@@ -1,3 +1,18 @@
+import * as React from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <div>Hello world!</div>,
+  },
+]);
+
 export default function Root(props) {
-  return <section>{props.name} is mounted!</section>;
+  return <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 }
