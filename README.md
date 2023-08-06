@@ -21,6 +21,12 @@ npm start -- --port 8500
 npm run start:standalone
 ```
 
+3. Add executable for hooks during commit
+
+```
+chmod a+x .husky/pre-commit
+```
+
 ## Deployment
 
 1. Project deployment works differently as there is _NO_ hosting page. Means navigating to the page e.g. https://zelda-auth-react-walcoorperation.vercel.app/ will deal with NO Page found.
