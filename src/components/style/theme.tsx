@@ -1,7 +1,7 @@
 /* istanbul ignore file -- @preserve */
 /** Ignore styling for test case **/
 import * as React from "react";
-import createTheme from "@mui/material/styles/createTheme";
+import { createTheme } from "@mui/material/styles";
 import { green, purple } from "@mui/material/colors";
 import {
   Link as RouterLink,
