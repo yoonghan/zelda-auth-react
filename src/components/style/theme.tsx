@@ -3,21 +3,8 @@
 import * as React from "react";
 import { createTheme } from "@mui/material/styles";
 import { green, purple } from "@mui/material/colors";
-import {
-  Link as RouterLink,
-  LinkProps as RouterLinkProps,
-} from "react-router-dom";
 import { LinkProps } from "@mui/material/Link";
-
-// eslint-disable-next-line react-refresh/only-export-components
-const LinkBehavior = React.forwardRef<
-  HTMLAnchorElement,
-  Omit<RouterLinkProps, "to"> & { href: RouterLinkProps["to"] }
->((props, ref) => {
-  const { href, ...other } = props;
-  // Map href (Material UI) -> to (react-router)
-  return <RouterLink ref={ref} to={href} {...other} />;
-});
+import { LinkBehavior } from "../LinkBehavior";
 
 const theme = createTheme({
   palette: {
