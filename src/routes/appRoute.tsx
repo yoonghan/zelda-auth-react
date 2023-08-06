@@ -12,12 +12,12 @@ type Props = {
 };
 
 const routes = (props: Props): RouteObject => ({
-  path: "/",
+  path: "/auth",
   element: <Root />,
   errorElement: <ErrorPage />,
   children: [
     {
-      path: "/",
+      path: "",
       element: <About />,
     },
     {
@@ -29,15 +29,11 @@ const routes = (props: Props): RouteObject => ({
       element: <Profiler />,
     },
     {
-      path: "/auth",
-      element: <About />,
-    },
-    {
-      path: "/auth/login",
+      path: "login",
       element: <SignIn {...props} />,
     },
     {
-      path: "/auth/logout",
+      path: "logout",
       element: <SignOut {...props} redirect="/auth/login" />,
     },
   ],
