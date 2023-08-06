@@ -7,7 +7,7 @@ import {
 } from "@yoonghan/walcron-microfrontend-shared";
 import appRoute from "./routes/appRoute";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
   appRoute({
     onSignIn: () => {
       //do nothing
@@ -15,8 +15,8 @@ const router = createBrowserRouter([
     onSignOut: () => {
       //do nothing
     },
-  }),
-]);
+  })
+);
 
 export default function Root(props) {
   return (

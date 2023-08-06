@@ -6,12 +6,10 @@ import React from "react";
 describe("appRoute", () => {
   const Wrapper = ({ goto }: { goto: string[] }) => {
     const router = createMemoryRouter(
-      [
-        routes({
-          onSignIn: jest.fn(),
-          onSignOut: jest.fn(),
-        }),
-      ],
+      routes({
+        onSignIn: jest.fn(),
+        onSignOut: jest.fn(),
+      }),
       { initialEntries: goto }
     );
     return <RouterProvider router={router} />;
@@ -23,12 +21,12 @@ describe("appRoute", () => {
   });
 
   it("should show be able to navigate to root", () => {
-    render(<Wrapper goto={["/"]} />);
+    render(<Wrapper goto={["/auth"]} />);
     expect(screen.queryByText("Not Found")).not.toBeInTheDocument();
   });
 
   it("should show be able to navigate to /about", () => {
-    render(<Wrapper goto={["/about"]} />);
+    render(<Wrapper goto={["/auth/about"]} />);
     expect(screen.queryByText("Not Found")).not.toBeInTheDocument();
   });
 

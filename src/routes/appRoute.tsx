@@ -11,32 +11,35 @@ type Props = {
   onSignOut: () => void;
 };
 
-const routes = (props: Props): RouteObject => ({
-  path: "/auth",
-  element: <Root />,
-  errorElement: <ErrorPage />,
-  children: [
-    {
-      path: "",
-      element: <About />,
-    },
-    {
-      path: "about",
-      element: <About />,
-    },
-    {
-      path: "profile",
-      element: <Profiler />,
-    },
-    {
-      path: "login",
-      element: <SignIn {...props} />,
-    },
-    {
-      path: "logout",
-      element: <SignOut {...props} redirect="/auth/login" />,
-    },
-  ],
-});
+const routes = (props: Props): RouteObject[] => [
+  { path: "/", element: <About />, errorElement: <ErrorPage /> },
+  {
+    path: "/auth",
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "",
+        element: <About />,
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
+      {
+        path: "profile",
+        element: <Profiler />,
+      },
+      {
+        path: "login",
+        element: <SignIn {...props} />,
+      },
+      {
+        path: "logout",
+        element: <SignOut {...props} redirect="/auth/login" />,
+      },
+    ],
+  },
+];
 
 export default routes;
