@@ -7,5 +7,8 @@
     "skipLibCheck": true
   },
   "files": ["src/walcron-zelda-auth-react.tsx"],
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*",
+    "/Users/han/Work/codes/nextjs/zelda-microfrontend/zelda-root/external_modules/shared-context/typings/types.d.ts"
+  ]
 }
