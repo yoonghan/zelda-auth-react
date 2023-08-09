@@ -1,23 +1,23 @@
 import { render, screen } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import routes from "./appRoute";
-import React from "react";
+import { AuthenticationProvider } from "../context/authentication";
 
 describe("appRoute", () => {
   const Wrapper = ({ goto }: { goto: string[] }) => {
-    const router = createMemoryRouter(
-      routes({
-        onSignIn: jest.fn(),
-        onSignOut: jest.fn(),
-      }),
-      { initialEntries: goto }
+    const router = createMemoryRouter(routes, { initialEntries: goto });
+    return (
+      <AuthenticationProvider>
+        <RouterProvider router={router} />
+      </AuthenticationProvider>
     );
-    return <RouterProvider router={router} />;
   };
 
   it("should show exception when the route is not valid", () => {
+    const mock = jest.spyOn(console, "warn").mockImplementation(() => {});
     render(<Wrapper goto={["/isnotvalid"]} />);
     expect(screen.getByText("Not Found")).toBeInTheDocument();
+    mock.mockRestore();
   });
 
   it("should show be able to navigate to root", () => {

@@ -10,21 +10,17 @@ import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
 import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
 
-export default function SignIn({ onSignIn }: { onSignIn: () => void }) {
-  const [invalidForm, setInvalidForm] = useState(false);
-
+export default function SignIn({
+  onSignIn,
+  error,
+}: {
+  onSignIn: (username: string, password: string) => void;
+  error: string | undefined;
+}) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (
-      data.get("email") === "walcron@email.com" &&
-      data.get("password") === "testPassword"
-    ) {
-      setInvalidForm(false);
-      onSignIn();
-      return;
-    }
-    setInvalidForm(true);
+    onSignIn(data.get("email").toString(), data.get("password").toString());
   };
 
   return (
@@ -62,14 +58,11 @@ export default function SignIn({ onSignIn }: { onSignIn: () => void }) {
             id="password"
             autoComplete="current-password"
           />
-          {invalidForm && (
-            <Alert severity="error">Try walcron@email.com/testPassword</Alert>
-          )}
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-
+          {error && <Alert severity="error">{error}</Alert>}
           <Button
             type="submit"
             fullWidth
