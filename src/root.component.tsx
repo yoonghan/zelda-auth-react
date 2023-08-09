@@ -6,22 +6,16 @@ import {
   consoleReportHandler,
 } from "@yoonghan/walcron-microfrontend-shared";
 import appRoute from "./routes/appRoute";
+import { AuthenticationProvider } from "./context/authentication";
 
-const router = createBrowserRouter(
-  appRoute({
-    onSignIn: () => {
-      //do nothing
-    },
-    onSignOut: () => {
-      //do nothing
-    },
-  })
-);
+const router = createBrowserRouter(appRoute);
 
 export default function Root(props) {
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <AuthenticationProvider>
+        <RouterProvider router={router} />
+      </AuthenticationProvider>
     </React.StrictMode>
   );
 }

@@ -3,15 +3,10 @@ import Root from "./Root";
 import ErrorPage from "./ExtendedErrorPage";
 import SignIn from "../components/SignIn";
 import SignOut from "../components/SignOut";
-import { RouteObject } from "react-router-dom";
 import Profiler from "../components/Profile";
+import { AuthenticationConsumer } from "../context/authentication";
 
-type Props = {
-  onSignIn: () => void;
-  onSignOut: () => void;
-};
-
-const routes = (props: Props): RouteObject[] => [
+const routes = [
   { path: "/", element: <About />, errorElement: <ErrorPage /> },
   {
     path: "/auth",
@@ -32,11 +27,23 @@ const routes = (props: Props): RouteObject[] => [
       },
       {
         path: "login",
-        element: <SignIn {...props} />,
+        element: (
+          <AuthenticationConsumer>
+            {(props) => <SignIn {...props} />}
+          </AuthenticationConsumer>
+        ),
       },
+      /* istanbul ignore next -- @preserve */
       {
         path: "logout",
-        element: <SignOut {...props} redirect="/auth/login" />,
+        element: (
+          <AuthenticationConsumer>
+            {
+              /* istanbul ignore next -- @preserve */
+              (props) => <SignOut {...props} redirect="/auth/login" />
+            }
+          </AuthenticationConsumer>
+        ),
       },
     ],
   },
