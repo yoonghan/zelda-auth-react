@@ -27,7 +27,9 @@ describe("ExtendedErrorPage", () => {
   };
 
   it("should render error page when route is not found", async () => {
+    const mock = jest.spyOn(console, "warn").mockImplementation(() => {});
     renderComponent("/wrongurl");
     expect(await screen.findByText("Not Found")).toBeInTheDocument();
+    mock.mockRestore();
   });
 });
