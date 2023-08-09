@@ -7,11 +7,6 @@ This is an authentication project that is based on react, which act as the contr
 [![Build Status][build-badge]][build]
 [![Code Coverage][coverage-badge]][coverage]
 
-## Installation
-
-1. Checkout zelda-root project.
-2. Change tsconfig.json and include path 'zelda-root/external_modules/shared-context/typings/types.d.ts'.
-
 ## Usage
 
 1. Execute the project for use with zelda-root
