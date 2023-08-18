@@ -20,7 +20,7 @@ This is an authentication project that is based on react, which act as the contr
 npm start -- --port 8500
 ```
 
-2. Execute the project for local development
+2. Execute the project for local development. Read standalone - setup.
 
 ```
 npm run start:standalone
@@ -31,6 +31,18 @@ npm run start:standalone
 ```
 chmod a+x .husky/pre-commit
 ```
+
+## Standalone setup
+
+1. Open the standalone application in site http://localhost:8500
+2. In the browser console, run localStorage.setItem('devtools', true); Refresh the page.
+3. From the "..." at the bottom add new modules
+
+| Name | Url    |
+| ---- | ------ |
+| rxjs | https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs/system/es2015/rxjs.min.js |
+| @walcron/zelda-shared-context | https://zelda-shared.walcron.com/walcron-zelda-shared-context.js |s
+
 
 ## Deployment
 
