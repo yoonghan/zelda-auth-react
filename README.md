@@ -38,11 +38,10 @@ chmod a+x .husky/pre-commit
 2. In the browser console, run localStorage.setItem('devtools', true); Refresh the page.
 3. From the "..." at the bottom add new modules
 
-| Name | Url    |
-| ---- | ------ |
-| rxjs | https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs/system/es2015/rxjs.min.js |
-| @walcron/zelda-shared-context | https://zelda-shared.walcron.com/walcron-zelda-shared-context.js |s
-
+| Name                          | Url                                                                     |
+| ----------------------------- | ----------------------------------------------------------------------- |
+| rxjs                          | https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs/system/es2015/rxjs.min.js |
+| @walcron/zelda-shared-context | https://zelda-shared.walcron.com/walcron-zelda-shared-context.js        |
 
 ## Deployment
 
