@@ -5,6 +5,7 @@ import {
 } from "./authentication";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { login, logout } from "@walcron/zelda-shared-context";
 
 describe("authentication", () => {
   it("should have correct authentication defaults", () => {
@@ -33,7 +34,9 @@ describe("authentication", () => {
         </AuthenticationProvider>
       );
       await userEvent.click(screen.getByRole("button", { name: "Sign In" }));
+      expect(login).toHaveBeenCalled();
       await userEvent.click(screen.getByRole("button", { name: "Sign Out" }));
+      expect(logout).toHaveBeenCalled();
     });
   });
 });
