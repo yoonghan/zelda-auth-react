@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { auth$, login } from "@walcron/zelda-shared-context";
+import { auth$, login, logout } from "@walcron/zelda-shared-context";
 
 type Props = {
   onSignIn: (username: string, password: string) => void;
@@ -43,7 +43,9 @@ export const AuthenticationProvider = ({
         onSignIn: (username: string, password: string) => {
           login(username, password);
         },
-        onSignOut: () => {},
+        onSignOut: () => {
+          logout();
+        },
         error,
       }}
     >
