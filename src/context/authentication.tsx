@@ -5,6 +5,7 @@ type Props = {
   onSignIn: (username: string, password: string) => void;
   onSignOut: () => void;
   error: string | undefined;
+  loggedIn: boolean;
 };
 
 export const defaultProps: Props = {
@@ -15,6 +16,7 @@ export const defaultProps: Props = {
     //empty
   },
   error: undefined,
+  loggedIn: false,
 };
 
 const AuthenticationContext = createContext(defaultProps);
@@ -27,10 +29,12 @@ export const AuthenticationProvider = ({
   children: ReactNode;
 }) => {
   const [error, setError] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const sub = auth$.subscribe(({ error }) => {
+    const sub = auth$.subscribe(({ error, sessionToken }) => {
       setError(error);
+      setLoggedIn(sessionToken !== null);
     });
     return () => {
       sub.unsubscribe();
@@ -47,6 +51,7 @@ export const AuthenticationProvider = ({
           logout();
         },
         error,
+        loggedIn,
       }}
     >
       {children}
