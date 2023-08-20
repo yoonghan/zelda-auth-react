@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -9,14 +9,25 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
 import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn({
   onSignIn,
   error,
+  loggedIn,
 }: {
   onSignIn: (username: string, password: string) => void;
   error: string | undefined;
+  loggedIn: boolean;
 }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/auth/profile", { replace: true });
+    }
+  }, [loggedIn]);
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

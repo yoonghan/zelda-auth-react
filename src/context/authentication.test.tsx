@@ -10,6 +10,7 @@ import { login, logout } from "@walcron/zelda-shared-context";
 describe("authentication", () => {
   it("should have correct authentication defaults", () => {
     expect(defaultProps.error).toBeUndefined();
+    expect(defaultProps.loggedIn).toBeFalsy();
     defaultProps.onSignIn("user", "password");
     defaultProps.onSignOut();
   });
@@ -19,11 +20,8 @@ describe("authentication", () => {
       render(
         <AuthenticationProvider>
           <AuthenticationConsumer>
-            {({ onSignIn, onSignOut, error }) => (
+            {({ onSignIn, onSignOut, error, loggedIn }) => (
               <>
-                <div>
-                  <span>Error: {error}</span>
-                </div>
                 <button onClick={() => onSignIn("username", "password")}>
                   Sign In
                 </button>

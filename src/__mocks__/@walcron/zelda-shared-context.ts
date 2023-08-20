@@ -3,6 +3,7 @@ export const auth$ = {
     callback({
       pending: false,
       error: "message",
+      sessionToken: null,
     });
     return {
       unsubscribe: jest.fn(),
