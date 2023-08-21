@@ -32,6 +32,8 @@ npm run start:standalone
 chmod a+x .husky/pre-commit
 ```
 
+4. All included html must be saved as ejs extension.
+
 ## Standalone setup
 
 1. Open the standalone application in site http://localhost:8500

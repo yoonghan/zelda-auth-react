@@ -26,7 +26,7 @@ export default function SignIn({
     if (loggedIn) {
       navigate("/auth/profile", { replace: true });
     }
-  }, [loggedIn]);
+  }, [loggedIn, navigate]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
