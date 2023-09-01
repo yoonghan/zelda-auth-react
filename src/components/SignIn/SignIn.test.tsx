@@ -28,47 +28,83 @@ describe("SignIn", () => {
     );
 
   it("should render login component correctly", () => {
-    renderComponent();
-    expect(screen.getByText("Sign in")).toBeInTheDocument();
+    const { getByRole, getByText, getByLabelText, queryByRole } =
+      renderComponent();
+    expect(getByText("Sign in")).toBeInTheDocument();
 
-    expect(screen.getByLabelText("Email Address *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Password *")).toBeInTheDocument();
+    expect(getByLabelText("Email Address *")).toBeInTheDocument();
+    expect(getByLabelText("Password *")).toBeInTheDocument();
 
-    expect(
-      screen.getByRole("checkbox", { name: "Remember me" })
-    ).toBeInTheDocument();
+    expect(getByRole("checkbox", { name: "Remember me" })).toBeInTheDocument();
 
-    expect(screen.getByRole("button", { name: "Sign In" })).toBeInTheDocument();
+    expect(getByRole("button", { name: "Sign In" })).toBeInTheDocument();
 
-    expect(screen.getByText(/^Copyright ©.*2023\.$/)).toBeInTheDocument();
+    expect(getByText(/^Copyright ©.*2023\.$/)).toBeInTheDocument();
+
+    expect(queryByRole("alert")).not.toBeInTheDocument();
   });
 
-  it("should be able to signin with valid authentication", async () => {
-    const onSignInMock = jest.fn();
-    renderComponent(onSignInMock);
-    await userEvent.type(
-      screen.getByLabelText("Email Address *"),
-      "walcron@email.com"
-    );
-    await userEvent.type(screen.getByLabelText("Password *"), "testPassword");
-    await userEvent.click(screen.getByRole("button", { name: "Sign In" }));
-    expect(onSignInMock).toHaveBeenCalled();
+  describe("Validation", () => {
+    it("should indicate email and password is not entered if user submit", async () => {
+      const onSignInMock = jest.fn();
+      const { getByRole, getByText } = renderComponent(onSignInMock);
+      await userEvent.click(getByRole("button", { name: "Sign In" }));
+      expect(getByText("Email address is required")).toBeInTheDocument();
+      expect(getByText("Password is required")).toBeInTheDocument();
+    });
+
+    it("should enable form enter press", async () => {
+      const onSignInMock = jest.fn();
+      const { getByLabelText, getByRole } = renderComponent(onSignInMock);
+      await userEvent.type(getByLabelText("Email Address *"), "{enter}");
+      expect(getByRole("alert")).toBeInTheDocument();
+    });
+
+    it("should enable key input press", async () => {
+      const onSignInMock = jest.fn();
+      const { getByLabelText, getByText } = renderComponent(onSignInMock);
+      await userEvent.type(getByLabelText("Email Address *"), "{enter}");
+      expect(getByText("Email address is required")).toBeInTheDocument();
+    });
+
+    it("should not display error", async () => {
+      const onSignInMock = jest.fn();
+      const { queryByRole, getByRole, getByLabelText } =
+        renderComponent(onSignInMock);
+      await userEvent.type(
+        getByLabelText("Email Address *"),
+        "walcron@gmail.com"
+      );
+      await userEvent.type(getByLabelText("Password *"), "walcron@gmail.com");
+      await userEvent.click(getByRole("button", { name: "Sign In" }));
+      expect(queryByRole("alert")).not.toBeInTheDocument();
+    });
   });
 
-  it("should be show exceptio when sign in failed", async () => {
-    const errorMessage = "Sorry, it's an invalid sign-in";
-    const onSignInMock = jest.fn();
-    renderComponent(onSignInMock, errorMessage);
-    await userEvent.type(
-      screen.getByLabelText("Email Address *"),
-      "walcron@email.com"
-    );
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
-  });
+  describe("login", () => {
+    it("should be able to signin with valid authentication", async () => {
+      const onSignInMock = jest.fn();
+      renderComponent(onSignInMock);
+      await userEvent.type(
+        screen.getByLabelText("Email Address *"),
+        "walcron@email.com"
+      );
+      await userEvent.type(screen.getByLabelText("Password *"), "testPassword");
+      await userEvent.click(screen.getByRole("button", { name: "Sign In" }));
+      expect(onSignInMock).toHaveBeenCalled();
+    });
 
-  it("should go profile if user is already logged in", () => {
-    const onSignInMock = jest.fn();
-    renderComponent(onSignInMock, undefined, true);
-    expect(screen.getByText("Profile")).toBeInTheDocument();
+    it("should be show exception when sign in failed", async () => {
+      const errorMessage = "Sorry, it's an invalid sign-in";
+      const onSignInMock = jest.fn();
+      const { getByText } = renderComponent(onSignInMock, errorMessage);
+      expect(getByText(errorMessage)).toBeInTheDocument();
+    });
+
+    it("should go profile if user is already logged in", () => {
+      const onSignInMock = jest.fn();
+      renderComponent(onSignInMock, undefined, true);
+      expect(screen.getByText("Profile")).toBeInTheDocument();
+    });
   });
 });
