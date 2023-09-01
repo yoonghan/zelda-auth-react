@@ -10,13 +10,17 @@ module.exports = (webpackConfigEnv, argv) => {
     argv,
   });
 
-  return merge(defaultConfig, {
-    // modify the webpack config however you'd like to by adding to this object
-    plugins: [
-      new HtmlWebpackPlugin({
-        inject: false,
-        template: "src/index.ejs",
-      }),
-    ],
-  });
+  const additionalConfigs = webpackConfigEnv.standalone
+    ? {}
+    : {
+        plugins: [
+          new HtmlWebpackPlugin({
+            inject: false,
+            template: "src/about.ejs",
+            filename: "index.html",
+          }),
+        ],
+      };
+
+  return merge(defaultConfig, additionalConfigs);
 };
