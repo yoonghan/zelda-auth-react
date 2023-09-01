@@ -1,4 +1,4 @@
-import { FormEvent, useEffect } from "react";
+import { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,6 +10,12 @@ import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
 import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
 import { useNavigate } from "react-router-dom";
+import { FieldErrors, FieldValue, useForm } from "react-hook-form";
+
+type FormValues = {
+  email: string;
+  password: string;
+};
 
 export default function SignIn({
   onSignIn,
@@ -21,6 +27,11 @@ export default function SignIn({
   loggedIn: boolean;
 }) {
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     if (loggedIn) {
@@ -28,10 +39,20 @@ export default function SignIn({
     }
   }, [loggedIn, navigate]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    onSignIn(data.get("email").toString(), data.get("password").toString());
+  const onSubmit = (formValues: FormValues) => {
+    onSignIn(formValues.email, formValues.password);
+  };
+
+  const printErrors = (errors: FieldErrors<FieldValue<String>>) => {
+    const keys = Object.keys(errors);
+
+    return (
+      <ul>
+        {keys.map((error) => (
+          <li key={error}>{`${errors[error].message}`}</li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -48,7 +69,12 @@ export default function SignIn({
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
@@ -58,6 +84,13 @@ export default function SignIn({
             name="email"
             autoComplete="email"
             autoFocus
+            {...register("email", {
+              required: "Email address is required",
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+                message: "Email address is invalid",
+              },
+            })}
           />
           <TextField
             margin="normal"
@@ -68,11 +101,20 @@ export default function SignIn({
             type="password"
             id="password"
             autoComplete="current-password"
+            {...register("password", {
+              required: "Password is required",
+              min: 8,
+            })}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox value="remember" color="primary" id="remember-me" />
+            }
             label="Remember me"
           />
+          {errors && Object.keys(errors).length !== 0 && (
+            <Alert severity="error">{printErrors(errors)}</Alert>
+          )}
           {error && <Alert severity="error">{error}</Alert>}
           <Button
             type="submit"
