@@ -10,4 +10,9 @@ export declare const auth$: BehaviorSubject<AuthProps>;
 export declare function login(username: string, password: string): void;
 export declare function logout(): void;
 export {};
+export const credentials: {
+    username: string;
+    password: string;
+};
+export declare const sessionToken = "abc1234";
 }
