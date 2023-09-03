@@ -1,5 +1,6 @@
+import { fabClasses } from "@mui/material";
 import SignIn from ".";
-import { render, screen } from "@testing-library/react";
+import { findByText, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
@@ -82,19 +83,21 @@ describe("SignIn", () => {
   });
 
   describe("login", () => {
-    it("should be able to signin with valid authentication", async () => {
+    it("should be able to signin with valid authentication and show loading", async () => {
       const onSignInMock = jest.fn();
-      renderComponent(onSignInMock);
+      const { getByLabelText, getByRole, findByTestId } =
+        renderComponent(onSignInMock);
       await userEvent.type(
-        screen.getByLabelText("Email Address *"),
+        getByLabelText("Email Address *"),
         "walcron@email.com"
       );
-      await userEvent.type(screen.getByLabelText("Password *"), "testPassword");
-      await userEvent.click(screen.getByRole("button", { name: "Sign In" }));
+      await userEvent.type(getByLabelText("Password *"), "testPassword");
+      await userEvent.click(getByRole("button", { name: "Sign In" }));
       expect(onSignInMock).toHaveBeenCalled();
+      expect(await findByTestId("loader")).toBeInTheDocument();
     });
 
-    it("should be show exception when sign in failed", async () => {
+    it("should be show exception when sign in failed and loader does not appear", async () => {
       const errorMessage = "Sorry, it's an invalid sign-in";
       const onSignInMock = jest.fn();
       const { getByText } = renderComponent(onSignInMock, errorMessage);
