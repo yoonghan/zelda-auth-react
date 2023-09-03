@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
 import { useNavigate } from "react-router-dom";
 import { FieldErrors, FieldValue, useForm } from "react-hook-form";
@@ -27,6 +29,7 @@ export default function SignIn({
   loggedIn: boolean;
 }) {
   const navigate = useNavigate();
+  const submissionCount = useRef(0);
   const {
     register,
     handleSubmit,
@@ -39,12 +42,25 @@ export default function SignIn({
     }
   }, [loggedIn, navigate]);
 
-  const onSubmit = (formValues: FormValues) => {
-    onSignIn(formValues.email, formValues.password);
-  };
+  const submissionInProgress = useCallback(
+    () => submissionCount.current > 0 && error === undefined,
+    [error]
+  );
 
-  const printErrors = (errors: FieldErrors<FieldValue<String>>) => {
+  const onSubmit = useCallback(
+    (formValues: FormValues) => {
+      onSignIn(formValues.email, formValues.password);
+      submissionCount.current += 1;
+    },
+    [onSignIn]
+  );
+
+  const inputErrors = (() => {
     const keys = Object.keys(errors);
+
+    if (keys.length === 0) {
+      return undefined;
+    }
 
     return (
       <ul>
@@ -53,7 +69,7 @@ export default function SignIn({
         ))}
       </ul>
     );
-  };
+  })();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -75,56 +91,68 @@ export default function SignIn({
           noValidate
           sx={{ mt: 1 }}
         >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            {...register("email", {
-              required: "Email address is required",
-              pattern: {
-                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i,
-                message: "Email address is invalid",
-              },
-            })}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            {...register("password", {
-              required: "Password is required",
-              min: 8,
-            })}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox value="remember" color="primary" id="remember-me" />
-            }
-            label="Remember me"
-          />
-          {errors && Object.keys(errors).length !== 0 && (
-            <Alert severity="error">{printErrors(errors)}</Alert>
-          )}
-          {error && <Alert severity="error">{error}</Alert>}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+          <Box
+            component="fieldset"
+            sx={{ border: 0 }}
+            disabled={submissionInProgress()}
           >
-            Sign In
-          </Button>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              {...register("email", {
+                required: "Email address is required",
+                pattern: {
+                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+                  message: "Email address is invalid",
+                },
+              })}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              {...register("password", {
+                required: "Password is required",
+                min: 8,
+              })}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox value="remember" color="primary" id="remember-me" />
+              }
+              label="Remember me"
+            />
+            {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
+            {error && <Alert severity="warning">{error}</Alert>}
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+          </Box>
         </Box>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={submissionInProgress()}
+          data-testid="loader"
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Box>
       <Copyright lastUpdatedYear={2023} />
     </Container>
