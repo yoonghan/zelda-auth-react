@@ -2,8 +2,6 @@ import { useCallback, useEffect, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -18,14 +16,15 @@ import { emailPattern, passwordLength } from "../shared/validation";
 type FormValues = {
   email: string;
   password: string;
+  rePassword: string;
 };
 
-export default function SignIn({
-  onSignIn,
+export default function Create({
+  onCreate,
   error,
   loggedIn,
 }: {
-  onSignIn: (username: string, password: string) => void;
+  onCreate: (username: string, password: string) => void;
   error: string | undefined;
   loggedIn: boolean;
 }) {
@@ -34,6 +33,7 @@ export default function SignIn({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
@@ -50,10 +50,10 @@ export default function SignIn({
 
   const onSubmit = useCallback(
     (formValues: FormValues) => {
-      onSignIn(formValues.email, formValues.password);
+      onCreate(formValues.email, formValues.password);
       submissionCount.current += 1;
     },
-    [onSignIn]
+    [onCreate]
   );
 
   const inputErrors = (() => {
@@ -84,7 +84,7 @@ export default function SignIn({
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Create User
         </Typography>
         <Box
           component="form"
@@ -122,7 +122,6 @@ export default function SignIn({
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -131,11 +130,22 @@ export default function SignIn({
                 },
               })}
             />
-            <FormControlLabel
-              control={
-                <Checkbox value="remember" color="primary" id="remember-me" />
-              }
-              label="Remember me"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="rePassword"
+              label="Confirm Password"
+              type="password"
+              id="rePassword"
+              {...register("rePassword", {
+                required: "Confirm password is required",
+                validate: (retypedPassword: string) => {
+                  if (watch("password") !== retypedPassword) {
+                    return "Your confirmed password doesn't match";
+                  }
+                },
+              })}
             />
             {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
             {error && <Alert severity="warning">{error}</Alert>}
@@ -146,7 +156,7 @@ export default function SignIn({
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Create
             </Button>
           </Box>
         </Box>

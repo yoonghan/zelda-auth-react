@@ -10,5 +10,6 @@ export const auth$ = {
     };
   },
 };
+export const create = jest.fn();
 export const login = jest.fn();
 export const logout = jest.fn();
