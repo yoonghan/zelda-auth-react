@@ -56,15 +56,10 @@ describe("SignIn", () => {
 
     it("should enable form enter press", async () => {
       const onSignInMock = jest.fn();
-      const { getByLabelText, getByRole } = renderComponent(onSignInMock);
+      const { getByLabelText, getByRole, getByText } =
+        renderComponent(onSignInMock);
       await userEvent.type(getByLabelText("Email Address *"), "{enter}");
       expect(getByRole("alert")).toBeInTheDocument();
-    });
-
-    it("should enable key input press", async () => {
-      const onSignInMock = jest.fn();
-      const { getByLabelText, getByText } = renderComponent(onSignInMock);
-      await userEvent.type(getByLabelText("Email Address *"), "{enter}");
       expect(getByText("Email address is required")).toBeInTheDocument();
     });
 
