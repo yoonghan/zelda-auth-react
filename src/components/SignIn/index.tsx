@@ -14,6 +14,7 @@ import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { emailPattern, passwordLength } from "../shared/validation";
+import { Link } from "@mui/material";
 
 type FormValues = {
   email: string;
@@ -130,12 +131,6 @@ export default function SignIn({
                   message: `Password min length is ${passwordLength}`,
                 },
               })}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox value="remember" color="primary" id="remember-me" />
-              }
-              label="Remember me"
             />
             {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
             {error && <Alert severity="warning">{error}</Alert>}

@@ -74,7 +74,7 @@ describe("Create", () => {
         "12333{enter}"
       );
       expect(await findByText("Email address is invalid")).toBeInTheDocument();
-      expect(await getByText("Password min length is 8")).toBeInTheDocument();
+      expect(await getByText("Password min length is 6")).toBeInTheDocument();
       expect(
         await getByText("Your confirmed password doesn't match")
       ).toBeInTheDocument();

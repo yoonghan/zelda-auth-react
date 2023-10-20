@@ -70,7 +70,7 @@ describe("SignIn", () => {
       await userEvent.type(getByLabelText("Email Address *"), "walcrontest");
       await userEvent.type(getByLabelText("Password *"), "abc123{enter}");
       expect(await findByText("Email address is invalid")).toBeInTheDocument();
-      expect(await getByText("Password min length is 8")).toBeInTheDocument();
+      expect(await getByText("Password min length is 6")).toBeInTheDocument();
     });
 
     it("should not display error", async () => {
