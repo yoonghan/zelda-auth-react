@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,7 +10,8 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
 import { useNavigate } from "react-router-dom";
-import { FieldErrors, FieldValue, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { emailPattern, passwordLength } from "../shared/validation";
 
 type FormValues = {
   email: string;
@@ -108,7 +109,7 @@ export default function Create({
               {...register("email", {
                 required: "Email address is required",
                 pattern: {
-                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+                  value: emailPattern,
                   message: "Email address is invalid",
                 },
               })}
@@ -124,8 +125,8 @@ export default function Create({
               {...register("password", {
                 required: "Password is required",
                 minLength: {
-                  value: 8,
-                  message: "Password min length is 8",
+                  value: passwordLength,
+                  message: `Password min length is ${passwordLength}`,
                 },
               })}
             />
