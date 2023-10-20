@@ -68,11 +68,8 @@ describe("Create", () => {
       const { getByLabelText, findByText, getByText } =
         renderComponent(onCreateMock);
       await userEvent.type(getByLabelText("Email Address *"), "walcron");
-      await userEvent.type(getByLabelText("Password *"), "abc123");
-      await userEvent.type(
-        getByLabelText("Confirm Password *"),
-        "12333{enter}"
-      );
+      await userEvent.type(getByLabelText("Password *"), "abc");
+      await userEvent.type(getByLabelText("Confirm Password *"), "1233{enter}");
       expect(await findByText("Email address is invalid")).toBeInTheDocument();
       expect(await getByText("Password min length is 6")).toBeInTheDocument();
       expect(

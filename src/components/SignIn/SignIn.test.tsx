@@ -36,7 +36,10 @@ describe("SignIn", () => {
     expect(getByLabelText("Email Address *")).toBeInTheDocument();
     expect(getByLabelText("Password *")).toBeInTheDocument();
 
-    expect(getByRole("checkbox", { name: "Remember me" })).toBeInTheDocument();
+    expect(getByRole("link", { name: "Sign me up" })).toHaveAttribute(
+      "href",
+      "/auth/create"
+    );
 
     expect(getByRole("button", { name: "Sign In" })).toBeInTheDocument();
 
@@ -68,7 +71,7 @@ describe("SignIn", () => {
       const { getByLabelText, findByText, getByText } =
         renderComponent(onCreateMock);
       await userEvent.type(getByLabelText("Email Address *"), "walcrontest");
-      await userEvent.type(getByLabelText("Password *"), "abc123{enter}");
+      await userEvent.type(getByLabelText("Password *"), "abc{enter}");
       expect(await findByText("Email address is invalid")).toBeInTheDocument();
       expect(await getByText("Password min length is 6")).toBeInTheDocument();
     });
