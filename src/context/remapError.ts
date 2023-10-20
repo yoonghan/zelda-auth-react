@@ -15,7 +15,7 @@ export const remapAuthenticationError = (
       case "Firebase: Error (auth/email-already-in-use).":
         return "Email already exists.";
       default:
-        return `Issue - ${cleanError.substring(firebaseText.length)}`;
+        return `Issue -${cleanError.substring(firebaseText.length)}`;
     }
   }
   return cleanError;

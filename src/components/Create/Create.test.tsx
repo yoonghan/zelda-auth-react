@@ -32,10 +32,16 @@ describe("Create", () => {
     const { getByRole, getByText, getByLabelText, queryByRole } =
       renderComponent();
     expect(getByText("Create User")).toBeInTheDocument();
+    expect(
+      getByText("We thank you for taking interest in signing up with us.")
+    ).toBeInTheDocument();
 
     expect(getByLabelText("Email Address *")).toBeInTheDocument();
     expect(getByLabelText("Password *")).toBeInTheDocument();
     expect(getByLabelText("Confirm Password *")).toBeInTheDocument();
+    expect(
+      getByRole("checkbox", { name: "I agree to create." })
+    ).toBeInTheDocument();
 
     expect(getByRole("button", { name: "Create" })).toBeInTheDocument();
 
@@ -52,6 +58,7 @@ describe("Create", () => {
       expect(getByText("Email address is required")).toBeInTheDocument();
       expect(getByText("Password is required")).toBeInTheDocument();
       expect(getByText("Confirm password is required")).toBeInTheDocument();
+      expect(getByText("Please check 'I agree to create'")).toBeInTheDocument();
     });
 
     it("should enable form enter press", async () => {
@@ -76,23 +83,6 @@ describe("Create", () => {
         await getByText("Your confirmed password doesn't match")
       ).toBeInTheDocument();
     });
-
-    it("should not display error", async () => {
-      const onCreateMock = jest.fn();
-      const { queryByRole, getByRole, getByLabelText } =
-        renderComponent(onCreateMock);
-      await userEvent.type(
-        getByLabelText("Email Address *"),
-        "walcron@gmail.com"
-      );
-      await userEvent.type(getByLabelText("Password *"), "walcron@gmail.com");
-      await userEvent.type(
-        getByLabelText("Confirm Password *"),
-        "walcron@gmail.com"
-      );
-      await userEvent.click(getByRole("button", { name: "Create" }));
-      expect(queryByRole("alert")).not.toBeInTheDocument();
-    });
   });
 
   describe("login", () => {
@@ -108,6 +98,9 @@ describe("Create", () => {
       await userEvent.type(
         getByLabelText("Confirm Password *"),
         "testPassword"
+      );
+      await userEvent.click(
+        getByRole("checkbox", { name: "I agree to create." })
       );
       await userEvent.click(getByRole("button", { name: "Create" }));
       expect(onCreateMock).toHaveBeenCalled();

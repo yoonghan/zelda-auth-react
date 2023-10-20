@@ -12,6 +12,7 @@ import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { emailPattern, passwordLength } from "../shared/validation";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 type FormValues = {
   email: string;
@@ -86,6 +87,14 @@ export default function Create({
         <Typography component="h1" variant="h5">
           Create User
         </Typography>
+        <Typography
+          component="p"
+          variant="body2"
+          textAlign="justify"
+          margin={1}
+        >
+          We thank you for taking interest in signing up with us.
+        </Typography>
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -147,6 +156,15 @@ export default function Create({
                 },
               })}
             />
+
+            <FormControlLabel
+              control={<Checkbox value="agree" color="primary" id="agree" />}
+              label="I agree to create."
+              {...register("agree", {
+                required: "Please check 'I agree to create'",
+              })}
+            />
+
             {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
             {error && <Alert severity="warning">{error}</Alert>}
 
@@ -154,7 +172,7 @@ export default function Create({
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 2, mb: 2 }}
             >
               Create
             </Button>
