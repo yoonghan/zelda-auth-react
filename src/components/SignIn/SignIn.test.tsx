@@ -63,6 +63,16 @@ describe("SignIn", () => {
       expect(getByText("Email address is required")).toBeInTheDocument();
     });
 
+    it("should display error for invalid input", async () => {
+      const onCreateMock = jest.fn();
+      const { getByLabelText, findByText, getByText } =
+        renderComponent(onCreateMock);
+      await userEvent.type(getByLabelText("Email Address *"), "walcrontest");
+      await userEvent.type(getByLabelText("Password *"), "abc123{enter}");
+      expect(await findByText("Email address is invalid")).toBeInTheDocument();
+      expect(await getByText("Password min length is 8")).toBeInTheDocument();
+    });
+
     it("should not display error", async () => {
       const onSignInMock = jest.fn();
       const { queryByRole, getByRole, getByLabelText } =
