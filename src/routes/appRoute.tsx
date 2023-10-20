@@ -5,6 +5,7 @@ import SignIn from "../components/SignIn";
 import SignOut from "../components/SignOut";
 import Profiler from "../components/Profile";
 import { AuthenticationConsumer } from "../context/authentication";
+import Create from "../components/Create";
 
 const routes = [
   { path: "/", element: <About />, errorElement: <ErrorPage /> },
@@ -30,6 +31,15 @@ const routes = [
         element: (
           <AuthenticationConsumer>
             {(props) => <SignIn {...props} />}
+          </AuthenticationConsumer>
+        ),
+      },
+
+      {
+        path: "create",
+        element: (
+          <AuthenticationConsumer>
+            {(props) => <Create {...props} />}
           </AuthenticationConsumer>
         ),
       },
