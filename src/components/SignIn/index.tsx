@@ -124,7 +124,10 @@ export default function SignIn({
               autoComplete="current-password"
               {...register("password", {
                 required: "Password is required",
-                min: 8,
+                minLength: {
+                  value: 8,
+                  message: "Password min length is 8",
+                },
               })}
             />
             <FormControlLabel

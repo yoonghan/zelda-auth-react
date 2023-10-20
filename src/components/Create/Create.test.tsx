@@ -63,20 +63,20 @@ describe("Create", () => {
       expect(getByText("Email address is required")).toBeInTheDocument();
     });
 
-    it("should display error is password has not been retype", async () => {
+    it("should display error for invalid input", async () => {
       const onCreateMock = jest.fn();
-      const { getByLabelText, findByText } = renderComponent(onCreateMock);
-      await userEvent.type(
-        getByLabelText("Email Address *"),
-        "walcron@gmail.com"
-      );
-      await userEvent.type(getByLabelText("Password *"), "abcdefg123");
+      const { getByLabelText, findByText, getByText } =
+        renderComponent(onCreateMock);
+      await userEvent.type(getByLabelText("Email Address *"), "walcron");
+      await userEvent.type(getByLabelText("Password *"), "abc123");
       await userEvent.type(
         getByLabelText("Confirm Password *"),
         "12333{enter}"
       );
+      expect(await findByText("Email address is invalid")).toBeInTheDocument();
+      expect(await getByText("Password min length is 8")).toBeInTheDocument();
       expect(
-        await findByText("Your confirmed password doesn't match")
+        await getByText("Your confirmed password doesn't match")
       ).toBeInTheDocument();
     });
 
