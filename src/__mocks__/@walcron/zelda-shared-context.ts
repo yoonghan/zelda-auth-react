@@ -2,7 +2,7 @@ export const auth$ = {
   subscribe: (callback: any) => {
     callback({
       pending: false,
-      error: "message",
+      error: "Firebase: login",
       sessionToken: null,
     });
     return {

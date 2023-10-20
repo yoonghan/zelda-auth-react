@@ -18,7 +18,7 @@ describe("authentication", () => {
 
   describe("provider", () => {
     it("should authenticate properly", async () => {
-      render(
+      const { getByTestId } = render(
         <AuthenticationProvider>
           <AuthenticationConsumer>
             {({ onCreate, onSignIn, onSignOut, error, loggedIn }) => (
@@ -30,6 +30,7 @@ describe("authentication", () => {
                   Sign In
                 </button>
                 <button onClick={onSignOut}>Sign Out</button>
+                <div data-testid={"error"}>{error}</div>
               </>
             )}
           </AuthenticationConsumer>
@@ -41,6 +42,7 @@ describe("authentication", () => {
       expect(login).toHaveBeenCalled();
       await userEvent.click(screen.getByRole("button", { name: "Sign Out" }));
       expect(logout).toHaveBeenCalled();
+      expect(getByTestId("error")).toHaveTextContent("Issue - login");
     });
   });
 });
