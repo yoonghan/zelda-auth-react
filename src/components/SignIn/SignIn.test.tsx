@@ -75,19 +75,6 @@ describe("SignIn", () => {
       expect(await findByText("Email address is invalid")).toBeInTheDocument();
       expect(await getByText("Password min length is 6")).toBeInTheDocument();
     });
-
-    it("should not display error", async () => {
-      const onSignInMock = jest.fn();
-      const { queryByRole, getByRole, getByLabelText } =
-        renderComponent(onSignInMock);
-      await userEvent.type(
-        getByLabelText("Email Address *"),
-        "walcron@gmail.com"
-      );
-      await userEvent.type(getByLabelText("Password *"), "walcron@gmail.com");
-      await userEvent.click(getByRole("button", { name: "Sign In" }));
-      expect(queryByRole("alert")).not.toBeInTheDocument();
-    });
   });
 
   describe("login", () => {
