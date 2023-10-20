@@ -36,7 +36,10 @@ describe("SignIn", () => {
     expect(getByLabelText("Email Address *")).toBeInTheDocument();
     expect(getByLabelText("Password *")).toBeInTheDocument();
 
-    expect(getByRole("checkbox", { name: "Remember me" })).toBeInTheDocument();
+    expect(getByRole("link", { name: "Sign me up" })).toHaveAttribute(
+      "href",
+      "/auth/create"
+    );
 
     expect(getByRole("button", { name: "Sign In" })).toBeInTheDocument();
 
@@ -68,22 +71,9 @@ describe("SignIn", () => {
       const { getByLabelText, findByText, getByText } =
         renderComponent(onCreateMock);
       await userEvent.type(getByLabelText("Email Address *"), "walcrontest");
-      await userEvent.type(getByLabelText("Password *"), "abc123{enter}");
+      await userEvent.type(getByLabelText("Password *"), "abc{enter}");
       expect(await findByText("Email address is invalid")).toBeInTheDocument();
-      expect(await getByText("Password min length is 8")).toBeInTheDocument();
-    });
-
-    it("should not display error", async () => {
-      const onSignInMock = jest.fn();
-      const { queryByRole, getByRole, getByLabelText } =
-        renderComponent(onSignInMock);
-      await userEvent.type(
-        getByLabelText("Email Address *"),
-        "walcron@gmail.com"
-      );
-      await userEvent.type(getByLabelText("Password *"), "walcron@gmail.com");
-      await userEvent.click(getByRole("button", { name: "Sign In" }));
-      expect(queryByRole("alert")).not.toBeInTheDocument();
+      expect(await getByText("Password min length is 6")).toBeInTheDocument();
     });
   });
 

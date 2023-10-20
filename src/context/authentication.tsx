@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { auth$, create, login, logout } from "@walcron/zelda-shared-context";
+import { remapAuthenticationError } from "./remapError";
 
 type Props = {
   onSignIn: (username: string, password: string) => void;
@@ -37,7 +38,7 @@ export const AuthenticationProvider = ({
 
   useEffect(() => {
     const sub = auth$.subscribe(({ error, sessionToken }) => {
-      setError(error);
+      setError(remapAuthenticationError(error));
       setLoggedIn(sessionToken !== null);
     });
     return () => {
