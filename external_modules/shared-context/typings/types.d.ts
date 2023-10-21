@@ -10,28 +10,29 @@ export const credentials: {
 /// <reference types="jest" />
 export const mockAuth: jest.Mock<any, any, any>;
 import { BehaviorSubject } from 'rxjs';
-interface AuthProps {
+import { AuthResponse, AuthWithProfileResponse } from './type/Auth';
+import { ChangePasswordResponse } from './type/ChangePassword';
+export const SESSION_KEY = "sessionToken";
+export declare const auth$: BehaviorSubject<AuthResponse>;
+export declare function create(username: string, password: string, displayName?: string): Promise<AuthWithProfileResponse>;
+export declare function login(username: string, password: string): Promise<AuthResponse>;
+export declare function confirmPasswordResetEmail(code: string, newPassword: string): Promise<ChangePasswordResponse>;
+export declare function resetEmail(username: string, redirectUrl: string): Promise<ChangePasswordResponse>;
+export declare function changePassword(oldPassword: string, newPassword: string): Promise<ChangePasswordResponse>;
+export declare function logout(): Promise<void>;
+import './__custom_mocks__/firebase/auth';
+import 'whatwg-fetch';
+export interface AuthResponse {
     sessionToken: string | null;
     error: string | undefined;
     pending: boolean;
 }
-interface AuthPropsWithProfile extends AuthProps {
+export interface AuthWithProfileResponse extends AuthResponse {
     isProfileUpdated: boolean;
 }
-type ChangePasswordProps = {
+export type ChangePasswordResponse = {
     isChanged: boolean;
     error: string | undefined;
 };
-export const SESSION_KEY = "sessionToken";
-export declare const auth$: BehaviorSubject<AuthProps>;
-export declare function create(username: string, password: string, displayName?: string): Promise<AuthPropsWithProfile>;
-export declare function login(username: string, password: string): Promise<AuthProps>;
-export declare function confirmPasswordResetEmail(code: string, newPassword: string): Promise<ChangePasswordProps>;
-export declare function resetEmail(username: string, redirectUrl: string): Promise<ChangePasswordProps>;
-export declare function changePassword(oldPassword: string, newPassword: string): Promise<ChangePasswordProps>;
-export declare function logout(): Promise<void>;
-export {};
-import './__custom_mocks__/firebase/auth';
-import 'whatwg-fetch';
 export {};
 }
