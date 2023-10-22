@@ -17,6 +17,11 @@ describe("remapError", () => {
       expect(
         remapAuthenticationError("Firebase: Error (auth/email-already-in-use).")
       ).toBe("Email already exists.");
+      expect(
+        remapAuthenticationError(
+          "Firebase: Domain not whitelisted by project (auth/unauthorized-continue-uri)."
+        )
+      ).toBe("System configuration issue, please contact admin.");
     });
 
     it("should return error as it is by default", () => {

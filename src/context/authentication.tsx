@@ -1,11 +1,21 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { auth$, create, login, logout } from "@walcron/zelda-shared-context";
+import {
+  type EmailPasswordResetResponse,
+  auth$,
+  create,
+  login,
+  logout,
+  resetEmail,
+} from "@walcron/zelda-shared-context";
 import { remapAuthenticationError } from "./remapError";
 
 type Props = {
   onSignIn: (username: string, password: string) => void;
   onCreate: (username: string, password: string) => void;
   onSignOut: () => void;
+  onSendEmailToResetPassword: (
+    email: string
+  ) => Promise<EmailPasswordResetResponse>;
   error: string | undefined;
   loggedIn: boolean;
 };
@@ -20,6 +30,10 @@ export const defaultProps: Props = {
   onSignOut: () => {
     //empty
   },
+  onSendEmailToResetPassword: async (email: string) => ({
+    isSent: false,
+    error: undefined,
+  }),
   error: undefined,
   loggedIn: false,
 };
@@ -57,6 +71,16 @@ export const AuthenticationProvider = ({
         },
         onSignOut: () => {
           logout();
+        },
+        onSendEmailToResetPassword: async (email: string) => {
+          const response = await resetEmail(
+            email,
+            "https://zelda.walcron.com/auth/resetpassword"
+          );
+          return {
+            ...response,
+            error: setError(response?.error),
+          };
         },
         error,
         loggedIn,

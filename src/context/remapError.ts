@@ -1,5 +1,13 @@
 const firebaseText = "Firebase:";
 
+const firebaseMapper = {
+  "Firebase: Error (auth/invalid-login-credentials).":
+    "Invalid username and password.",
+  "Firebase: Error (auth/email-already-in-use).": "Email already exists.",
+  "Firebase: Domain not whitelisted by project (auth/unauthorized-continue-uri).":
+    "System configuration issue, please contact admin.",
+};
+
 export const remapAuthenticationError = (
   errorMessage: string | null | undefined
 ) => {
@@ -9,14 +17,10 @@ export const remapAuthenticationError = (
 
   const cleanError = errorMessage.trim();
   if (cleanError.startsWith(firebaseText)) {
-    switch (cleanError) {
-      case "Firebase: Error (auth/invalid-login-credentials).":
-        return "Invalid username and password.";
-      case "Firebase: Error (auth/email-already-in-use).":
-        return "Email already exists.";
-      default:
-        return `Issue -${cleanError.substring(firebaseText.length)}`;
-    }
+    return (
+      firebaseMapper[cleanError] ??
+      `Issue -${cleanError.substring(firebaseText.length)}`
+    );
   }
   return cleanError;
 };
