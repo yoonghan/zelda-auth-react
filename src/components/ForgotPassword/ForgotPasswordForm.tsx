@@ -1,30 +1,30 @@
-import { useCallback, useState } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import { useForm } from "react-hook-form";
-import { emailPattern } from "../shared/validation";
-import { type EmailPasswordResetResponse } from "@walcron/zelda-shared-context";
+import { useCallback, useState } from 'react'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
+import Alert from '@mui/material/Alert'
+import Backdrop from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
+import { useForm } from 'react-hook-form'
+import { emailPattern } from '../shared/validation'
+import { type EmailPasswordResetResponse } from '@walcron/zelda-shared-context'
 
-type FormValues = {
-  email: string;
-};
+interface FormValues {
+  email: string
+}
 
-type ProcessingState = {
-  isProcessing: boolean;
-  error?: string;
-  isResetSent: boolean;
-};
+interface ProcessingState {
+  isProcessing: boolean
+  error?: string
+  isResetSent: boolean
+}
 
-type Props = {
+interface Props {
   onSendEmailToResetPassword: (
     email: string
-  ) => Promise<EmailPasswordResetResponse>;
-  emailSentTriggerCallback: (email: string) => void;
-};
+  ) => Promise<EmailPasswordResetResponse>
+  emailSentTriggerCallback: (email: string) => void
+}
 
 export const ForgotPasswordForm = ({
   onSendEmailToResetPassword,
@@ -34,71 +34,71 @@ export const ForgotPasswordForm = ({
     isProcessing: false,
     error: undefined,
     isResetSent: false,
-  });
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm()
 
   const submissionInProgress = useCallback(
     () => processState.isProcessing,
     [processState]
-  );
-
-  const sendForRequest = async (email: string) => {
-    const response = await onSendEmailToResetPassword(email);
-    if (response.error) {
-      setProcessState({
-        isResetSent: false,
-        isProcessing: false,
-        error: response.error,
-      });
-      return;
-    }
-    if (response.isSent) {
-      emailSentTriggerCallback(email);
-    }
-    setProcessState({
-      isResetSent: false,
-      isProcessing: false,
-      error: undefined,
-    });
-  };
+  )
 
   const onSubmit = useCallback(
-    (formValues: FormValues) => {
+    async (formValues: FormValues) => {
       setProcessState({
         isResetSent: false,
         isProcessing: true,
         error: null,
-      });
-      sendForRequest(formValues.email);
+      })
+
+      const response = await onSendEmailToResetPassword(formValues.email)
+      if (response.error) {
+        setProcessState({
+          isResetSent: false,
+          isProcessing: false,
+          error: response.error,
+        })
+        return
+      }
+      if (response.isSent) {
+        emailSentTriggerCallback(formValues.email)
+      }
+      setProcessState({
+        isResetSent: false,
+        isProcessing: false,
+        error: undefined,
+      })
     },
-    [onSendEmailToResetPassword]
-  );
+    [emailSentTriggerCallback, onSendEmailToResetPassword]
+  )
 
   const inputErrors = (() => {
-    const keys = Object.keys(errors);
+    const keys = Object.keys(errors)
 
     if (keys.length === 0) {
-      return undefined;
+      return undefined
     }
 
     return (
       <ul>
         {keys.map((error) => (
-          <li key={error}>{`${errors[error].message}`}</li>
+          // eslint-disable-next-line @typescript-eslint/no-base-to-string
+          <li key={error}>{`${errors[error].message?.toString()}`}</li>
         ))}
       </ul>
-    );
-  })();
+    )
+  })()
 
   return (
     <>
       <Box
         component="form"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(form) => {
+          void handleSubmit(onSubmit)(form)
+        }}
         noValidate
         sx={{ mt: 1 }}
       >
@@ -116,11 +116,11 @@ export const ForgotPasswordForm = ({
             name="email"
             autoComplete="email"
             autoFocus
-            {...register("email", {
-              required: "Email address is required",
+            {...register('email', {
+              required: 'Email address is required',
               pattern: {
                 value: emailPattern,
-                message: "Email address is invalid",
+                message: 'Email address is invalid',
               },
             })}
           />
@@ -140,12 +140,12 @@ export const ForgotPasswordForm = ({
         </Box>
       </Box>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={processState.isProcessing}
         data-testid="loader"
       >
         <CircularProgress color="inherit" />
       </Backdrop>
     </>
-  );
-};
+  )
+}

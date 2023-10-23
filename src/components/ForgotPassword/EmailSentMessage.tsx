@@ -1,10 +1,10 @@
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 
-type Props = {
-  email: string;
-};
+interface Props {
+  email: string
+}
 
 const EmailSentMessage = ({ email }: Props) => {
   return (
@@ -31,7 +31,7 @@ const EmailSentMessage = ({ email }: Props) => {
         Confirm Password
       </Button>
     </Box>
-  );
-};
+  )
+}
 
-export default EmailSentMessage;
+export default EmailSentMessage

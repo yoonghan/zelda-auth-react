@@ -1,7 +1,7 @@
-import React from "react";
-import * as ReactDOMClient from "react-dom/client";
-import singleSpaReact from "single-spa-react";
-import Root from "./root.component";
+import React from 'react'
+import * as ReactDOMClient from 'react-dom/client'
+import singleSpaReact from 'single-spa-react'
+import Root from './root.component'
 
 const lifecycles = singleSpaReact({
   React,
@@ -9,9 +9,9 @@ const lifecycles = singleSpaReact({
   rootComponent: Root,
   errorBoundary(err, info, props) {
     // Customize the root error boundary for your microfrontend here.
-    return null;
+    return null
   },
-  renderType: "createRoot",
-});
+  renderType: 'createRoot',
+})
 
-export const { bootstrap, mount, unmount } = lifecycles;
+export const { bootstrap, mount, unmount } = lifecycles

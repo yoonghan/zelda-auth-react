@@ -1,34 +1,34 @@
-import About from "./About";
-import Root from "./Root";
-import ErrorPage from "./ExtendedErrorPage";
-import SignIn from "../components/SignIn";
-import SignOut from "../components/SignOut";
-import Profiler from "../components/Profile";
-import { AuthenticationConsumer } from "../context/authentication";
-import Create from "../components/Create";
-import ForgotPassword from "../components/ForgotPassword";
+import About from './About'
+import Root from './Root'
+import ErrorPage from './ExtendedErrorPage'
+import SignIn from '../components/SignIn'
+import SignOut from '../components/SignOut'
+import Profiler from '../components/Profile'
+import { AuthenticationConsumer } from '../context/authentication'
+import Create from '../components/Create'
+import ForgotPassword from '../components/ForgotPassword'
 
 const routes = [
-  { path: "/", element: <About />, errorElement: <ErrorPage /> },
+  { path: '/', element: <About />, errorElement: <ErrorPage /> },
   {
-    path: "/auth",
+    path: '/auth',
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "",
+        path: '',
         element: <About />,
       },
       {
-        path: "about",
+        path: 'about',
         element: <About />,
       },
       {
-        path: "profile",
+        path: 'profile',
         element: <Profiler />,
       },
       {
-        path: "login",
+        path: 'login',
         element: (
           <AuthenticationConsumer>
             {(props) => <SignIn {...props} />}
@@ -36,7 +36,7 @@ const routes = [
         ),
       },
       {
-        path: "create",
+        path: 'create',
         element: (
           <AuthenticationConsumer>
             {(props) => <Create {...props} />}
@@ -44,7 +44,7 @@ const routes = [
         ),
       },
       {
-        path: "forgot-password",
+        path: 'forgot-password',
         element: (
           <AuthenticationConsumer>
             {(props) => <ForgotPassword {...props} />}
@@ -53,7 +53,7 @@ const routes = [
       },
       /* istanbul ignore next -- @preserve */
       {
-        path: "logout",
+        path: 'logout',
         element: (
           <AuthenticationConsumer>
             {
@@ -65,6 +65,6 @@ const routes = [
       },
     ],
   },
-];
+]
 
-export default routes;
+export default routes

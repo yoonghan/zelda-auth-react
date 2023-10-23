@@ -1,21 +1,21 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Alert from "@mui/material/Alert";
-import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Grid from "@mui/material/Grid";
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import Alert from '@mui/material/Alert'
+import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import Grid from '@mui/material/Grid'
 
 export default function Profiler() {
   return (
     <Container component="main" maxWidth="md">
-      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
       <Typography component="h1" variant="h5">
         Logged in
       </Typography>
@@ -50,7 +50,7 @@ export default function Profiler() {
               <InputLabel shrink htmlFor="phone-code" required={true}>
                 Code
               </InputLabel>
-              <Select value={"65"} label="Code" id="phone-code">
+              <Select value={'65'} label="Code" id="phone-code">
                 <MenuItem value={65}>65 - Singapore</MenuItem>
                 <MenuItem value={60}>60 - Malaysia</MenuItem>
               </Select>
@@ -81,5 +81,5 @@ export default function Profiler() {
       </Box>
       <Copyright lastUpdatedYear={2023} />
     </Container>
-  );
+  )
 }
