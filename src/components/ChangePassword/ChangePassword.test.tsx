@@ -47,6 +47,10 @@ describe('ChangePassword', () => {
       expect(
         getByRole('button', { name: 'Update Password' })
       ).toBeInTheDocument()
+      expect(getByRole('link', { name: 'Return to Profile' })).toHaveAttribute(
+        'href',
+        urls.profile
+      )
     })
 
     it('should show error if input is blank', async () => {

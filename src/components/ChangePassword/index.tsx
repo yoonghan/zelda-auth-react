@@ -13,6 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { passwordLength } from '../shared/validation'
 import Alert from '@mui/material/Alert'
 import { useForm } from 'react-hook-form'
+import Link from '@mui/material/Link'
 
 interface FormValues {
   oPassword: string
@@ -202,7 +203,11 @@ const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
             flexDirection: 'column',
             alignItems: 'center',
           }}
-        ></Box>
+        >
+          <Typography variant={'body2'}>
+            <Link href={urls.profile}>Return to Profile</Link>
+          </Typography>
+        </Box>
       </Box>
     </Container>
   )

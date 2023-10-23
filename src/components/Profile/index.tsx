@@ -11,6 +11,7 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Grid from '@mui/material/Grid'
 import { urls } from '../../routes/const'
+import Link from '@mui/material/Link'
 
 export default function Profiler() {
   return (
@@ -79,16 +80,17 @@ export default function Profiler() {
           Update
         </Button>
       </Box>
-      <Box sx={{ mt: 3, mb: 2 }}>
-        <Typography>I want to change my password:</Typography>
-        <Button
-          type="link"
-          fullWidth
-          variant="contained"
-          href={urls.changePassword}
-        >
-          Change Password
-        </Button>
+      <Box
+        sx={{
+          marginTop: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant={'body2'}>
+          <Link href={urls.changePassword}>Change Password</Link>
+        </Typography>
       </Box>
     </Container>
   )
