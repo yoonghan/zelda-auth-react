@@ -18,7 +18,7 @@ interface Props {
   onSendEmailToResetPassword: (
     email: string
   ) => Promise<EmailPasswordResetResponse>
-  onUpdatePassword: (
+  onChangePassword: (
     oldPassword,
     newPassword
   ) => Promise<ChangePasswordResponse>
@@ -40,7 +40,7 @@ export const defaultProps: Props = {
     isSent: false,
     error: undefined,
   }),
-  onUpdatePassword: async (oldPassword: string, newPassword: string) => ({
+  onChangePassword: async (oldPassword: string, newPassword: string) => ({
     isChanged: false,
     error: undefined,
   }),
@@ -93,7 +93,7 @@ export const AuthenticationProvider = ({
           }
         },
 
-        onUpdatePassword: async (oldPassword: string, newPassword: string) => {
+        onChangePassword: async (oldPassword: string, newPassword: string) => {
           const response = await changePassword(oldPassword, newPassword)
           return {
             ...response,

@@ -26,7 +26,7 @@ describe('authentication', () => {
       isSent: false,
       error: undefined,
     })
-    expect(await defaultProps.onUpdatePassword('old', 'new')).toStrictEqual({
+    expect(await defaultProps.onChangePassword('old', 'new')).toStrictEqual({
       isChanged: false,
       error: undefined,
     })
@@ -42,7 +42,7 @@ describe('authentication', () => {
               onSignIn,
               onSignOut,
               onSendEmailToResetPassword,
-              onUpdatePassword,
+              onChangePassword: onChangePassword,
               error,
             }) => (
               <>
@@ -69,7 +69,7 @@ describe('authentication', () => {
                 </button>
                 <button
                   onClick={() => {
-                    void onUpdatePassword('old', 'new').then(() => {})
+                    void onChangePassword('old', 'new').then(() => {})
                   }}
                 >
                   Update Password

@@ -24,14 +24,14 @@ interface ProcessingState extends ChangePasswordResponse {
 }
 
 interface Props {
-  onUpdatePassword: (
+  onChangePassword: (
     oldPassword: string,
     newPassword: string
   ) => Promise<ChangePasswordResponse>
   loggedIn: boolean
 }
 
-const UpdatePassword = ({ loggedIn, onUpdatePassword }: Props) => {
+const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
   const navigate = useNavigate()
 
   const [processState, setProcessState] = useState<ProcessingState>({
@@ -54,7 +54,7 @@ const UpdatePassword = ({ loggedIn, onUpdatePassword }: Props) => {
         ...processState,
         isProcessing: true,
       })
-      const response = await onUpdatePassword(
+      const response = await onChangePassword(
         formValues.oPassword,
         formValues.nPassword
       )
@@ -69,7 +69,7 @@ const UpdatePassword = ({ loggedIn, onUpdatePassword }: Props) => {
         isProcessing: false,
       })
     },
-    [onUpdatePassword, processState, setValue]
+    [onChangePassword, processState, setValue]
   )
 
   const inputErrors = (() => {
@@ -208,4 +208,4 @@ const UpdatePassword = ({ loggedIn, onUpdatePassword }: Props) => {
   )
 }
 
-export default UpdatePassword
+export default ChangePassword

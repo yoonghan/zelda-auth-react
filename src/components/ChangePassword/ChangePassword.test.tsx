@@ -1,14 +1,14 @@
 import type { ChangePasswordResponse } from '@walcron/zelda-shared-context'
-import UpdatePassword from '.'
+import ChangePassword from '.'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { urls } from '../../routes/const'
 
-describe('UpdatePassword', () => {
+describe('ChangePassword', () => {
   const renderComponent = (
     loggedIn = true,
-    onUpdatePassword: (
+    onChangePassword: (
       oldPassword: string,
       newPassword: string
     ) => Promise<ChangePasswordResponse> = jest.fn()
@@ -19,9 +19,9 @@ describe('UpdatePassword', () => {
           <Route
             path="/"
             element={
-              <UpdatePassword
+              <ChangePassword
                 loggedIn={loggedIn}
-                onUpdatePassword={onUpdatePassword}
+                onChangePassword={onChangePassword}
               />
             }
           ></Route>
