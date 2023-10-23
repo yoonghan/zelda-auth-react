@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom'
 import { type EmailPasswordResetResponse } from '@walcron/zelda-shared-context'
 import EmailSentMessage from './EmailSentMessage'
 import { ForgotPasswordForm } from './ForgotPasswordForm'
+import Link from '@mui/material/Link'
+import { urls } from '../../routes/const'
 
 export default function ForgotPassword({
   onSendEmailToResetPassword,
@@ -54,6 +56,19 @@ export default function ForgotPassword({
           Reset a forgotten password
         </Typography>
         {renderedDisplay}
+
+        <Box
+          sx={{
+            marginBottom: 5,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant={'body2'} component={'p'}>
+            Recalled my password?: <Link href={urls.signin}>Sign In</Link>
+          </Typography>
+        </Box>
       </Box>
     </Container>
   )

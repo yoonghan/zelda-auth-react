@@ -17,15 +17,6 @@ const EmailSentMessage = ({ email }: Props) => {
         fullWidth
         variant="contained"
         sx={{ mt: 2, mb: 2 }}
-        href="/auth/login"
-      >
-        Return To Login
-      </Button>
-      <Button
-        type="link"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 2, mb: 2 }}
         href="/auth/confirm-password"
       >
         Confirm Password

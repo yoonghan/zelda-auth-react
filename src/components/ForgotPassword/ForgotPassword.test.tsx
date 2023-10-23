@@ -3,6 +3,7 @@ import ForgotPassword from '.'
 import userEvent from '@testing-library/user-event'
 import { render } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { urls } from '../../routes/const'
 
 describe('ForgotPassword', () => {
   const renderComponent = (
@@ -30,8 +31,9 @@ describe('ForgotPassword', () => {
 
   describe(' logged in', () => {
     it('should redirect if user is logged in', () => {
-      const { getByText } = renderComponent(true)
+      const { getByText, getByRole } = renderComponent(true)
       expect(getByText('Profile')).toBeInTheDocument()
+      expect(getByRole('Sign In')).toHaveAttribute('href', urls.signin)
     })
   })
 

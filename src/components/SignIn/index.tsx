@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { emailPattern, passwordLength } from '../shared/validation'
 import { Link } from '@mui/material'
+import { urls } from '../../routes/const'
 
 interface FormValues {
   email: string
@@ -38,7 +39,7 @@ export default function SignIn({
 
   useEffect(() => {
     if (loggedIn) {
-      navigate('/auth/profile', { replace: true })
+      navigate(urls.profile, { replace: true })
     }
   }, [loggedIn, navigate])
 
@@ -162,8 +163,11 @@ export default function SignIn({
           alignItems: 'center',
         }}
       >
-        <Typography variant={'body2'}>
-          No Account Yet?: <Link href="/auth/create">Sign me up</Link>
+        <Typography variant={'body2'} component={'p'}>
+          No Account Yet?: <Link href={urls.create}>Sign me up</Link>
+        </Typography>
+        <Typography variant={'body2'} component={'p'}>
+          <Link href={urls.forgotPassword}>Forgot my password</Link>
         </Typography>
       </Box>
       <Copyright lastUpdatedYear={2023} />

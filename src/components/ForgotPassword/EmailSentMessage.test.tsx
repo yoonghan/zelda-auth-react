@@ -10,10 +10,6 @@ describe('EmailSentMessage', () => {
     expect(
       getByText('Reset email has been sent, check your (testmail@mail.com).')
     ).toBeInTheDocument()
-    expect(getByRole('link', { name: 'Return To Login' })).toHaveAttribute(
-      'href',
-      '/auth/login'
-    )
     expect(getByRole('link', { name: 'Confirm Password' })).toHaveAttribute(
       'href',
       '/auth/confirm-password'

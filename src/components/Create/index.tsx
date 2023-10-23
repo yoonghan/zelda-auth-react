@@ -12,7 +12,8 @@ import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { emailPattern, passwordLength } from '../shared/validation'
-import { Checkbox, FormControlLabel } from '@mui/material'
+import { Checkbox, FormControlLabel, Link } from '@mui/material'
+import { urls } from '../../routes/const'
 
 interface FormValues {
   email: string
@@ -40,7 +41,7 @@ export default function Create({
 
   useEffect(() => {
     if (loggedIn) {
-      navigate('/auth/profile', { replace: true })
+      navigate(urls.profile, { replace: true })
     }
   }, [loggedIn, navigate])
 
@@ -188,6 +189,19 @@ export default function Create({
         >
           <CircularProgress color="inherit" />
         </Backdrop>
+      </Box>
+
+      <Box
+        sx={{
+          marginBottom: 5,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant={'body2'} component={'p'}>
+          Already a user?: <Link href={urls.signin}>Sign In</Link>
+        </Typography>
       </Box>
       <Copyright lastUpdatedYear={2023} />
     </Container>
