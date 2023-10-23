@@ -5,7 +5,13 @@ import {
 } from './authentication'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { login, logout, create } from '@walcron/zelda-shared-context'
+import {
+  login,
+  logout,
+  create,
+  changePassword,
+  resetEmail,
+} from '@walcron/zelda-shared-context'
 
 describe('authentication', () => {
   it('should have correct authentication defaults', async () => {
@@ -20,6 +26,10 @@ describe('authentication', () => {
       isSent: false,
       error: undefined,
     })
+    expect(await defaultProps.onUpdatePassword('old', 'new')).toStrictEqual({
+      isChanged: false,
+      error: undefined,
+    })
   })
 
   describe('provider', () => {
@@ -32,6 +42,7 @@ describe('authentication', () => {
               onSignIn,
               onSignOut,
               onSendEmailToResetPassword,
+              onUpdatePassword,
               error,
             }) => (
               <>
@@ -56,6 +67,13 @@ describe('authentication', () => {
                 >
                   Reset Email
                 </button>
+                <button
+                  onClick={() => {
+                    void onUpdatePassword('old', 'new').then(() => {})
+                  }}
+                >
+                  Update Password
+                </button>
                 <button onClick={onSignOut}>Sign Out</button>
                 <div data-testid={'error'}>{error}</div>
               </>
@@ -71,6 +89,11 @@ describe('authentication', () => {
       await userEvent.click(screen.getByRole('button', { name: 'Sign Out' }))
       expect(logout).toHaveBeenCalled()
       await userEvent.click(screen.getByRole('button', { name: 'Reset Email' }))
+      expect(resetEmail).toHaveBeenCalled()
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Update Password' })
+      )
+      expect(changePassword).toHaveBeenCalled()
     })
   })
 })
