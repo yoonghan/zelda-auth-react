@@ -1,5 +1,6 @@
 import Profile from '.'
 import { render, screen } from '@testing-library/react'
+import { urls } from '../../routes/const'
 
 describe('Profile', () => {
   it('should render login component correctly', () => {
@@ -15,5 +16,9 @@ describe('Profile', () => {
     expect(screen.getByLabelText('Phone *')).toBeInTheDocument()
 
     expect(screen.getByRole('button', { name: 'Update' })).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('link', { name: 'Change Password' })
+    ).toHaveAttribute('href', urls.changePassword)
   })
 })

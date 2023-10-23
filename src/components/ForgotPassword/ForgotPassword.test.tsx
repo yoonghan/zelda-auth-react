@@ -3,6 +3,7 @@ import ForgotPassword from '.'
 import userEvent from '@testing-library/user-event'
 import { render } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { urls } from '../../routes/const'
 
 describe('ForgotPassword', () => {
   const renderComponent = (
@@ -23,12 +24,12 @@ describe('ForgotPassword', () => {
               />
             }
           ></Route>
-          <Route path="/auth/profile" element={<div>Profile</div>}></Route>
+          <Route path={urls.profile} element={<div>Profile</div>}></Route>
         </Routes>
       </MemoryRouter>
     )
 
-  describe(' logged in', () => {
+  describe('logged in', () => {
     it('should redirect if user is logged in', () => {
       const { getByText } = renderComponent(true)
       expect(getByText('Profile')).toBeInTheDocument()
@@ -50,7 +51,7 @@ describe('ForgotPassword', () => {
         isSent: true,
         error: undefined,
       })
-      const { findByRole, getByLabelText } = renderComponent(
+      const { getByText, getByLabelText } = renderComponent(
         false,
         mockEmailSent
       )
@@ -59,7 +60,7 @@ describe('ForgotPassword', () => {
         'test@email.com{enter}'
       )
       expect(
-        await findByRole('link', { name: 'Return To Login' })
+        getByText('Reset email has been sent, check your (test@email.com).')
       ).toBeInTheDocument()
     })
   })

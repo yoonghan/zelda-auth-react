@@ -1,11 +1,13 @@
 import { type ReactNode, createContext, useEffect, useState } from 'react'
 import {
   type EmailPasswordResetResponse,
+  type ChangePasswordResponse,
   auth$,
   create,
   login,
   logout,
   resetEmail,
+  changePassword,
 } from '@walcron/zelda-shared-context'
 import { remapAuthenticationError } from './remapError'
 
@@ -16,6 +18,10 @@ interface Props {
   onSendEmailToResetPassword: (
     email: string
   ) => Promise<EmailPasswordResetResponse>
+  onChangePassword: (
+    oldPassword,
+    newPassword
+  ) => Promise<ChangePasswordResponse>
   error: string | undefined
   loggedIn: boolean
 }
@@ -32,6 +38,10 @@ export const defaultProps: Props = {
   },
   onSendEmailToResetPassword: async (email: string) => ({
     isSent: false,
+    error: undefined,
+  }),
+  onChangePassword: async (oldPassword: string, newPassword: string) => ({
+    isChanged: false,
     error: undefined,
   }),
   error: undefined,
@@ -77,6 +87,13 @@ export const AuthenticationProvider = ({
             email,
             'https://zelda.walcron.com/auth/resetpassword'
           )
+          return {
+            ...response,
+            error: remapAuthenticationError(response?.error),
+          }
+        },
+        onChangePassword: async (oldPassword: string, newPassword: string) => {
+          const response = await changePassword(oldPassword, newPassword)
           return {
             ...response,
             error: remapAuthenticationError(response?.error),

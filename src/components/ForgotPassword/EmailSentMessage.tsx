@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import { urls } from '../../routes/const'
 
 interface Props {
   email: string
@@ -17,18 +18,9 @@ const EmailSentMessage = ({ email }: Props) => {
         fullWidth
         variant="contained"
         sx={{ mt: 2, mb: 2 }}
-        href="/auth/login"
+        href={urls.signin}
       >
-        Return To Login
-      </Button>
-      <Button
-        type="link"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 2, mb: 2 }}
-        href="/auth/confirm-password"
-      >
-        Confirm Password
+        Return to sign in
       </Button>
     </Box>
   )

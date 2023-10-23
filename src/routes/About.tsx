@@ -1,4 +1,6 @@
-import { Container, Typography, Grid } from '@mui/material'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Container from '@mui/material/Container'
 import packageJson from '../../package.json'
 
 const About = () => {

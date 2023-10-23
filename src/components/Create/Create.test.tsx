@@ -2,6 +2,7 @@ import Confirm from '.'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { urls } from '../../routes/const'
 
 describe('Create', () => {
   const renderComponent = (
@@ -22,7 +23,7 @@ describe('Create', () => {
               />
             }
           ></Route>
-          <Route path="/auth/profile" element={<div>Profile</div>}></Route>
+          <Route path={urls.profile} element={<div>Profile</div>}></Route>
         </Routes>
       </MemoryRouter>
     )
@@ -34,6 +35,11 @@ describe('Create', () => {
     expect(
       getByText('We thank you for taking interest in signing up with us.')
     ).toBeInTheDocument()
+
+    expect(getByRole('link', { name: 'Sign In' })).toHaveAttribute(
+      'href',
+      urls.signin
+    )
 
     expect(getByLabelText('Email Address *')).toBeInTheDocument()
     expect(getByLabelText('Password *')).toBeInTheDocument()

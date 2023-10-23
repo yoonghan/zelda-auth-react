@@ -7,6 +7,7 @@ import Profiler from '../components/Profile'
 import { AuthenticationConsumer } from '../context/authentication'
 import Create from '../components/Create'
 import ForgotPassword from '../components/ForgotPassword'
+import ChangePassword from '../components/ChangePassword'
 
 const routes = [
   { path: '/', element: <About />, errorElement: <ErrorPage /> },
@@ -48,6 +49,18 @@ const routes = [
         element: (
           <AuthenticationConsumer>
             {(props) => <ForgotPassword {...props} />}
+          </AuthenticationConsumer>
+        ),
+      },
+      /* istanbul ignore next -- @preserve */
+      {
+        path: 'change-password',
+        element: (
+          <AuthenticationConsumer>
+            {
+              /* istanbul ignore next -- @preserve */
+              (props) => <ChangePassword {...props} />
+            }
           </AuthenticationConsumer>
         ),
       },

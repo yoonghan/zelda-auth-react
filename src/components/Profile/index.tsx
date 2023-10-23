@@ -5,12 +5,13 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Alert from '@mui/material/Alert'
-import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Grid from '@mui/material/Grid'
+import { urls } from '../../routes/const'
+import Link from '@mui/material/Link'
 
 export default function Profiler() {
   return (
@@ -20,7 +21,7 @@ export default function Profiler() {
         Logged in
       </Typography>
       <Alert severity="warning">
-        You can't change your profile, everything is hardcoded
+        You can&apos;t change your profile, everything is hardcoded
       </Alert>
       <Box>
         <TextField
@@ -79,7 +80,18 @@ export default function Profiler() {
           Update
         </Button>
       </Box>
-      <Copyright lastUpdatedYear={2023} />
+      <Box
+        sx={{
+          marginTop: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant={'body2'}>
+          <Link href={urls.changePassword}>Change Password</Link>
+        </Typography>
+      </Box>
     </Container>
   )
 }

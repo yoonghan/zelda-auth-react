@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react'
 import EmailSentMessage from './EmailSentMessage'
+import { urls } from '../../routes/const'
 
 describe('EmailSentMessage', () => {
   const renderComponent = (email: string = 'testemail@gmail.com') =>
@@ -10,13 +11,9 @@ describe('EmailSentMessage', () => {
     expect(
       getByText('Reset email has been sent, check your (testmail@mail.com).')
     ).toBeInTheDocument()
-    expect(getByRole('link', { name: 'Return To Login' })).toHaveAttribute(
+    expect(getByRole('link', { name: 'Return to sign in' })).toHaveAttribute(
       'href',
-      '/auth/login'
-    )
-    expect(getByRole('link', { name: 'Confirm Password' })).toHaveAttribute(
-      'href',
-      '/auth/confirm-password'
+      urls.signin
     )
   })
 })

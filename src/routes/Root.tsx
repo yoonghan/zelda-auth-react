@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import defaultTheme from '../components/style/theme'
-import { ThemeProvider } from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
 
 export default function Root() {
   return (

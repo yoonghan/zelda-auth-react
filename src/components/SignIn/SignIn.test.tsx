@@ -2,6 +2,7 @@ import SignIn from '.'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { urls } from '../../routes/const'
 
 describe('SignIn', () => {
   const renderComponent = (
@@ -22,7 +23,7 @@ describe('SignIn', () => {
               />
             }
           ></Route>
-          <Route path="/auth/profile" element={<div>Profile</div>}></Route>
+          <Route path={urls.profile} element={<div>Profile</div>}></Route>
         </Routes>
       </MemoryRouter>
     )
@@ -37,7 +38,11 @@ describe('SignIn', () => {
 
     expect(getByRole('link', { name: 'Sign me up' })).toHaveAttribute(
       'href',
-      '/auth/create'
+      urls.create
+    )
+    expect(getByRole('link', { name: 'Forgot my password' })).toHaveAttribute(
+      'href',
+      urls.forgotPassword
     )
 
     expect(getByRole('button', { name: 'Sign In' })).toBeInTheDocument()
