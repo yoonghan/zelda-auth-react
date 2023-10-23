@@ -92,7 +92,6 @@ export const AuthenticationProvider = ({
             error: remapAuthenticationError(response?.error),
           }
         },
-
         onChangePassword: async (oldPassword: string, newPassword: string) => {
           const response = await changePassword(oldPassword, newPassword)
           return {

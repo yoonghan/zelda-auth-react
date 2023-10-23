@@ -12,6 +12,10 @@ import {
   changePassword,
   resetEmail,
 } from '@walcron/zelda-shared-context'
+import {
+  changePassword as mockChangePassword,
+  resetEmail as mockResetEmail,
+} from '../__mocks__/@walcron/zelda-shared-context'
 
 describe('authentication', () => {
   it('should have correct authentication defaults', async () => {
@@ -34,6 +38,13 @@ describe('authentication', () => {
 
   describe('provider', () => {
     it('should authenticate properly', async () => {
+      mockChangePassword.mockResolvedValue({
+        error: 'Firebase: change password',
+      })
+      mockResetEmail.mockResolvedValue({
+        error: 'Firebase: reset email',
+      })
+      var updatedError = ''
       const { getByTestId } = render(
         <AuthenticationProvider>
           <AuthenticationConsumer>
@@ -42,7 +53,7 @@ describe('authentication', () => {
               onSignIn,
               onSignOut,
               onSendEmailToResetPassword,
-              onChangePassword: onChangePassword,
+              onChangePassword,
               error,
             }) => (
               <>
@@ -62,14 +73,20 @@ describe('authentication', () => {
                 </button>
                 <button
                   onClick={() => {
-                    void onSendEmailToResetPassword('email').then(() => {})
+                    void onSendEmailToResetPassword('email').then(
+                      (response) => {
+                        updatedError = response.error
+                      }
+                    )
                   }}
                 >
                   Reset Email
                 </button>
                 <button
                   onClick={() => {
-                    void onChangePassword('old', 'new').then(() => {})
+                    void onChangePassword('old', 'new').then((response) => {
+                      updatedError = response.error
+                    })
                   }}
                 >
                   Update Password
@@ -90,10 +107,12 @@ describe('authentication', () => {
       expect(logout).toHaveBeenCalled()
       await userEvent.click(screen.getByRole('button', { name: 'Reset Email' }))
       expect(resetEmail).toHaveBeenCalled()
+      expect(updatedError).toBe('Issue - reset email')
       await userEvent.click(
         screen.getByRole('button', { name: 'Update Password' })
       )
       expect(changePassword).toHaveBeenCalled()
+      expect(updatedError).toBe('Issue - change password')
     })
   })
 })
