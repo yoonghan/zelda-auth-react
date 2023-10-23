@@ -108,11 +108,5 @@ describe("ForgotPasswordForm", () => {
       expect(onEmailSentCallbackMock).toHaveBeenCalledWith("walcron@email.com");
       expect(getByTestId("loader")).not.toBeVisible();
     });
-
-    // it("should go profile if user is already logged in", () => {
-    //   const onResetMock = jest.fn();
-    //   const { getByText } = renderComponent(onResetMock, undefined, true);
-    //   expect(getByText("Profile")).toBeInTheDocument();
-    // });
   });
 });

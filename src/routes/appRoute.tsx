@@ -6,6 +6,7 @@ import SignOut from "../components/SignOut";
 import Profiler from "../components/Profile";
 import { AuthenticationConsumer } from "../context/authentication";
 import Create from "../components/Create";
+import ForgotPassword from "../components/ForgotPassword";
 
 const routes = [
   { path: "/", element: <About />, errorElement: <ErrorPage /> },
@@ -34,12 +35,19 @@ const routes = [
           </AuthenticationConsumer>
         ),
       },
-
       {
         path: "create",
         element: (
           <AuthenticationConsumer>
             {(props) => <Create {...props} />}
+          </AuthenticationConsumer>
+        ),
+      },
+      {
+        path: "forgot-password",
+        element: (
+          <AuthenticationConsumer>
+            {(props) => <ForgotPassword {...props} />}
           </AuthenticationConsumer>
         ),
       },
