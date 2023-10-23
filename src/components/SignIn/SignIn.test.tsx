@@ -86,7 +86,7 @@ describe("SignIn", () => {
   describe("login", () => {
     it("should be able to signin with valid authentication and show loading", async () => {
       const onSignInMock = jest.fn();
-      const { getByLabelText, getByRole, getByTestId } =
+      const { getByLabelText, getByRole, findByTestId } =
         renderComponent(onSignInMock);
       await userEvent.type(
         getByLabelText("Email Address *"),
@@ -95,7 +95,7 @@ describe("SignIn", () => {
       await userEvent.type(getByLabelText("Password *"), "testPassword");
       await userEvent.click(getByRole("button", { name: "Sign In" }));
       expect(onSignInMock).toHaveBeenCalled();
-      expect(getByTestId("loader")).toBeVisible();
+      expect(await findByTestId("loader")).toBeVisible();
     });
 
     it("should be show exception when sign in failed and loader does not appear", async () => {
