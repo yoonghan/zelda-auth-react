@@ -12,7 +12,9 @@ import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { emailPattern, passwordLength } from '../shared/validation'
-import { Checkbox, FormControlLabel, Link } from '@mui/material'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Link from '@mui/material/Link'
+import Checkbox from '@mui/material/Checkbox'
 import { urls } from '../../routes/const'
 
 interface FormValues {

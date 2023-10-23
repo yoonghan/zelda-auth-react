@@ -20,7 +20,7 @@ export default function Profiler() {
         Logged in
       </Typography>
       <Alert severity="warning">
-        You can't change your profile, everything is hardcoded
+        You can&apos;t change your profile, everything is hardcoded
       </Alert>
       <Box>
         <TextField
