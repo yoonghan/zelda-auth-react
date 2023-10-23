@@ -88,7 +88,7 @@ describe("Create", () => {
   describe("login", () => {
     it("should be able to signin with valid authentication and show loading", async () => {
       const onCreateMock = jest.fn();
-      const { getByLabelText, getByRole, findByTestId } =
+      const { getByLabelText, getByRole, getByTestId } =
         renderComponent(onCreateMock);
       await userEvent.type(
         getByLabelText("Email Address *"),
@@ -104,14 +104,18 @@ describe("Create", () => {
       );
       await userEvent.click(getByRole("button", { name: "Create" }));
       expect(onCreateMock).toHaveBeenCalled();
-      expect(await findByTestId("loader")).toBeInTheDocument();
+      expect(getByTestId("loader")).toBeVisible();
     });
 
     it("should be show exception when sign in failed and loader does not appear", async () => {
       const errorMessage = "Sorry, unable to create";
       const onCreateMock = jest.fn();
-      const { getByText } = renderComponent(onCreateMock, errorMessage);
+      const { getByText, queryByTestId } = renderComponent(
+        onCreateMock,
+        errorMessage
+      );
       expect(getByText(errorMessage)).toBeInTheDocument();
+      expect(queryByTestId("loader")).not.toBeVisible();
     });
 
     it("should go profile if user is already logged in", () => {

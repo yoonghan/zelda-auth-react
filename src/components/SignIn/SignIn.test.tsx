@@ -1,6 +1,12 @@
 import { fabClasses } from "@mui/material";
 import SignIn from ".";
-import { findByText, render, screen, waitFor } from "@testing-library/react";
+import {
+  findByText,
+  getByTestId,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
@@ -80,7 +86,7 @@ describe("SignIn", () => {
   describe("login", () => {
     it("should be able to signin with valid authentication and show loading", async () => {
       const onSignInMock = jest.fn();
-      const { getByLabelText, getByRole, findByTestId } =
+      const { getByLabelText, getByRole, getByTestId } =
         renderComponent(onSignInMock);
       await userEvent.type(
         getByLabelText("Email Address *"),
@@ -89,14 +95,18 @@ describe("SignIn", () => {
       await userEvent.type(getByLabelText("Password *"), "testPassword");
       await userEvent.click(getByRole("button", { name: "Sign In" }));
       expect(onSignInMock).toHaveBeenCalled();
-      expect(await findByTestId("loader")).toBeInTheDocument();
+      expect(getByTestId("loader")).toBeVisible();
     });
 
     it("should be show exception when sign in failed and loader does not appear", async () => {
       const errorMessage = "Sorry, it's an invalid sign-in";
       const onSignInMock = jest.fn();
-      const { getByText } = renderComponent(onSignInMock, errorMessage);
+      const { getByText, queryByTestId } = renderComponent(
+        onSignInMock,
+        errorMessage
+      );
       expect(getByText(errorMessage)).toBeInTheDocument();
+      expect(queryByTestId("loader")).not.toBeVisible();
     });
 
     it("should go profile if user is already logged in", () => {
