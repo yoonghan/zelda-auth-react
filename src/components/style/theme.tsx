@@ -1,10 +1,9 @@
 /* istanbul ignore file -- @preserve */
 /** Ignore styling for test case **/
-import * as React from "react";
-import { createTheme } from "@mui/material/styles";
-import { green, purple } from "@mui/material/colors";
-import { LinkProps } from "@mui/material/Link";
-import { LinkBehavior } from "../LinkBehavior";
+import { createTheme } from '@mui/material/styles'
+import { green, purple } from '@mui/material/colors'
+import { type LinkProps } from '@mui/material/Link'
+import { LinkBehavior } from '../LinkBehavior'
 
 const theme = createTheme({
   palette: {
@@ -19,7 +18,7 @@ const theme = createTheme({
     MuiLink: {
       defaultProps: {
         component: LinkBehavior,
-      } as LinkProps,
+      } satisfies LinkProps,
     },
     MuiButtonBase: {
       defaultProps: {
@@ -27,8 +26,8 @@ const theme = createTheme({
       },
     },
   },
-});
+})
 
-const defaultTheme = createTheme(theme);
+const defaultTheme = createTheme(theme)
 
-export default defaultTheme;
+export default defaultTheme

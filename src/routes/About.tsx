@@ -1,5 +1,5 @@
-import { Container, Typography, Grid } from "@mui/material";
-import packageJson from "../../package.json";
+import { Container, Typography, Grid } from '@mui/material'
+import packageJson from '../../package.json'
 
 const About = () => {
   return (
@@ -17,7 +17,7 @@ const About = () => {
         </Typography>
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
-export default About;
+export default About

@@ -1,89 +1,90 @@
-import { useCallback, useEffect, useRef } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Alert from "@mui/material/Alert";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Copyright } from "@yoonghan/walcron-microfrontend-shared";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { emailPattern, passwordLength } from "../shared/validation";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { useCallback, useEffect, useRef } from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import Alert from '@mui/material/Alert'
+import Backdrop from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
+import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { emailPattern, passwordLength } from '../shared/validation'
+import { Checkbox, FormControlLabel } from '@mui/material'
 
-type FormValues = {
-  email: string;
-  password: string;
-  rePassword: string;
-};
+interface FormValues {
+  email: string
+  password: string
+  rePassword: string
+}
 
 export default function Create({
   onCreate,
   error,
   loggedIn,
 }: {
-  onCreate: (username: string, password: string) => void;
-  error: string | undefined;
-  loggedIn: boolean;
+  onCreate: (username: string, password: string) => void
+  error: string | undefined
+  loggedIn: boolean
 }) {
-  const navigate = useNavigate();
-  const submissionCount = useRef(0);
+  const navigate = useNavigate()
+  const submissionCount = useRef(0)
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm()
 
   useEffect(() => {
     if (loggedIn) {
-      navigate("/auth/profile", { replace: true });
+      navigate('/auth/profile', { replace: true })
     }
-  }, [loggedIn, navigate]);
+  }, [loggedIn, navigate])
 
   const submissionInProgress = useCallback(
     () => submissionCount.current > 0 && error === undefined,
     [error]
-  );
+  )
 
   const onSubmit = useCallback(
     (formValues: FormValues) => {
-      onCreate(formValues.email, formValues.password);
-      submissionCount.current += 1;
+      onCreate(formValues.email, formValues.password)
+      submissionCount.current += 1
     },
     [onCreate]
-  );
+  )
 
   const inputErrors = (() => {
-    const keys = Object.keys(errors);
+    const keys = Object.keys(errors)
 
     if (keys.length === 0) {
-      return undefined;
+      return undefined
     }
 
     return (
       <ul>
         {keys.map((error) => (
-          <li key={error}>{`${errors[error].message}`}</li>
+          // eslint-disable-next-line @typescript-eslint/no-base-to-string
+          <li key={error}>{errors[error].message?.toString()}</li>
         ))}
       </ul>
-    );
-  })();
+    )
+  })()
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
         <Typography component="h1" variant="h5">
           Create User
         </Typography>
@@ -97,7 +98,9 @@ export default function Create({
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={(form) => {
+            void handleSubmit(onSubmit)(form)
+          }}
           noValidate
           sx={{ mt: 1 }}
         >
@@ -115,11 +118,11 @@ export default function Create({
               name="email"
               autoComplete="email"
               autoFocus
-              {...register("email", {
-                required: "Email address is required",
+              {...register('email', {
+                required: 'Email address is required',
                 pattern: {
                   value: emailPattern,
-                  message: "Email address is invalid",
+                  message: 'Email address is invalid',
                 },
               })}
             />
@@ -131,8 +134,8 @@ export default function Create({
               label="Password"
               type="password"
               id="password"
-              {...register("password", {
-                required: "Password is required",
+              {...register('password', {
+                required: 'Password is required',
                 minLength: {
                   value: passwordLength,
                   message: `Password min length is ${passwordLength}`,
@@ -147,11 +150,11 @@ export default function Create({
               label="Confirm Password"
               type="password"
               id="rePassword"
-              {...register("rePassword", {
-                required: "Confirm password is required",
+              {...register('rePassword', {
+                required: 'Confirm password is required',
                 validate: (retypedPassword: string) => {
-                  if (watch("password") !== retypedPassword) {
-                    return "Your confirmed password doesn't match";
+                  if (watch('password') !== retypedPassword) {
+                    return "Your confirmed password doesn't match"
                   }
                 },
               })}
@@ -160,7 +163,7 @@ export default function Create({
             <FormControlLabel
               control={<Checkbox value="agree" color="primary" id="agree" />}
               label="I agree to create."
-              {...register("agree", {
+              {...register('agree', {
                 required: "Please check 'I agree to create'",
               })}
             />
@@ -179,7 +182,7 @@ export default function Create({
           </Box>
         </Box>
         <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={submissionInProgress()}
           data-testid="loader"
         >
@@ -188,5 +191,5 @@ export default function Create({
       </Box>
       <Copyright lastUpdatedYear={2023} />
     </Container>
-  );
+  )
 }
