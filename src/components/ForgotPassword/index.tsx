@@ -24,9 +24,9 @@ export default function ForgotPassword({
 
   useEffect(() => {
     if (loggedIn) {
-      navigate('/auth/profile', { replace: true })
+      navigate(urls.profile, { replace: true })
     }
-  }, [])
+  }, [loggedIn, navigate])
 
   const renderedDisplay = useMemo(() => {
     if (emailSentTo) {

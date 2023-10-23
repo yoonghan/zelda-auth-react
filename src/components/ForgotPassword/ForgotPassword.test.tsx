@@ -24,12 +24,12 @@ describe('ForgotPassword', () => {
               />
             }
           ></Route>
-          <Route path="/auth/profile" element={<div>Profile</div>}></Route>
+          <Route path={urls.profile} element={<div>Profile</div>}></Route>
         </Routes>
       </MemoryRouter>
     )
 
-  describe(' logged in', () => {
+  describe('logged in', () => {
     it('should redirect if user is logged in', () => {
       const { getByText } = renderComponent(true)
       expect(getByText('Profile')).toBeInTheDocument()
