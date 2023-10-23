@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { ForgotPasswordForm } from "./ForgotPasswordForm";
 
-describe("ForgotPassword", () => {
+describe("ForgotPasswordForm", () => {
   const renderComponent = (
     onSendEmailToResetPassword = jest.fn(),
     emailSentTriggerCallback = jest.fn()
