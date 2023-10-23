@@ -5,12 +5,12 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Alert from '@mui/material/Alert'
-import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Grid from '@mui/material/Grid'
+import { urls } from '../../routes/const'
 
 export default function Profiler() {
   return (
@@ -79,7 +79,17 @@ export default function Profiler() {
           Update
         </Button>
       </Box>
-      <Copyright lastUpdatedYear={2023} />
+      <Box sx={{ mt: 3, mb: 2 }}>
+        <Typography>I want to change my password:</Typography>
+        <Button
+          type="link"
+          fullWidth
+          variant="contained"
+          href={urls.changePassword}
+        >
+          Change Password
+        </Button>
+      </Box>
     </Container>
   )
 }
