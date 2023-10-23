@@ -144,7 +144,7 @@ const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
               id="nPassword"
               label="New Password"
               name="nPassword"
-              type="nPassword"
+              type="password"
               {...register('nPassword', {
                 required: 'New Password is required',
                 minLength: {
@@ -161,7 +161,7 @@ const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
               id="rPassword"
               label="Retype New Password"
               name="rPassword"
-              type="rPassword"
+              type="password"
               {...register('rPassword', {
                 required: 'Retype new password is required',
                 validate: (retypedPassword: string) => {
