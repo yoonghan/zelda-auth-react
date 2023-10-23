@@ -108,5 +108,24 @@ describe("ForgotPasswordForm", () => {
       expect(onEmailSentCallbackMock).toHaveBeenCalledWith("walcron@email.com");
       expect(getByTestId("loader")).not.toBeVisible();
     });
+
+    it("should remain in screen incase no error or isSent=false", async () => {
+      const onResetMock = jest.fn();
+      const onEmailSentCallbackMock = jest.fn();
+      onResetMock.mockResolvedValue({
+        isSent: false,
+        error: undefined,
+      });
+      const { getByLabelText, getByTestId } = renderComponent(
+        onResetMock,
+        onEmailSentCallbackMock
+      );
+      await userEvent.type(
+        getByLabelText("Email Address *"),
+        "walcron@email.com{enter}"
+      );
+      expect(onEmailSentCallbackMock).not.toHaveBeenCalled();
+      expect(getByTestId("loader")).not.toBeVisible();
+    });
   });
 });

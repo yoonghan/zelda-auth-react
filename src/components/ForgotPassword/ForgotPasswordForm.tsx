@@ -55,7 +55,8 @@ export const ForgotPasswordForm = ({
         error: response.error,
       });
       return;
-    } else if (response.isSent) {
+    }
+    if (response.isSent) {
       emailSentTriggerCallback(email);
     }
     setProcessState({
