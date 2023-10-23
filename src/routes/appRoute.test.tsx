@@ -50,6 +50,12 @@ describe('appRoute', () => {
     expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
   })
 
+  // Remove since user is not logged in
+  // it('should show be able to navigate to /auth/change-password', () => {
+  //   render(<Wrapper goto={['/auth/change-password']} />)
+  //   expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
+  // })
+
   // Remove logout since it will cause a loop.
   // it("should show be able to navigate to /auth/logout", () => {
   //   render(<Wrapper goto={["/auth/logout"]} />);
