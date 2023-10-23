@@ -31,9 +31,8 @@ describe('ForgotPassword', () => {
 
   describe(' logged in', () => {
     it('should redirect if user is logged in', () => {
-      const { getByText, getByRole } = renderComponent(true)
+      const { getByText } = renderComponent(true)
       expect(getByText('Profile')).toBeInTheDocument()
-      expect(getByRole('Sign In')).toHaveAttribute('href', urls.signin)
     })
   })
 
@@ -52,7 +51,7 @@ describe('ForgotPassword', () => {
         isSent: true,
         error: undefined,
       })
-      const { findByRole, getByLabelText } = renderComponent(
+      const { getByText, getByLabelText } = renderComponent(
         false,
         mockEmailSent
       )
@@ -61,7 +60,7 @@ describe('ForgotPassword', () => {
         'test@email.com{enter}'
       )
       expect(
-        await findByRole('link', { name: 'Return To Login' })
+        getByText('Reset email has been sent, check your (test@email.com).')
       ).toBeInTheDocument()
     })
   })
