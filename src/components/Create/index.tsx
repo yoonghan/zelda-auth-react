@@ -105,7 +105,7 @@ export default function Create({
             void handleSubmit(onSubmit)(form)
           }}
           noValidate
-          sx={{ mt: 1 }}
+          sx={{ mt: 1, width: 1 }}
         >
           <Box
             component="fieldset"
@@ -173,16 +173,15 @@ export default function Create({
 
             {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
             {error && <Alert severity="warning">{error}</Alert>}
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2, mb: 2 }}
-            >
-              Create
-            </Button>
           </Box>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, mb: 2 }}
+          >
+            Create
+          </Button>
         </Box>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
