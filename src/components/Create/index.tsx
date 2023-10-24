@@ -16,6 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Link from '@mui/material/Link'
 import Checkbox from '@mui/material/Checkbox'
 import { urls } from '../../routes/const'
+import { yearChange } from '../../shared/const'
 
 interface FormValues {
   email: string
@@ -105,7 +106,7 @@ export default function Create({
             void handleSubmit(onSubmit)(form)
           }}
           noValidate
-          sx={{ mt: 1 }}
+          sx={{ mt: 1, width: 1 }}
         >
           <Box
             component="fieldset"
@@ -173,16 +174,15 @@ export default function Create({
 
             {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
             {error && <Alert severity="warning">{error}</Alert>}
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2, mb: 2 }}
-            >
-              Create
-            </Button>
           </Box>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, mb: 2 }}
+          >
+            Create
+          </Button>
         </Box>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -205,7 +205,7 @@ export default function Create({
           Already a user?: <Link href={urls.signin}>Sign In</Link>
         </Typography>
       </Box>
-      <Copyright lastUpdatedYear={2023} />
+      <Copyright lastUpdatedYear={yearChange} />
     </Container>
   )
 }

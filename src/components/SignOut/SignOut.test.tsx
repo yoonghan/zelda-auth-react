@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 describe('SignOut', () => {
-  it('should render logout component correctly', () => {
+  it('should render logout component correctly', async () => {
     const onSignOutFn = jest.fn()
-    render(
+    const { findByText } = render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route
@@ -17,7 +17,7 @@ describe('SignOut', () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText('Login')).toBeInTheDocument()
+    expect(await findByText('Login')).toBeInTheDocument()
     expect(onSignOutFn).toHaveBeenCalled()
   })
 

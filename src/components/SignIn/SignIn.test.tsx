@@ -40,7 +40,7 @@ describe('SignIn', () => {
       'href',
       urls.create
     )
-    expect(getByRole('link', { name: 'Forgot my password' })).toHaveAttribute(
+    expect(getByRole('link', { name: 'Forgot your password' })).toHaveAttribute(
       'href',
       urls.forgotPassword
     )

@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form'
 import { emailPattern, passwordLength } from '../shared/validation'
 import Link from '@mui/material/Link'
 import { urls } from '../../routes/const'
+import { yearChange } from '../../shared/const'
 
 interface FormValues {
   email: string
@@ -93,7 +94,7 @@ export default function SignIn({
             void handleSubmit(onSubmit)(form)
           }}
           noValidate
-          sx={{ mt: 1 }}
+          sx={{ mt: 1, width: 1 }}
         >
           <Box
             component="fieldset"
@@ -134,18 +135,18 @@ export default function SignIn({
                 },
               })}
             />
-            {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
-            {error && <Alert severity="warning">{error}</Alert>}
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
           </Box>
+          {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
+          {error && <Alert severity="warning">{error}</Alert>}
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
         </Box>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -167,10 +168,10 @@ export default function SignIn({
           No Account Yet?: <Link href={urls.create}>Sign me up</Link>
         </Typography>
         <Typography variant={'body2'} component={'p'}>
-          <Link href={urls.forgotPassword}>Forgot my password</Link>
+          <Link href={urls.forgotPassword}>Forgot your password</Link>
         </Typography>
       </Box>
-      <Copyright lastUpdatedYear={2023} />
+      <Copyright lastUpdatedYear={yearChange} />
     </Container>
   )
 }

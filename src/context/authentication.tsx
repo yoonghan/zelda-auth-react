@@ -14,7 +14,7 @@ import { remapAuthenticationError } from './remapError'
 interface Props {
   onSignIn: (username: string, password: string) => void
   onCreate: (username: string, password: string) => void
-  onSignOut: () => void
+  onSignOut: () => Promise<void>
   onSendEmailToResetPassword: (
     email: string
   ) => Promise<EmailPasswordResetResponse>
@@ -33,7 +33,7 @@ export const defaultProps: Props = {
   onSignIn: (username: string, password: string) => {
     // empty
   },
-  onSignOut: () => {
+  onSignOut: async () => {
     // empty
   },
   onSendEmailToResetPassword: async (email: string) => ({
@@ -79,9 +79,7 @@ export const AuthenticationProvider = ({
         onSignIn: (username: string, password: string) => {
           void login(username, password)
         },
-        onSignOut: () => {
-          void logout()
-        },
+        onSignOut: logout,
         onSendEmailToResetPassword: async (email: string) => {
           const response = await resetEmail(
             email,

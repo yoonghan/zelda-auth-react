@@ -100,7 +100,7 @@ export const ForgotPasswordForm = ({
           void handleSubmit(onSubmit)(form)
         }}
         noValidate
-        sx={{ mt: 1 }}
+        sx={{ mt: 1, width: '1' }}
       >
         <Box
           component="fieldset"
@@ -124,20 +124,20 @@ export const ForgotPasswordForm = ({
               },
             })}
           />
-          {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
-          {processState.error && (
-            <Alert severity="warning">{processState.error}</Alert>
-          )}
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 2, mb: 2 }}
-          >
-            Reset My Password
-          </Button>
         </Box>
+        {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
+        {processState.error && (
+          <Alert severity="warning">{processState.error}</Alert>
+        )}
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          Reset My Password
+        </Button>
       </Box>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

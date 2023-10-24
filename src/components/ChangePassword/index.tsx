@@ -107,7 +107,7 @@ const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h5">
           Change Password
         </Typography>
 
@@ -121,7 +121,7 @@ const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
             void handleSubmit(onSubmit)(form)
           }}
           noValidate
-          sx={{ mt: 1 }}
+          sx={{ mt: 1, width: 1 }}
         >
           <Box component="fieldset" sx={{ border: 0 }}>
             <TextField
@@ -172,22 +172,21 @@ const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
                 },
               })}
             />
-
-            {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
-
-            {processState.error && (
-              <Alert severity="warning">{processState.error}</Alert>
-            )}
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2, mb: 2 }}
-            >
-              Update Password
-            </Button>
           </Box>
+          {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
+
+          {processState.error && (
+            <Alert severity="warning">{processState.error}</Alert>
+          )}
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, mb: 2 }}
+          >
+            Update Password
+          </Button>
         </Box>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
