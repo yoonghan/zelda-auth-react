@@ -16,6 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Link from '@mui/material/Link'
 import Checkbox from '@mui/material/Checkbox'
 import { urls } from '../../routes/const'
+import { yearChange } from '../../shared/const'
 
 interface FormValues {
   email: string
@@ -204,7 +205,7 @@ export default function Create({
           Already a user?: <Link href={urls.signin}>Sign In</Link>
         </Typography>
       </Box>
-      <Copyright lastUpdatedYear={2023} />
+      <Copyright lastUpdatedYear={yearChange} />
     </Container>
   )
 }

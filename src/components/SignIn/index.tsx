@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form'
 import { emailPattern, passwordLength } from '../shared/validation'
 import Link from '@mui/material/Link'
 import { urls } from '../../routes/const'
+import { yearChange } from '../../shared/const'
 
 interface FormValues {
   email: string
@@ -170,7 +171,7 @@ export default function SignIn({
           <Link href={urls.forgotPassword}>Forgot your password</Link>
         </Typography>
       </Box>
-      <Copyright lastUpdatedYear={2023} />
+      <Copyright lastUpdatedYear={yearChange} />
     </Container>
   )
 }
