@@ -100,7 +100,7 @@ export const ForgotPasswordForm = ({
           void handleSubmit(onSubmit)(form)
         }}
         noValidate
-        sx={{ mt: 1, width: '100%' }}
+        sx={{ mt: 1, width: '1' }}
       >
         <Box
           component="fieldset"
