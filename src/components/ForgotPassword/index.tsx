@@ -66,7 +66,7 @@ export default function ForgotPassword({
           }}
         >
           <Typography variant={'body2'} component={'p'}>
-            Recalled my password?: <Link href={urls.signin}>Sign In</Link>
+            Recalled your password?: <Link href={urls.signin}>Sign In</Link>
           </Typography>
         </Box>
       </Box>

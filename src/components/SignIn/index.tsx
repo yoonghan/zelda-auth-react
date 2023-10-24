@@ -167,7 +167,7 @@ export default function SignIn({
           No Account Yet?: <Link href={urls.create}>Sign me up</Link>
         </Typography>
         <Typography variant={'body2'} component={'p'}>
-          <Link href={urls.forgotPassword}>Forgot my password</Link>
+          <Link href={urls.forgotPassword}>Forgot your password</Link>
         </Typography>
       </Box>
       <Copyright lastUpdatedYear={2023} />
