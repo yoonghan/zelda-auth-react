@@ -3,12 +3,6 @@ export class Firebase {
     static getFirebaseInitializeApp: () => import("@firebase/app").FirebaseApp;
     static getAuth: () => import("firebase/auth").Auth;
 }
-export const credentials: {
-    username: string;
-    password: string;
-};
-/// <reference types="jest" />
-export const mockAuth: jest.Mock<any, any, any>;
 import { BehaviorSubject } from 'rxjs';
 import { AuthResponse, AuthWithProfileResponse } from './type/Auth';
 import { ChangePasswordResponse, EmailPasswordResetResponse } from './type/ChangePassword';
@@ -20,8 +14,7 @@ export declare function confirmPasswordResetEmail(code: string, newPassword: str
 export declare function resetEmail(username: string, redirectUrl: string): Promise<EmailPasswordResetResponse>;
 export declare function changePassword(oldPassword: string, newPassword: string): Promise<ChangePasswordResponse>;
 export declare function logout(): Promise<void>;
-import './__custom_mocks__/firebase/auth';
-import 'whatwg-fetch';
+export declare const updateUserLogin: (user: any) => void;
 export interface AuthResponse {
     sessionToken: string | null;
     error: string | undefined;
@@ -38,5 +31,4 @@ export type EmailPasswordResetResponse = {
     isSent: boolean;
     error: string | undefined;
 };
-export {};
 }
