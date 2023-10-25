@@ -8,7 +8,14 @@ export const credentials: {
     password: string;
 };
 /// <reference types="jest" />
-export const mockAuth: jest.Mock<any, any, any>;
+export const mockedUser: {
+    uid: string;
+    username: string;
+    user: {
+        getIdToken: () => Promise<unknown>;
+    };
+};
+export declare const mockAuth: jest.Mock<any, any, any>;
 import { BehaviorSubject } from 'rxjs';
 import { AuthResponse, AuthWithProfileResponse } from './type/Auth';
 import { ChangePasswordResponse, EmailPasswordResetResponse } from './type/ChangePassword';
@@ -20,6 +27,7 @@ export declare function confirmPasswordResetEmail(code: string, newPassword: str
 export declare function resetEmail(username: string, redirectUrl: string): Promise<EmailPasswordResetResponse>;
 export declare function changePassword(oldPassword: string, newPassword: string): Promise<ChangePasswordResponse>;
 export declare function logout(): Promise<void>;
+export declare const updateUserLogin: (user: any) => void;
 import './__custom_mocks__/firebase/auth';
 import 'whatwg-fetch';
 export interface AuthResponse {
