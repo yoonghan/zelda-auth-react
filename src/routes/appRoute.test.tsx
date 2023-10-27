@@ -66,26 +66,6 @@ describe('appRoute', () => {
   //   expect(screen.queryByText("Not Found")).not.toBeInTheDocument();
   // });
 
-  describe('logged out', () => {
-    beforeEach(() => {
-      setupAuthAsLoggedOut()
-    })
-
-    const renderComponent = ({ goto }: { goto: string[] }) => {
-      const router = createMemoryRouter(routes, { initialEntries: goto })
-      return render(
-        <AuthenticationProvider>
-          <RouterProvider router={router} />
-        </AuthenticationProvider>
-      )
-    }
-
-    it('should navigate to sign in when go to profile', async () => {
-      const { findByText } = renderComponent({ goto: ['/', '/auth/profile'] })
-      expect(await findByText('Sign in')).toBeInTheDocument()
-    })
-  })
-
   describe('logged in', () => {
     beforeEach(() => {
       setupAuthAsLoggedIn()

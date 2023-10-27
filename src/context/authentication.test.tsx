@@ -44,7 +44,7 @@ describe('authentication', () => {
       mockResetEmail.mockResolvedValue({
         error: 'Firebase: reset email',
       })
-      var updatedError = ''
+      let updatedError = ''
       const { getByTestId } = render(
         <AuthenticationProvider>
           <AuthenticationConsumer>

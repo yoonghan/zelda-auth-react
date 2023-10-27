@@ -11,7 +11,7 @@ import {
 } from '@walcron/zelda-shared-context'
 import { remapAuthenticationError } from './remapError'
 
-interface Props {
+export interface Props {
   onSignIn: (username: string, password: string) => void
   onCreate: (username: string, password: string) => void
   onSignOut: () => Promise<void>
@@ -23,7 +23,7 @@ interface Props {
     newPassword
   ) => Promise<ChangePasswordResponse>
   error: string | undefined
-  loggedIn: boolean
+  loggedIn: boolean | null
 }
 
 export const defaultProps: Props = {
@@ -58,7 +58,7 @@ export const AuthenticationProvider = ({
   children: ReactNode
 }) => {
   const [error, setError] = useState('')
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(null)
 
   useEffect(() => {
     const sub = auth$.subscribe(({ error, sessionToken }) => {

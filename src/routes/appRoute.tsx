@@ -28,13 +28,9 @@ const routes = [
       {
         path: 'profile',
         element: (
-          <AuthenticationConsumer>
-            {({ loggedIn }) => (
-              <ProtectedPage loggedIn={loggedIn} redirectTo="SignIn">
-                <Profiler />
-              </ProtectedPage>
-            )}
-          </AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="SignIn">
+            {() => <Profiler />}
+          </ProtectedPage>
         ),
       },
       {
