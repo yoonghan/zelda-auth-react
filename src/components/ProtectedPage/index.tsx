@@ -29,7 +29,7 @@ const PageRedirector = ({
   failRedirectTo,
   children,
   ...props
-}: PageRedirectorProps) => {
+}: PageRedirectorProps): JSX.Element => {
   switch (props.loggedIn) {
     case null:
       return <>Initializing</>
@@ -45,7 +45,7 @@ const PageRedirector = ({
       break
   }
 
-  return children(props)
+  return <>{children(props)}</>
 }
 
 export default ProtectedPage
