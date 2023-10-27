@@ -1,32 +1,11 @@
 import Confirm from '.'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { urls } from '../../routes/const'
 
 describe('Create', () => {
-  const renderComponent = (
-    onCreate = jest.fn(),
-    errorMessage = undefined,
-    loggedIn = false
-  ) =>
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Confirm
-                onCreate={onCreate}
-                error={errorMessage}
-                loggedIn={loggedIn}
-              />
-            }
-          ></Route>
-          <Route path={urls.profile} element={<div>Profile</div>}></Route>
-        </Routes>
-      </MemoryRouter>
-    )
+  const renderComponent = (onCreate = jest.fn(), errorMessage = undefined) =>
+    render(<Confirm onCreate={onCreate} error={errorMessage} />)
 
   it('should render login component correctly', () => {
     const { getByRole, getByText, getByLabelText, queryByRole } =
@@ -118,12 +97,6 @@ describe('Create', () => {
       )
       expect(getByText(errorMessage)).toBeInTheDocument()
       expect(queryByTestId('loader')).not.toBeVisible()
-    })
-
-    it('should go profile if user is already logged in', () => {
-      const onCreateMock = jest.fn()
-      renderComponent(onCreateMock, undefined, true)
-      expect(screen.getByText('Profile')).toBeInTheDocument()
     })
   })
 })

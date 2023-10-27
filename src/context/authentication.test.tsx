@@ -23,7 +23,7 @@ describe('authentication', () => {
     expect(defaultProps.loggedIn).toBeFalsy()
     defaultProps.onSignIn('user', 'password')
     defaultProps.onCreate('user', 'password')
-    defaultProps.onSignOut()
+    void defaultProps.onSignOut()
     expect(
       await defaultProps.onSendEmailToResetPassword('email')
     ).toStrictEqual({
@@ -44,7 +44,7 @@ describe('authentication', () => {
       mockResetEmail.mockResolvedValue({
         error: 'Firebase: reset email',
       })
-      var updatedError = ''
+      let updatedError = ''
       const { getByTestId } = render(
         <AuthenticationProvider>
           <AuthenticationConsumer>
@@ -91,7 +91,13 @@ describe('authentication', () => {
                 >
                   Update Password
                 </button>
-                <button onClick={onSignOut}>Sign Out</button>
+                <button
+                  onClick={() => {
+                    void onSignOut()
+                  }}
+                >
+                  Sign Out
+                </button>
                 <div data-testid={'error'}>{error}</div>
               </>
             )}

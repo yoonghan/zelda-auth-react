@@ -8,6 +8,7 @@ import { AuthenticationConsumer } from '../context/authentication'
 import Create from '../components/Create'
 import ForgotPassword from '../components/ForgotPassword'
 import ChangePassword from '../components/ChangePassword'
+import ProtectedPage from '../components/ProtectedPage'
 
 const routes = [
   { path: '/', element: <About />, errorElement: <ErrorPage /> },
@@ -26,54 +27,58 @@ const routes = [
       },
       {
         path: 'profile',
-        element: <Profiler />,
+        element: (
+          <ProtectedPage failRedirectTo="SignIn">
+            {() => <Profiler />}
+          </ProtectedPage>
+        ),
       },
       {
         path: 'login',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="Profile">
             {(props) => <SignIn {...props} />}
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       {
         path: 'create',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="Profile">
             {(props) => <Create {...props} />}
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       {
         path: 'forgot-password',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="Profile">
             {(props) => <ForgotPassword {...props} />}
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       /* istanbul ignore next -- @preserve */
       {
         path: 'change-password',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="SignIn">
             {
               /* istanbul ignore next -- @preserve */
               (props) => <ChangePassword {...props} />
             }
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       /* istanbul ignore next -- @preserve */
       {
         path: 'logout',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="SignIn">
             {
               /* istanbul ignore next -- @preserve */
-              (props) => <SignOut {...props} redirect="/auth/login" />
+              (props) => <SignOut {...props} />
             }
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
     ],

@@ -1,6 +1,5 @@
 import { type ChangePasswordResponse } from '@walcron/zelda-shared-context'
-import { useCallback, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useCallback, useState } from 'react'
 import { urls } from '../../routes/const'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
@@ -29,12 +28,9 @@ interface Props {
     oldPassword: string,
     newPassword: string
   ) => Promise<ChangePasswordResponse>
-  loggedIn: boolean
 }
 
-const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
-  const navigate = useNavigate()
-
+const ChangePassword = ({ onChangePassword }: Props) => {
   const [processState, setProcessState] = useState<ProcessingState>({
     isProcessing: false,
     error: undefined,
@@ -89,12 +85,6 @@ const ChangePassword = ({ loggedIn, onChangePassword }: Props) => {
       </ul>
     )
   })()
-
-  useEffect(() => {
-    if (!loggedIn) {
-      navigate(urls.signin, { replace: true })
-    }
-  }, [loggedIn, navigate])
 
   return (
     <Container component="main" maxWidth="xs">
