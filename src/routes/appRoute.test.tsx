@@ -34,11 +34,6 @@ describe('appRoute', () => {
     expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
   })
 
-  it('should show be able to navigate to /auth/create', () => {
-    render(<Wrapper goto={['/auth/create']} />)
-    expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
-  })
-
   it('should show be able to navigate to /auth/forgot-password', () => {
     render(<Wrapper goto={['/auth/forgot-password']} />)
     expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
@@ -79,6 +74,11 @@ describe('appRoute', () => {
       const { findByText } = renderComponent({ goto: ['/', '/auth/login'] })
       expect(await findByText('Logged in')).toBeInTheDocument()
     })
+
+    it('should navigate to profile if access from create', async () => {
+      const { findByText } = render(<Wrapper goto={['/auth/create']} />)
+      expect(await findByText('Logged in')).toBeInTheDocument()
+    })
   })
 
   describe('logged out', () => {
@@ -98,6 +98,11 @@ describe('appRoute', () => {
     it('should navigate to sign in and not redirected', async () => {
       const { findByText } = renderComponent({ goto: ['/', '/auth/login'] })
       expect(await findByText('Sign in')).toBeInTheDocument()
+    })
+
+    it('should navigate to create and not redirected', async () => {
+      const { findByText } = render(<Wrapper goto={['/auth/create']} />)
+      expect(await findByText('Create User')).toBeInTheDocument()
     })
   })
 })

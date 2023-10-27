@@ -44,9 +44,9 @@ const routes = [
       {
         path: 'create',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="Profile">
             {(props) => <Create {...props} />}
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       {
