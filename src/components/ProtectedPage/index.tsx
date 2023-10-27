@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode
 }
 
-const AuthenticatedComponent = ({ loggedIn, redirectTo, children }: Props) => {
+const ProtectedPage = ({ loggedIn, redirectTo, children }: Props) => {
   if (loggedIn && redirectTo === 'Profile') {
     return <Navigate to={urls.profile} replace={true} />
   }
@@ -18,4 +18,4 @@ const AuthenticatedComponent = ({ loggedIn, redirectTo, children }: Props) => {
   return <>{children}</>
 }
 
-export default AuthenticatedComponent
+export default ProtectedPage

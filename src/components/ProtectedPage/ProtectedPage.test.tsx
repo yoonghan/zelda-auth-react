@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react'
-import AuthenticatedComponent from '.'
+import ProtectedPage from '.'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
-describe('AuthenticatedComponent', () => {
+describe('ProtectedPage', () => {
   const renderComponent = ({
     loggedIn,
     redirectTo,
@@ -16,12 +16,9 @@ describe('AuthenticatedComponent', () => {
           <Route
             path="/"
             element={
-              <AuthenticatedComponent
-                loggedIn={loggedIn}
-                redirectTo={redirectTo}
-              >
+              <ProtectedPage loggedIn={loggedIn} redirectTo={redirectTo}>
                 Component
-              </AuthenticatedComponent>
+              </ProtectedPage>
             }
           ></Route>
           <Route path="/auth/profile" element={<div>Profile</div>}></Route>

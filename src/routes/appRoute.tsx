@@ -8,7 +8,7 @@ import { AuthenticationConsumer } from '../context/authentication'
 import Create from '../components/Create'
 import ForgotPassword from '../components/ForgotPassword'
 import ChangePassword from '../components/ChangePassword'
-import AuthenticatedComponent from '../components/AuthenticatedComponent'
+import ProtectedPage from '../components/ProtectedPage'
 
 const routes = [
   { path: '/', element: <About />, errorElement: <ErrorPage /> },
@@ -30,9 +30,9 @@ const routes = [
         element: (
           <AuthenticationConsumer>
             {({ loggedIn }) => (
-              <AuthenticatedComponent loggedIn={loggedIn} redirectTo="SignIn">
+              <ProtectedPage loggedIn={loggedIn} redirectTo="SignIn">
                 <Profiler />
-              </AuthenticatedComponent>
+              </ProtectedPage>
             )}
           </AuthenticationConsumer>
         ),
