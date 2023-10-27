@@ -34,16 +34,6 @@ describe('appRoute', () => {
     expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
   })
 
-  it('should show be able to navigate to /auth', () => {
-    render(<Wrapper goto={['/auth/login']} />)
-    expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
-  })
-
-  it('should show be able to navigate to /auth/login', () => {
-    render(<Wrapper goto={['/auth/login']} />)
-    expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
-  })
-
   it('should show be able to navigate to /auth/create', () => {
     render(<Wrapper goto={['/auth/create']} />)
     expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
@@ -83,6 +73,31 @@ describe('appRoute', () => {
     it('should navigate to profile and not redirected', async () => {
       const { findByText } = renderComponent({ goto: ['/', '/auth/profile'] })
       expect(await findByText('Logged in')).toBeInTheDocument()
+    })
+
+    it('should navigate to profile if access from sign in', async () => {
+      const { findByText } = renderComponent({ goto: ['/', '/auth/login'] })
+      expect(await findByText('Logged in')).toBeInTheDocument()
+    })
+  })
+
+  describe('logged out', () => {
+    beforeEach(() => {
+      setupAuthAsLoggedOut()
+    })
+
+    const renderComponent = ({ goto }: { goto: string[] }) => {
+      const router = createMemoryRouter(routes, { initialEntries: goto })
+      return render(
+        <AuthenticationProvider>
+          <RouterProvider router={router} />
+        </AuthenticationProvider>
+      )
+    }
+
+    it('should navigate to sign in and not redirected', async () => {
+      const { findByText } = renderComponent({ goto: ['/', '/auth/login'] })
+      expect(await findByText('Sign in')).toBeInTheDocument()
     })
   })
 })

@@ -36,9 +36,9 @@ const routes = [
       {
         path: 'login',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="Profile">
             {(props) => <SignIn {...props} />}
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       {

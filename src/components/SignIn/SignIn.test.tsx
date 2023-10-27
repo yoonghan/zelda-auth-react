@@ -106,11 +106,5 @@ describe('SignIn', () => {
       expect(getByText(errorMessage)).toBeInTheDocument()
       expect(queryByTestId('loader')).not.toBeVisible()
     })
-
-    it('should go profile if user is already logged in', () => {
-      const onSignInMock = jest.fn()
-      renderComponent(onSignInMock, undefined, true)
-      expect(screen.getByText('Profile')).toBeInTheDocument()
-    })
   })
 })
