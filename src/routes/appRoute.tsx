@@ -52,9 +52,9 @@ const routes = [
       {
         path: 'forgot-password',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="Profile">
             {(props) => <ForgotPassword {...props} />}
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       /* istanbul ignore next -- @preserve */

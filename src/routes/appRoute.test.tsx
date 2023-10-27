@@ -34,11 +34,6 @@ describe('appRoute', () => {
     expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
   })
 
-  it('should show be able to navigate to /auth/forgot-password', () => {
-    render(<Wrapper goto={['/auth/forgot-password']} />)
-    expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
-  })
-
   // Remove since user is not logged in
   // it('should show be able to navigate to /auth/change-password', () => {
   //   render(<Wrapper goto={['/auth/change-password']} />)
@@ -79,6 +74,13 @@ describe('appRoute', () => {
       const { findByText } = render(<Wrapper goto={['/auth/create']} />)
       expect(await findByText('Logged in')).toBeInTheDocument()
     })
+
+    it('should navigate to profile if access from forgot-password', async () => {
+      const { findByText } = render(
+        <Wrapper goto={['/auth/forgot-password']} />
+      )
+      expect(await findByText('Logged in')).toBeInTheDocument()
+    })
   })
 
   describe('logged out', () => {
@@ -103,6 +105,13 @@ describe('appRoute', () => {
     it('should navigate to create and not redirected', async () => {
       const { findByText } = render(<Wrapper goto={['/auth/create']} />)
       expect(await findByText('Create User')).toBeInTheDocument()
+    })
+
+    it('should navigate to forgot-password and not redirected', async () => {
+      const { findByText } = render(
+        <Wrapper goto={['/auth/forgot-password']} />
+      )
+      expect(await findByText('Reset a forgotten password')).toBeInTheDocument()
     })
   })
 })

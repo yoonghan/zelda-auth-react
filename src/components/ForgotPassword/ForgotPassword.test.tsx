@@ -19,7 +19,6 @@ describe('ForgotPassword', () => {
             path="/"
             element={
               <ForgotPassword
-                loggedIn={loggedIn}
                 onSendEmailToResetPassword={onSendEmailToResetPassword}
               />
             }
@@ -29,39 +28,27 @@ describe('ForgotPassword', () => {
       </MemoryRouter>
     )
 
-  describe('logged in', () => {
-    it('should redirect if user is logged in', () => {
-      const { getByText } = renderComponent(true)
-      expect(getByText('Profile')).toBeInTheDocument()
-    })
+  it('should default render forgot password form', () => {
+    const { getByText, getByRole } = renderComponent(false)
+    expect(getByText('Reset a forgotten password')).toBeInTheDocument()
+    expect(
+      getByRole('button', { name: 'Reset My Password' })
+    ).toBeInTheDocument()
   })
 
-  describe('not logged in', () => {
-    it('should default render forgot password form', () => {
-      const { getByText, getByRole } = renderComponent(false)
-      expect(getByText('Reset a forgotten password')).toBeInTheDocument()
-      expect(
-        getByRole('button', { name: 'Reset My Password' })
-      ).toBeInTheDocument()
+  it('should inform user when password is successfully reset', async () => {
+    const mockEmailSent = jest.fn()
+    mockEmailSent.mockResolvedValue({
+      isSent: true,
+      error: undefined,
     })
-
-    it('should inform user when password is successfully reset', async () => {
-      const mockEmailSent = jest.fn()
-      mockEmailSent.mockResolvedValue({
-        isSent: true,
-        error: undefined,
-      })
-      const { getByText, getByLabelText } = renderComponent(
-        false,
-        mockEmailSent
-      )
-      await userEvent.type(
-        getByLabelText('Email Address *'),
-        'test@email.com{enter}'
-      )
-      expect(
-        getByText('Reset email has been sent, check your (test@email.com).')
-      ).toBeInTheDocument()
-    })
+    const { getByText, getByLabelText } = renderComponent(false, mockEmailSent)
+    await userEvent.type(
+      getByLabelText('Email Address *'),
+      'test@email.com{enter}'
+    )
+    expect(
+      getByText('Reset email has been sent, check your (test@email.com).')
+    ).toBeInTheDocument()
   })
 })
