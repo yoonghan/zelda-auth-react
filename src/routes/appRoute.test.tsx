@@ -34,18 +34,6 @@ describe('appRoute', () => {
     expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
   })
 
-  // Remove since user is not logged in
-  // it('should show be able to navigate to /auth/change-password', () => {
-  //   render(<Wrapper goto={['/auth/change-password']} />)
-  //   expect(screen.queryByText('Not Found')).not.toBeInTheDocument()
-  // })
-
-  // Remove logout since it will cause a loop.
-  // it("should show be able to navigate to /auth/logout", () => {
-  //   render(<Wrapper goto={["/auth/logout"]} />);
-  //   expect(screen.queryByText("Not Found")).not.toBeInTheDocument();
-  // });
-
   describe('logged in', () => {
     beforeEach(() => {
       setupAuthAsLoggedIn()
@@ -87,6 +75,11 @@ describe('appRoute', () => {
         <Wrapper goto={['/auth/change-password']} />
       )
       expect(await findByText('Change Password')).toBeInTheDocument()
+    })
+
+    it('should navigate to sigin if access from logout', async () => {
+      const { findByText } = render(<Wrapper goto={['/auth/logout']} />)
+      expect(await findByText('Signing out')).toBeInTheDocument()
     })
   })
 
@@ -130,6 +123,11 @@ describe('appRoute', () => {
       const { findByText } = render(
         <Wrapper goto={['/auth/change-password']} />
       )
+      expect(await findByText('Sign in')).toBeInTheDocument()
+    })
+
+    it('should navigate to signout and remained', async () => {
+      const { findByText } = render(<Wrapper goto={['/auth/logout']} />)
       expect(await findByText('Sign in')).toBeInTheDocument()
     })
   })

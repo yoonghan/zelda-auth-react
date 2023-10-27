@@ -73,12 +73,12 @@ const routes = [
       {
         path: 'logout',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="SignIn">
             {
               /* istanbul ignore next -- @preserve */
-              (props) => <SignOut {...props} redirect="/auth/login" />
+              (props) => <SignOut {...props} />
             }
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
     ],
