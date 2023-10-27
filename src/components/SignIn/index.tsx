@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -9,7 +9,6 @@ import Alert from '@mui/material/Alert'
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
 import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
-import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { emailPattern, passwordLength } from '../shared/validation'
 import Link from '@mui/material/Link'
@@ -24,25 +23,16 @@ interface FormValues {
 export default function SignIn({
   onSignIn,
   error,
-  loggedIn,
 }: {
   onSignIn: (username: string, password: string) => void
   error: string | undefined
-  loggedIn: boolean
 }) {
-  const navigate = useNavigate()
   const submissionCount = useRef(0)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
-
-  useEffect(() => {
-    if (loggedIn) {
-      navigate(urls.profile, { replace: true })
-    }
-  }, [loggedIn, navigate])
 
   const submissionInProgress = useCallback(
     () => submissionCount.current > 0 && error === undefined,
