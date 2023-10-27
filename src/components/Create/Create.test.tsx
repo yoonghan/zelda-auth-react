@@ -15,13 +15,7 @@ describe('Create', () => {
         <Routes>
           <Route
             path="/"
-            element={
-              <Confirm
-                onCreate={onCreate}
-                error={errorMessage}
-                loggedIn={loggedIn}
-              />
-            }
+            element={<Confirm onCreate={onCreate} error={errorMessage} />}
           ></Route>
           <Route path={urls.profile} element={<div>Profile</div>}></Route>
         </Routes>

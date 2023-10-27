@@ -1,5 +1,5 @@
 import SignIn from '.'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { urls } from '../../routes/const'
@@ -15,13 +15,7 @@ describe('SignIn', () => {
         <Routes>
           <Route
             path="/"
-            element={
-              <SignIn
-                onSignIn={onSignIn}
-                error={errorMessage}
-                loggedIn={loggedIn}
-              />
-            }
+            element={<SignIn onSignIn={onSignIn} error={errorMessage} />}
           ></Route>
           <Route path={urls.profile} element={<div>Profile</div>}></Route>
         </Routes>
