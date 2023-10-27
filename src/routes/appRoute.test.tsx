@@ -81,6 +81,13 @@ describe('appRoute', () => {
       )
       expect(await findByText('Logged in')).toBeInTheDocument()
     })
+
+    it('should navigate to change-password and not redireced', async () => {
+      const { findByText } = render(
+        <Wrapper goto={['/auth/change-password']} />
+      )
+      expect(await findByText('Change Password')).toBeInTheDocument()
+    })
   })
 
   describe('logged out', () => {
@@ -97,6 +104,11 @@ describe('appRoute', () => {
       )
     }
 
+    it('should navigate to sigin if not logged in', async () => {
+      const { findByText } = render(<Wrapper goto={['/auth/profile']} />)
+      expect(await findByText('Sign in')).toBeInTheDocument()
+    })
+
     it('should navigate to sign in and not redirected', async () => {
       const { findByText } = renderComponent({ goto: ['/', '/auth/login'] })
       expect(await findByText('Sign in')).toBeInTheDocument()
@@ -112,6 +124,13 @@ describe('appRoute', () => {
         <Wrapper goto={['/auth/forgot-password']} />
       )
       expect(await findByText('Reset a forgotten password')).toBeInTheDocument()
+    })
+
+    it('should navigate to sigin if not logged in', async () => {
+      const { findByText } = render(
+        <Wrapper goto={['/auth/change-password']} />
+      )
+      expect(await findByText('Sign in')).toBeInTheDocument()
     })
   })
 })

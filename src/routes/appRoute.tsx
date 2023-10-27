@@ -61,12 +61,12 @@ const routes = [
       {
         path: 'change-password',
         element: (
-          <AuthenticationConsumer>
+          <ProtectedPage failRedirectTo="SignIn">
             {
               /* istanbul ignore next -- @preserve */
               (props) => <ChangePassword {...props} />
             }
-          </AuthenticationConsumer>
+          </ProtectedPage>
         ),
       },
       /* istanbul ignore next -- @preserve */
