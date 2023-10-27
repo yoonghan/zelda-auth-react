@@ -1,26 +1,11 @@
 import SignIn from '.'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { urls } from '../../routes/const'
 
 describe('SignIn', () => {
-  const renderComponent = (
-    onSignIn = jest.fn(),
-    errorMessage = undefined,
-    loggedIn = false
-  ) =>
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route
-            path="/"
-            element={<SignIn onSignIn={onSignIn} error={errorMessage} />}
-          ></Route>
-          <Route path={urls.profile} element={<div>Profile</div>}></Route>
-        </Routes>
-      </MemoryRouter>
-    )
+  const renderComponent = (onSignIn = jest.fn(), errorMessage = undefined) =>
+    render(<SignIn onSignIn={onSignIn} error={errorMessage} />)
 
   it('should render login component correctly', () => {
     const { getByRole, getByText, getByLabelText, queryByRole } =

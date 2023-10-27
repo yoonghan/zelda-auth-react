@@ -2,33 +2,15 @@ import type { ChangePasswordResponse } from '@walcron/zelda-shared-context'
 import ChangePassword from '.'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { urls } from '../../routes/const'
 
 describe('ChangePassword', () => {
   const renderComponent = (
-    loggedIn = true,
     onChangePassword: (
       oldPassword: string,
       newPassword: string
     ) => Promise<ChangePasswordResponse> = jest.fn()
-  ) =>
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ChangePassword
-                loggedIn={loggedIn}
-                onChangePassword={onChangePassword}
-              />
-            }
-          ></Route>
-          <Route path={urls.signin} element={<div>Sign In</div>}></Route>
-        </Routes>
-      </MemoryRouter>
-    )
+  ) => render(<ChangePassword onChangePassword={onChangePassword} />)
 
   it('should render component correctly', () => {
     const { getByText, getByLabelText, getByRole } = renderComponent()
@@ -76,7 +58,7 @@ describe('ChangePassword', () => {
       const mockChangePassword = jest.fn()
       // eslint-disable-next-line @typescript-eslint/promise-function-async
       mockChangePassword.mockImplementation(() => new Promise(() => {}))
-      const { findByTestId } = renderComponent(true, mockChangePassword)
+      const { findByTestId } = renderComponent(mockChangePassword)
       await inputValidValues()
       expect(await findByTestId('loader')).toBeVisible()
     })
@@ -87,10 +69,8 @@ describe('ChangePassword', () => {
         isChanged: true,
         error: undefined,
       })
-      const { getByTestId, getByText, getByLabelText } = renderComponent(
-        true,
-        mockChangePassword
-      )
+      const { getByTestId, getByText, getByLabelText } =
+        renderComponent(mockChangePassword)
       await inputValidValues()
       expect(mockChangePassword).toHaveBeenCalledWith('abc', 'abc123')
       expect(getByTestId('loader')).not.toBeVisible()
@@ -107,10 +87,7 @@ describe('ChangePassword', () => {
         isChanged: false,
         error: 'Fail to Update',
       })
-      const { getByTestId, getByText } = renderComponent(
-        true,
-        mockChangePassword
-      )
+      const { getByTestId, getByText } = renderComponent(mockChangePassword)
       await inputValidValues()
       expect(getByTestId('loader')).not.toBeVisible()
       expect(getByText('Fail to Update')).toBeInTheDocument()

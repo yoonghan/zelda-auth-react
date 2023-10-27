@@ -2,34 +2,19 @@ import type { EmailPasswordResetResponse } from '@walcron/zelda-shared-context'
 import ForgotPassword from '.'
 import userEvent from '@testing-library/user-event'
 import { render } from '@testing-library/react'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { urls } from '../../routes/const'
 
 describe('ForgotPassword', () => {
   const renderComponent = (
-    loggedIn = false,
     onSendEmailToResetPassword: (
       email: string
     ) => Promise<EmailPasswordResetResponse> = jest.fn()
   ) =>
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ForgotPassword
-                onSendEmailToResetPassword={onSendEmailToResetPassword}
-              />
-            }
-          ></Route>
-          <Route path={urls.profile} element={<div>Profile</div>}></Route>
-        </Routes>
-      </MemoryRouter>
+      <ForgotPassword onSendEmailToResetPassword={onSendEmailToResetPassword} />
     )
 
   it('should default render forgot password form', () => {
-    const { getByText, getByRole } = renderComponent(false)
+    const { getByText, getByRole } = renderComponent()
     expect(getByText('Reset a forgotten password')).toBeInTheDocument()
     expect(
       getByRole('button', { name: 'Reset My Password' })
@@ -42,7 +27,7 @@ describe('ForgotPassword', () => {
       isSent: true,
       error: undefined,
     })
-    const { getByText, getByLabelText } = renderComponent(false, mockEmailSent)
+    const { getByText, getByLabelText } = renderComponent(mockEmailSent)
     await userEvent.type(
       getByLabelText('Email Address *'),
       'test@email.com{enter}'
