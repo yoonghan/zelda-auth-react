@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react'
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 import routes from './appRoute'
 import { AuthenticationProvider } from '../context/authentication'
+import {
+  setupAuthAsLoggedIn,
+  setupAuthAsLoggedOut,
+} from '../__mocks__/@walcron/zelda-shared-context'
 
 describe('appRoute', () => {
   const Wrapper = ({ goto }: { goto: string[] }) => {
@@ -61,4 +65,44 @@ describe('appRoute', () => {
   //   render(<Wrapper goto={["/auth/logout"]} />);
   //   expect(screen.queryByText("Not Found")).not.toBeInTheDocument();
   // });
+
+  describe('logged out', () => {
+    beforeEach(() => {
+      setupAuthAsLoggedOut()
+    })
+
+    const renderComponent = ({ goto }: { goto: string[] }) => {
+      const router = createMemoryRouter(routes, { initialEntries: goto })
+      return render(
+        <AuthenticationProvider>
+          <RouterProvider router={router} />
+        </AuthenticationProvider>
+      )
+    }
+
+    it('should navigate to sign in when go to profile', async () => {
+      const { findByText } = renderComponent({ goto: ['/', '/auth/profile'] })
+      expect(await findByText('Sign in')).toBeInTheDocument()
+    })
+  })
+
+  describe('logged in', () => {
+    beforeEach(() => {
+      setupAuthAsLoggedIn()
+    })
+
+    const renderComponent = ({ goto }: { goto: string[] }) => {
+      const router = createMemoryRouter(routes, { initialEntries: goto })
+      return render(
+        <AuthenticationProvider>
+          <RouterProvider router={router} />
+        </AuthenticationProvider>
+      )
+    }
+
+    it('should navigate to profile and not redirected', async () => {
+      const { findByText } = renderComponent({ goto: ['/', '/auth/profile'] })
+      expect(await findByText('Logged in')).toBeInTheDocument()
+    })
+  })
 })

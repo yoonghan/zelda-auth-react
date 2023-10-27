@@ -8,6 +8,7 @@ import { AuthenticationConsumer } from '../context/authentication'
 import Create from '../components/Create'
 import ForgotPassword from '../components/ForgotPassword'
 import ChangePassword from '../components/ChangePassword'
+import AuthenticatedComponent from '../components/AuthenticatedComponent'
 
 const routes = [
   { path: '/', element: <About />, errorElement: <ErrorPage /> },
@@ -26,7 +27,15 @@ const routes = [
       },
       {
         path: 'profile',
-        element: <Profiler />,
+        element: (
+          <AuthenticationConsumer>
+            {({ loggedIn }) => (
+              <AuthenticatedComponent loggedIn={loggedIn} redirectTo="SignIn">
+                <Profiler />
+              </AuthenticatedComponent>
+            )}
+          </AuthenticationConsumer>
+        ),
       },
       {
         path: 'login',
