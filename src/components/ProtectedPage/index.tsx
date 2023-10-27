@@ -43,7 +43,6 @@ const PageRedirector = ({
         return <Navigate to={urls.signin} replace={true} />
       }
       break
-    default:
   }
 
   return children(props)
