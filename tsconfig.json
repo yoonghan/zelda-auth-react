@@ -7,5 +7,5 @@
     "skipLibCheck": true
   },
   "files": ["src/walcron-zelda-auth-react.tsx"],
-  "include": ["src/**/*", "external_modules/**/typings/types.d.ts"]
+  "include": ["src/**/*", "external_modules/**/typings/types.d.ts", "e2e/**/*"]
 }
