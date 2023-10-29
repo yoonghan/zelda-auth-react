@@ -7,6 +7,7 @@ module.exports = {
     '\\.(css)$': 'identity-obj-proxy',
     'single-spa-react/parcel': 'single-spa-react/lib/cjs/parcel.cjs',
   },
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(test).[jt]s?(x)'],
   setupFiles: ['whatwg-fetch'],
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   coverageReporters: ['text', 'cobertura'],
