@@ -10,7 +10,7 @@ import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
 import { Copyright } from '@yoonghan/walcron-microfrontend-shared'
 import { useForm } from 'react-hook-form'
-import { emailPattern, passwordLength } from '../shared/validation'
+import { emailPattern, namePattern, passwordLength } from '../shared/validation'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Link from '@mui/material/Link'
 import Checkbox from '@mui/material/Checkbox'
@@ -19,6 +19,7 @@ import { yearChange } from '../../shared/const'
 
 interface FormValues {
   email: string
+  displayName: string
   password: string
   rePassword: string
 }
@@ -27,7 +28,7 @@ export default function Create({
   onCreate,
   error,
 }: {
-  onCreate: (username: string, password: string) => void
+  onCreate: (username: string, password: string, displayName: string) => void
   error: string | undefined
 }) {
   const submissionCount = useRef(0)
@@ -45,7 +46,7 @@ export default function Create({
 
   const onSubmit = useCallback(
     (formValues: FormValues) => {
-      onCreate(formValues.email, formValues.password)
+      onCreate(formValues.email, formValues.password, formValues.displayName)
       submissionCount.current += 1
     },
     [onCreate]
@@ -117,6 +118,23 @@ export default function Create({
                 pattern: {
                   value: emailPattern,
                   message: 'Email address is invalid',
+                },
+              })}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="displayName"
+              label="Display Name"
+              name="displayName"
+              autoComplete="name"
+              autoFocus
+              {...register('displayName', {
+                required: 'Display name is required',
+                pattern: {
+                  value: namePattern,
+                  message: 'Display name is invalid',
                 },
               })}
             />
