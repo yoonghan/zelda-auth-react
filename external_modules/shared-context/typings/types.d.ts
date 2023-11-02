@@ -6,7 +6,8 @@ export class Firebase {
 import { BehaviorSubject } from 'rxjs';
 import { AuthResponse, AuthWithProfileResponse } from './type/Auth';
 import { ChangePasswordResponse, EmailPasswordResetResponse } from './type/ChangePassword';
-import { RemoveUser } from './type/RemoveUser';
+import type { RemoveUser } from './type/RemoveUser';
+import type { UpdateUserRequest, UpdateUserResponse } from './type/UpdateUser';
 export const SESSION_KEY = "sessionToken";
 export declare const DISPLAYNAME_KEY = "sessionToken";
 export declare const auth$: BehaviorSubject<AuthResponse>;
@@ -18,6 +19,7 @@ export declare function changePassword(oldPassword: string, newPassword: string)
 export declare function logout(): Promise<void>;
 export declare const updateUserLogin: (user: any) => void;
 export declare function removeUser(): Promise<RemoveUser>;
+export declare function updateUser(updateUserRequest: UpdateUserRequest): Promise<UpdateUserResponse>;
 export interface AuthResponse {
     sessionToken: string | null;
     displayName: string;
@@ -37,6 +39,13 @@ export type EmailPasswordResetResponse = {
 };
 export type RemoveUser = {
     isRemoved: boolean;
+    error?: string;
+};
+export type UpdateUserRequest = {
+    displayName: string;
+};
+export type UpdateUserResponse = {
+    isProfileUpdated: boolean;
     error?: string;
 };
 }
