@@ -8,6 +8,7 @@ import { AuthResponse, AuthWithProfileResponse } from './type/Auth';
 import { ChangePasswordResponse, EmailPasswordResetResponse } from './type/ChangePassword';
 import { RemoveUser } from './type/RemoveUser';
 export const SESSION_KEY = "sessionToken";
+export declare const DISPLAYNAME_KEY = "sessionToken";
 export declare const auth$: BehaviorSubject<AuthResponse>;
 export declare function create(username: string, password: string, displayName?: string): Promise<AuthWithProfileResponse>;
 export declare function login(username: string, password: string): Promise<AuthResponse>;
@@ -19,6 +20,7 @@ export declare const updateUserLogin: (user: any) => void;
 export declare function removeUser(): Promise<RemoveUser>;
 export interface AuthResponse {
     sessionToken: string | null;
+    displayName: string;
     error: string | undefined;
     pending: boolean;
 }
