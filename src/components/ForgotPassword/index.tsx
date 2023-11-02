@@ -3,18 +3,16 @@ import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { type EmailPasswordResetResponse } from '@walcron/zelda-shared-context'
 import EmailSentMessage from './EmailSentMessage'
 import { ForgotPasswordForm } from './ForgotPasswordForm'
 import Link from '@mui/material/Link'
 import { urls } from '../../routes/const'
+import type { OnSendEmailToReset } from '../../types/authentication'
 
 export default function ForgotPassword({
   onSendEmailToResetPassword,
 }: {
-  onSendEmailToResetPassword: (
-    email: string
-  ) => Promise<EmailPasswordResetResponse>
+  onSendEmailToResetPassword: OnSendEmailToReset
 }) {
   const [emailSentTo, setEmailSentTo] = useState<string | undefined>()
 

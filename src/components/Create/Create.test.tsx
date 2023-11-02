@@ -2,10 +2,13 @@ import Confirm from '.'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { urls } from '../../routes/const'
+import type { OnCreate } from '../../types/authentication'
 
 describe('Create', () => {
-  const renderComponent = (onCreate = jest.fn(), errorMessage = undefined) =>
-    render(<Confirm onCreate={onCreate} error={errorMessage} />)
+  const renderComponent = (
+    onCreate: OnCreate = jest.fn(),
+    errorMessage = undefined
+  ) => render(<Confirm onCreate={onCreate} error={errorMessage} />)
 
   it('should render login component correctly', () => {
     const { getByRole, getByText, getByLabelText, queryByRole } =

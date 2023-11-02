@@ -16,6 +16,7 @@ import Link from '@mui/material/Link'
 import Checkbox from '@mui/material/Checkbox'
 import { urls } from '../../routes/const'
 import { yearChange } from '../../shared/const'
+import type { OnCreate } from '../../types/authentication'
 
 interface FormValues {
   email: string
@@ -28,8 +29,8 @@ export default function Create({
   onCreate,
   error,
 }: {
-  onCreate: (username: string, password: string, displayName: string) => void
-  error: string | undefined
+  onCreate: OnCreate
+  error: Error
 }) {
   const submissionCount = useRef(0)
   const {

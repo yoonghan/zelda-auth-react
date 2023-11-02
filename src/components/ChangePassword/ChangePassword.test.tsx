@@ -1,16 +1,12 @@
-import type { ChangePasswordResponse } from '@walcron/zelda-shared-context'
 import ChangePassword from '.'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
 import { urls } from '../../routes/const'
+import type { OnChangePassword } from '../../types/authentication'
 
 describe('ChangePassword', () => {
-  const renderComponent = (
-    onChangePassword: (
-      oldPassword: string,
-      newPassword: string
-    ) => Promise<ChangePasswordResponse> = jest.fn()
-  ) => render(<ChangePassword onChangePassword={onChangePassword} />)
+  const renderComponent = (onChangePassword: OnChangePassword = jest.fn()) =>
+    render(<ChangePassword onChangePassword={onChangePassword} />)
 
   it('should render component correctly', () => {
     const { getByText, getByLabelText, getByRole } = renderComponent()

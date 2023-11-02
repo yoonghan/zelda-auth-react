@@ -2,10 +2,13 @@ import SignIn from '.'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { urls } from '../../routes/const'
+import type { OnSignIn } from '../../types/authentication'
 
 describe('SignIn', () => {
-  const renderComponent = (onSignIn = jest.fn(), errorMessage = undefined) =>
-    render(<SignIn onSignIn={onSignIn} error={errorMessage} />)
+  const renderComponent = (
+    onSignIn: OnSignIn = jest.fn(),
+    errorMessage = undefined
+  ) => render(<SignIn onSignIn={onSignIn} error={errorMessage} />)
 
   it('should render login component correctly', () => {
     const { getByRole, getByText, getByLabelText, queryByRole } =

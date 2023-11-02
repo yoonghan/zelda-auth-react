@@ -69,7 +69,6 @@ const routes = [
           </ProtectedPage>
         ),
       },
-      /* istanbul ignore next -- @preserve */
       {
         path: 'logout',
         element: (

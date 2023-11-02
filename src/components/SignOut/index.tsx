@@ -1,4 +1,6 @@
-const SignOut = ({ onSignOut }: { onSignOut: () => Promise<void> }) => {
+import type { OnSignOut } from '../../types/authentication'
+
+const SignOut = ({ onSignOut }: { onSignOut: OnSignOut }) => {
   void onSignOut()
 
   return <>Signing out</>

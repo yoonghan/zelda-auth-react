@@ -14,6 +14,7 @@ import { emailPattern, passwordLength } from '../shared/validation'
 import Link from '@mui/material/Link'
 import { urls } from '../../routes/const'
 import { yearChange } from '../../shared/const'
+import type { OnSignIn, Error } from '../../types/authentication'
 
 interface FormValues {
   email: string
@@ -24,8 +25,8 @@ export default function SignIn({
   onSignIn,
   error,
 }: {
-  onSignIn: (username: string, password: string) => void
-  error: string | undefined
+  onSignIn: OnSignIn
+  error: Error
 }) {
   const submissionCount = useRef(0)
   const {
