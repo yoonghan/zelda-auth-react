@@ -30,6 +30,7 @@ export const defaultProps: Props = {
   }),
   error: undefined,
   loggedIn: false,
+  displayName: null,
 }
 
 const AuthenticationContext = createContext(defaultProps)
@@ -43,11 +44,13 @@ export const AuthenticationProvider = ({
 }) => {
   const [error, setError] = useState('')
   const [loggedIn, setLoggedIn] = useState(null)
+  const [displayName, setDisplayName] = useState(null)
 
   useEffect(() => {
-    const sub = auth$.subscribe(({ error, sessionToken }) => {
+    const sub = auth$.subscribe(({ error, sessionToken, displayName }) => {
       setError(remapAuthenticationError(error))
       setLoggedIn(sessionToken !== null)
+      setDisplayName(displayName)
     })
     return () => {
       sub.unsubscribe()
@@ -83,6 +86,7 @@ export const AuthenticationProvider = ({
         },
         error,
         loggedIn,
+        displayName,
       }}
     >
       {children}

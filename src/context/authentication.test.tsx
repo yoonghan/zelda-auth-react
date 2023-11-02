@@ -21,6 +21,7 @@ describe('authentication', () => {
   it('should have correct authentication defaults', async () => {
     expect(defaultProps.error).toBeUndefined()
     expect(defaultProps.loggedIn).toBeFalsy()
+    expect(defaultProps.displayName).toBeNull()
     defaultProps.onSignIn('user', 'password')
     defaultProps.onCreate('user', 'password', 'displayName')
     void defaultProps.onSignOut()
