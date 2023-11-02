@@ -19,6 +19,7 @@ export type OnChangePassword = (
 ) => Promise<ChangePasswordResponse>
 export type Error = string | undefined
 export type LoggedIn = boolean | null
+export type DisplayName = string | null
 
 export interface Authentication {
   onSignIn: OnSignIn
@@ -28,4 +29,5 @@ export interface Authentication {
   onChangePassword: OnChangePassword
   error: Error
   loggedIn: LoggedIn
+  displayName: DisplayName
 }

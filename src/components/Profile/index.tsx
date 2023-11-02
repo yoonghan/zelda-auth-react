@@ -13,7 +13,11 @@ import Grid from '@mui/material/Grid'
 import { urls } from '../../routes/const'
 import Link from '@mui/material/Link'
 
-export default function Profiler() {
+interface Props {
+  displayName: string | null
+}
+
+export default function Profiler({ displayName }: Props) {
   return (
     <Container component="main" maxWidth="md">
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
@@ -28,21 +32,10 @@ export default function Profiler() {
           margin="normal"
           required
           fullWidth
-          id="firstName"
-          label="First Name"
-          name="firstName"
-          value="Walcron"
-          disabled={true}
-        />
-
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="lastName"
-          label="Last Name"
-          name="lastName"
-          value="Coorperation"
+          id="displayName"
+          label="Display Name"
+          name="displayName"
+          value={displayName}
           disabled={true}
         />
         <Grid container>

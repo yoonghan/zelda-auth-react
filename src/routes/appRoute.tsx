@@ -4,7 +4,6 @@ import ErrorPage from './ExtendedErrorPage'
 import SignIn from '../components/SignIn'
 import SignOut from '../components/SignOut'
 import Profiler from '../components/Profile'
-import { AuthenticationConsumer } from '../context/authentication'
 import Create from '../components/Create'
 import ForgotPassword from '../components/ForgotPassword'
 import ChangePassword from '../components/ChangePassword'
@@ -29,7 +28,7 @@ const routes = [
         path: 'profile',
         element: (
           <ProtectedPage failRedirectTo="SignIn">
-            {() => <Profiler />}
+            {({ displayName }) => <Profiler displayName={displayName} />}
           </ProtectedPage>
         ),
       },
