@@ -130,7 +130,6 @@ export default function Create({
               label="Display Name"
               name="displayName"
               autoComplete="name"
-              autoFocus
               {...register('displayName', {
                 required: 'Display name is required',
                 pattern: {
