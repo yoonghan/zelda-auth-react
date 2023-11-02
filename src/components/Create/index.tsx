@@ -16,7 +16,7 @@ import Link from '@mui/material/Link'
 import Checkbox from '@mui/material/Checkbox'
 import { urls } from '../../routes/const'
 import { yearChange } from '../../shared/const'
-import type { OnCreate } from '../../types/authentication'
+import type { OnCreate, Error } from '../../types/authentication'
 
 interface FormValues {
   email: string

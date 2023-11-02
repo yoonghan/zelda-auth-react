@@ -1,17 +1,15 @@
 import { Navigate } from 'react-router-dom'
 import { urls } from '../../routes/const'
 import { type ReactNode } from 'react'
-import {
-  AuthenticationConsumer,
-  type Props as AuthenticatedContextProps,
-} from '../../context/authentication'
+import { AuthenticationConsumer } from '../../context/authentication'
+import type { Authentication } from '../../types/authentication'
 
 interface Props {
   failRedirectTo: 'Profile' | 'SignIn'
-  children: (authenticatedProps: AuthenticatedContextProps) => ReactNode
+  children: (authenticatedProps: Authentication) => ReactNode
 }
 
-interface PageRedirectorProps extends Props, AuthenticatedContextProps {}
+interface PageRedirectorProps extends Props, Authentication {}
 
 const ProtectedPage = ({ children, failRedirectTo }: Props) => {
   return (
