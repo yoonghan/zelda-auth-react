@@ -13,6 +13,7 @@ import { passwordLength } from '../shared/validation'
 import Alert from '@mui/material/Alert'
 import { useForm } from 'react-hook-form'
 import Link from '@mui/material/Link'
+import type { OnChangePassword } from '../../types/authentication'
 
 interface FormValues {
   oPassword: string
@@ -24,10 +25,7 @@ interface ProcessingState extends ChangePasswordResponse {
 }
 
 interface Props {
-  onChangePassword: (
-    oldPassword: string,
-    newPassword: string
-  ) => Promise<ChangePasswordResponse>
+  onChangePassword: OnChangePassword
 }
 
 const ChangePassword = ({ onChangePassword }: Props) => {

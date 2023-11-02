@@ -1,13 +1,11 @@
-import type { EmailPasswordResetResponse } from '@walcron/zelda-shared-context'
+import type { OnSendEmailToReset } from '../../types/authentication'
 import ForgotPassword from '.'
 import userEvent from '@testing-library/user-event'
 import { render } from '@testing-library/react'
 
 describe('ForgotPassword', () => {
   const renderComponent = (
-    onSendEmailToResetPassword: (
-      email: string
-    ) => Promise<EmailPasswordResetResponse> = jest.fn()
+    onSendEmailToResetPassword: OnSendEmailToReset = jest.fn()
   ) =>
     render(
       <ForgotPassword onSendEmailToResetPassword={onSendEmailToResetPassword} />

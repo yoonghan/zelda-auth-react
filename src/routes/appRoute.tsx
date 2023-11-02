@@ -57,27 +57,19 @@ const routes = [
           </ProtectedPage>
         ),
       },
-      /* istanbul ignore next -- @preserve */
       {
         path: 'change-password',
         element: (
           <ProtectedPage failRedirectTo="SignIn">
-            {
-              /* istanbul ignore next -- @preserve */
-              (props) => <ChangePassword {...props} />
-            }
+            {(props) => <ChangePassword {...props} />}
           </ProtectedPage>
         ),
       },
-      /* istanbul ignore next -- @preserve */
       {
         path: 'logout',
         element: (
           <ProtectedPage failRedirectTo="SignIn">
-            {
-              /* istanbul ignore next -- @preserve */
-              (props) => <SignOut {...props} />
-            }
+            {(props) => <SignOut {...props} />}
           </ProtectedPage>
         ),
       },

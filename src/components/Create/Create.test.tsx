@@ -2,10 +2,13 @@ import Confirm from '.'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { urls } from '../../routes/const'
+import type { OnCreate } from '../../types/authentication'
 
 describe('Create', () => {
-  const renderComponent = (onCreate = jest.fn(), errorMessage = undefined) =>
-    render(<Confirm onCreate={onCreate} error={errorMessage} />)
+  const renderComponent = (
+    onCreate: OnCreate = jest.fn(),
+    errorMessage = undefined
+  ) => render(<Confirm onCreate={onCreate} error={errorMessage} />)
 
   it('should render login component correctly', () => {
     const { getByRole, getByText, getByLabelText, queryByRole } =
@@ -21,6 +24,7 @@ describe('Create', () => {
     )
 
     expect(getByLabelText('Email Address *')).toBeInTheDocument()
+    expect(getByLabelText('Display Name *')).toBeInTheDocument()
     expect(getByLabelText('Password *')).toBeInTheDocument()
     expect(getByLabelText('Confirm Password *')).toBeInTheDocument()
     expect(
@@ -40,6 +44,7 @@ describe('Create', () => {
       const { getByRole, getByText } = renderComponent(onCreateMock)
       await userEvent.click(getByRole('button', { name: 'Create' }))
       expect(getByText('Email address is required')).toBeInTheDocument()
+      expect(getByText('Display name is required')).toBeInTheDocument()
       expect(getByText('Password is required')).toBeInTheDocument()
       expect(getByText('Confirm password is required')).toBeInTheDocument()
       expect(getByText("Please check 'I agree to create'")).toBeInTheDocument()
@@ -59,9 +64,11 @@ describe('Create', () => {
       const { getByLabelText, findByText, getByText } =
         renderComponent(onCreateMock)
       await userEvent.type(getByLabelText('Email Address *'), 'walcron')
+      await userEvent.type(getByLabelText('Display Name *'), 'hello  012')
       await userEvent.type(getByLabelText('Password *'), 'abc')
       await userEvent.type(getByLabelText('Confirm Password *'), '1233{enter}')
       expect(await findByText('Email address is invalid')).toBeInTheDocument()
+      expect(await findByText('Display name is invalid')).toBeInTheDocument()
       expect(getByText('Password min length is 6')).toBeInTheDocument()
       expect(
         getByText("Your confirmed password doesn't match")
@@ -78,6 +85,7 @@ describe('Create', () => {
         getByLabelText('Email Address *'),
         'walcron@email.com'
       )
+      await userEvent.type(getByLabelText('Display Name *'), 'walcron')
       await userEvent.type(getByLabelText('Password *'), 'testPassword')
       await userEvent.type(getByLabelText('Confirm Password *'), 'testPassword')
       await userEvent.click(

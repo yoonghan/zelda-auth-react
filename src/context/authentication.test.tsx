@@ -22,7 +22,7 @@ describe('authentication', () => {
     expect(defaultProps.error).toBeUndefined()
     expect(defaultProps.loggedIn).toBeFalsy()
     defaultProps.onSignIn('user', 'password')
-    defaultProps.onCreate('user', 'password')
+    defaultProps.onCreate('user', 'password', 'displayName')
     void defaultProps.onSignOut()
     expect(
       await defaultProps.onSendEmailToResetPassword('email')
@@ -59,7 +59,7 @@ describe('authentication', () => {
               <>
                 <button
                   onClick={() => {
-                    onCreate('username', 'password')
+                    onCreate('username', 'password', 'displayName')
                   }}
                 >
                   Create
