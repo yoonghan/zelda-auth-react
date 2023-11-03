@@ -12,7 +12,12 @@ export const SESSION_KEY = "sessionToken";
 export declare const DISPLAYNAME_KEY = "sessionToken";
 export declare const auth$: BehaviorSubject<AuthResponse>;
 export declare function create(username: string, password: string, displayName?: string): Promise<AuthWithProfileResponse>;
-export declare function login(username: string, password: string): Promise<AuthResponse>;
+export declare function login(username: string, password: string): Promise<{
+    sessionToken: string;
+    displayName: string;
+    error: string;
+    pending: boolean;
+}>;
 export declare function confirmPasswordResetEmail(code: string, newPassword: string): Promise<ChangePasswordResponse>;
 export declare function resetEmail(username: string, redirectUrl: string): Promise<EmailPasswordResetResponse>;
 export declare function changePassword(oldPassword: string, newPassword: string): Promise<ChangePasswordResponse>;
