@@ -3,6 +3,7 @@ import { urls } from '../../routes/const'
 import { type ReactNode } from 'react'
 import { AuthenticationConsumer } from '../../context/authentication'
 import type { Authentication } from '../../types/authentication'
+import { isEmpty } from '../../shared/util/StringUtil'
 
 interface Props {
   failRedirectTo: 'Profile' | 'SignIn'
@@ -32,7 +33,7 @@ const PageRedirector = ({
     case null:
       return <>Initializing</>
     case true:
-      if (failRedirectTo === 'Profile') {
+      if (failRedirectTo === 'Profile' && !isEmpty(props.displayName)) {
         return <Navigate to={urls.profile} replace={true} />
       }
       break
