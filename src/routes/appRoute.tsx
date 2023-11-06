@@ -28,7 +28,7 @@ const routes = [
         path: 'profile',
         element: (
           <ProtectedPage failRedirectTo="SignIn">
-            {({ displayName }) => <Profiler displayName={displayName} />}
+            {(props) => <Profiler {...props} />}
           </ProtectedPage>
         ),
       },

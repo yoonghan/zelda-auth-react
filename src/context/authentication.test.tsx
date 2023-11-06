@@ -11,10 +11,12 @@ import {
   create,
   changePassword,
   resetEmail,
+  updateUser,
 } from '@walcron/zelda-shared-context'
 import {
   changePassword as mockChangePassword,
   resetEmail as mockResetEmail,
+  updateUser as mockUpdateUser,
 } from '../__mocks__/@walcron/zelda-shared-context'
 
 describe('authentication', () => {
@@ -35,6 +37,12 @@ describe('authentication', () => {
       isChanged: false,
       error: undefined,
     })
+    expect(
+      await defaultProps.onUpdateUser({ displayName: 'Han' })
+    ).toStrictEqual({
+      isProfileUpdated: false,
+      error: undefined,
+    })
   })
 
   describe('provider', () => {
@@ -44,6 +52,9 @@ describe('authentication', () => {
       })
       mockResetEmail.mockResolvedValue({
         error: 'Firebase: reset email',
+      })
+      mockUpdateUser.mockResolvedValue({
+        error: 'Firebase: change user',
       })
       let updatedError = ''
       const { getByTestId } = render(
@@ -55,6 +66,7 @@ describe('authentication', () => {
               onSignOut,
               onSendEmailToResetPassword,
               onChangePassword,
+              onUpdateUser,
               error,
             }) => (
               <>
@@ -94,6 +106,17 @@ describe('authentication', () => {
                 </button>
                 <button
                   onClick={() => {
+                    void onUpdateUser({ displayName: 'clap clap' }).then(
+                      (response) => {
+                        updatedError = response.error
+                      }
+                    )
+                  }}
+                >
+                  Update User
+                </button>
+                <button
+                  onClick={() => {
                     void onSignOut()
                   }}
                 >
@@ -120,6 +143,9 @@ describe('authentication', () => {
       )
       expect(changePassword).toHaveBeenCalled()
       expect(updatedError).toBe('Issue - change password')
+      await userEvent.click(screen.getByRole('button', { name: 'Update User' }))
+      expect(updateUser).toHaveBeenCalled()
+      expect(updatedError).toBe('Issue - change user')
     })
   })
 })
