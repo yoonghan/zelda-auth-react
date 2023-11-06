@@ -21,7 +21,7 @@ describe('ProtectedPage', () => {
               path="/"
               element={
                 <ProtectedPage failRedirectTo={redirectTo}>
-                  {(props) => <>Component</>}
+                  {() => <>Component</>}
                 </ProtectedPage>
               }
             ></Route>
@@ -37,11 +37,19 @@ describe('ProtectedPage', () => {
       setupAuthAsLoggedIn()
     })
 
-    it('should redirect to Profile if logged in', () => {
+    it('should redirect to Profile if logged in and has displayName', () => {
       const { getByText } = renderComponent({
         redirectTo: 'Profile',
       })
       expect(getByText('Profile')).toBeInTheDocument()
+    })
+
+    it('should not redirect to Profile if logged in but has no displayName', () => {
+      setupAuthAsLoggedIn('')
+      const { getByText } = renderComponent({
+        redirectTo: 'Profile',
+      })
+      expect(getByText('Component')).toBeInTheDocument()
     })
 
     it('should not redirect to SignIn if logged in', async () => {
