@@ -7,11 +7,19 @@ import type { OnSignIn } from '../../types/authentication'
 describe('SignIn', () => {
   const renderComponent = (
     onSignIn: OnSignIn = jest.fn(),
-    errorMessage = undefined
-  ) => render(<SignIn onSignIn={onSignIn} error={errorMessage} />)
+    errorMessage = undefined,
+    isProcessing = false
+  ) =>
+    render(
+      <SignIn
+        onSignIn={onSignIn}
+        error={errorMessage}
+        isProcessing={isProcessing}
+      />
+    )
 
   it('should render login component correctly', () => {
-    const { getByRole, getByText, getByLabelText, queryByRole } =
+    const { getByRole, getByText, getByLabelText, queryByRole, queryByTestId } =
       renderComponent()
     expect(getByText('Sign in')).toBeInTheDocument()
 
@@ -32,6 +40,14 @@ describe('SignIn', () => {
     expect(getByText(/^Copyright ©.*2023\.$/)).toBeInTheDocument()
 
     expect(queryByRole('alert')).not.toBeInTheDocument()
+
+    expect(queryByTestId('loader')).not.toBeVisible()
+  })
+
+  it('should be loading if isProcessing', async () => {
+    const { getByTestId } = renderComponent(jest.fn(), undefined, true)
+
+    expect(getByTestId('loader')).toBeVisible()
   })
 
   describe('Validation', () => {
@@ -64,10 +80,9 @@ describe('SignIn', () => {
   })
 
   describe('login', () => {
-    it('should be able to signin with valid authentication and show loading', async () => {
+    it('should be able to signin with valid authentication', async () => {
       const onSignInMock = jest.fn()
-      const { getByLabelText, getByRole, findByTestId } =
-        renderComponent(onSignInMock)
+      const { getByLabelText, getByRole } = renderComponent(onSignInMock)
       await userEvent.type(
         getByLabelText('Email Address *'),
         'walcron@email.com'
@@ -75,18 +90,13 @@ describe('SignIn', () => {
       await userEvent.type(getByLabelText('Password *'), 'testPassword')
       await userEvent.click(getByRole('button', { name: 'Sign In' }))
       expect(onSignInMock).toHaveBeenCalled()
-      expect(await findByTestId('loader')).toBeVisible()
     })
 
-    it('should be show exception when sign in failed and loader does not appear', async () => {
+    it('should be show exception when sign in failed', async () => {
       const errorMessage = "Sorry, it's an invalid sign-in"
       const onSignInMock = jest.fn()
-      const { getByText, queryByTestId } = renderComponent(
-        onSignInMock,
-        errorMessage
-      )
+      const { getByText } = renderComponent(onSignInMock, errorMessage)
       expect(getByText(errorMessage)).toBeInTheDocument()
-      expect(queryByTestId('loader')).not.toBeVisible()
     })
   })
 })

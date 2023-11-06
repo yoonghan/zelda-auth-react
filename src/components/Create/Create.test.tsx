@@ -48,6 +48,11 @@ describe('Create', () => {
     expect(queryByTestId('loader')).not.toBeVisible()
   })
 
+  it('should show loading if return render is loading', async () => {
+    const { queryByTestId } = renderComponent(jest.fn(), '', true)
+    expect(queryByTestId('loader')).toBeVisible()
+  })
+
   describe('Validation', () => {
     it('should indicate email and password is not entered if user submit', async () => {
       const onCreateMock = jest.fn()
@@ -84,11 +89,6 @@ describe('Create', () => {
         getByText("Your confirmed password doesn't match")
       ).toBeInTheDocument()
     })
-  })
-
-  it('should show loading if return render is loading', async () => {
-    const { queryByTestId } = renderComponent(jest.fn(), '', true)
-    expect(queryByTestId('loader')).toBeVisible()
   })
 
   describe('login', () => {
