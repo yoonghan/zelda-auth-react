@@ -36,4 +36,5 @@ export interface Authentication {
   error: Error
   loggedIn: LoggedIn
   displayName: DisplayName
+  isProcessing: boolean
 }

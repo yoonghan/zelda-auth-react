@@ -24,6 +24,7 @@ describe('authentication', () => {
     expect(defaultProps.error).toBeUndefined()
     expect(defaultProps.loggedIn).toBeFalsy()
     expect(defaultProps.displayName).toBeNull()
+    expect(defaultProps.isProcessing).toBeFalsy()
     defaultProps.onSignIn('user', 'password')
     defaultProps.onCreate('user', 'password', 'displayName')
     void defaultProps.onSignOut()
@@ -68,6 +69,7 @@ describe('authentication', () => {
               onChangePassword,
               onUpdateUser,
               error,
+              isProcessing,
             }) => (
               <>
                 <button
@@ -123,6 +125,9 @@ describe('authentication', () => {
                   Sign Out
                 </button>
                 <div data-testid={'error'}>{error}</div>
+                <div data-testid={'is-processing'}>
+                  {isProcessing ? 'true' : 'false'}
+                </div>
               </>
             )}
           </AuthenticationConsumer>
@@ -146,6 +151,7 @@ describe('authentication', () => {
       await userEvent.click(screen.getByRole('button', { name: 'Update User' }))
       expect(updateUser).toHaveBeenCalled()
       expect(updatedError).toBe('Issue - change user')
+      expect(getByTestId('is-processing')).toHaveTextContent('false')
     })
   })
 })

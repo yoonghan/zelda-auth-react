@@ -37,15 +37,15 @@ describe('ProtectedPage', () => {
       setupAuthAsLoggedIn()
     })
 
-    it('should redirect to Profile if logged in and has displayName', () => {
+    it('should redirect to Profile if logged in and not processing', () => {
       const { getByText } = renderComponent({
         redirectTo: 'Profile',
       })
       expect(getByText('Profile')).toBeInTheDocument()
     })
 
-    it('should not redirect to Profile if logged in but has no displayName', () => {
-      setupAuthAsLoggedIn('')
+    it('should not redirect to Profile if logged in but in processing', () => {
+      setupAuthAsLoggedIn('', true)
       const { getByText } = renderComponent({
         redirectTo: 'Profile',
       })
@@ -53,6 +53,7 @@ describe('ProtectedPage', () => {
     })
 
     it('should not redirect to SignIn if logged in', async () => {
+      setupAuthAsLoggedIn()
       const { findByText } = renderComponent({
         redirectTo: 'SignIn',
       })

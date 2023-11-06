@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -28,11 +28,12 @@ interface FormValues {
 export default function Create({
   onCreate,
   error,
+  isProcessing,
 }: {
   onCreate: OnCreate
   error: Error
+  isProcessing: boolean
 }) {
-  const submissionCount = useRef(0)
   const {
     register,
     handleSubmit,
@@ -40,15 +41,9 @@ export default function Create({
     formState: { errors },
   } = useForm()
 
-  const submissionInProgress = useCallback(
-    () => submissionCount.current > 0 && error === undefined,
-    [error]
-  )
-
   const onSubmit = useCallback(
     (formValues: FormValues) => {
       onCreate(formValues.email, formValues.password, formValues.displayName)
-      submissionCount.current += 1
     },
     [onCreate]
   )
@@ -100,11 +95,7 @@ export default function Create({
           noValidate
           sx={{ mt: 1, width: 1 }}
         >
-          <Box
-            component="fieldset"
-            sx={{ border: 0 }}
-            disabled={submissionInProgress()}
-          >
+          <Box component="fieldset" sx={{ border: 0 }} disabled={isProcessing}>
             <TextField
               margin="normal"
               required
@@ -194,7 +185,7 @@ export default function Create({
         </Box>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={submissionInProgress()}
+          open={isProcessing}
           data-testid="loader"
         >
           <CircularProgress color="inherit" />
