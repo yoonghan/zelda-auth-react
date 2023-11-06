@@ -6,6 +6,7 @@ import {
   logout,
   resetEmail,
   changePassword,
+  updateUser,
 } from '@walcron/zelda-shared-context'
 import { remapAuthenticationError } from './remapError'
 import type { Authentication as Props } from '../types/authentication'
@@ -26,6 +27,10 @@ export const defaultProps: Props = {
   }),
   onChangePassword: async (oldPassword: string, newPassword: string) => ({
     isChanged: false,
+    error: undefined,
+  }),
+  onUpdateUser: async (userRequest) => ({
+    isProfileUpdated: false,
     error: undefined,
   }),
   error: undefined,
@@ -79,6 +84,13 @@ export const AuthenticationProvider = ({
         },
         onChangePassword: async (oldPassword: string, newPassword: string) => {
           const response = await changePassword(oldPassword, newPassword)
+          return {
+            ...response,
+            error: remapAuthenticationError(response?.error),
+          }
+        },
+        onUpdateUser: async (userRequest) => {
+          const response = await updateUser(userRequest)
           return {
             ...response,
             error: remapAuthenticationError(response?.error),

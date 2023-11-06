@@ -15,6 +15,7 @@ export const login = jest.fn()
 export const logout = jest.fn()
 export const resetEmail = jest.fn()
 export const changePassword = jest.fn()
+export const updateUser = jest.fn()
 
 export const setupAuthAsLoggedIn = () => {
   auth$.subscribe = (subscribeCallback: any) => {
