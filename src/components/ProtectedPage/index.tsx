@@ -33,7 +33,7 @@ const PageRedirector = ({
     case null:
       return <>Initializing</>
     case true:
-      if (failRedirectTo === 'Profile' && !isEmpty(props.displayName)) {
+      if (failRedirectTo === 'Profile' && !props.isProcessing) {
         return <Navigate to={urls.profile} replace={true} />
       }
       break

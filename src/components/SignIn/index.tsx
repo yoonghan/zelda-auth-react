@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -24,26 +24,21 @@ interface FormValues {
 export default function SignIn({
   onSignIn,
   error,
+  isProcessing,
 }: {
   onSignIn: OnSignIn
   error: Error
+  isProcessing: boolean
 }) {
-  const submissionCount = useRef(0)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
 
-  const submissionInProgress = useCallback(
-    () => submissionCount.current > 0 && error === undefined,
-    [error]
-  )
-
   const onSubmit = useCallback(
     (formValues: FormValues) => {
       onSignIn(formValues.email, formValues.password)
-      submissionCount.current += 1
     },
     [onSignIn]
   )
@@ -87,11 +82,7 @@ export default function SignIn({
           noValidate
           sx={{ mt: 1, width: 1 }}
         >
-          <Box
-            component="fieldset"
-            sx={{ border: 0 }}
-            disabled={submissionInProgress()}
-          >
+          <Box component="fieldset" sx={{ border: 0 }} disabled={isProcessing}>
             <TextField
               margin="normal"
               required
@@ -141,7 +132,7 @@ export default function SignIn({
         </Box>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={submissionInProgress()}
+          open={isProcessing}
           data-testid="loader"
         >
           <CircularProgress color="inherit" />

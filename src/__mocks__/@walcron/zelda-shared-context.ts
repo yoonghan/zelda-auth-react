@@ -17,11 +17,11 @@ export const resetEmail = jest.fn()
 export const changePassword = jest.fn()
 export const updateUser = jest.fn()
 
-export const setupAuthAsLoggedIn = (displayName = 'jack') => {
+export const setupAuthAsLoggedIn = (displayName = 'jack', pending = false) => {
   auth$.subscribe = (subscribeCallback: any) => {
     subscribeCallback({
       displayName,
-      pending: false,
+      pending: pending,
       error: undefined,
       sessionToken: 'OK',
     })
