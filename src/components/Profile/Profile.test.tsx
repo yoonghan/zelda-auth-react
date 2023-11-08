@@ -1,5 +1,5 @@
 import Profile from '.'
-import { render } from '@testing-library/react'
+import { render, within } from '@testing-library/react'
 import { urls } from '../../routes/const'
 import { UpdateUserRequest } from '@walcron/zelda-shared-context'
 import userEvent from '@testing-library/user-event'
@@ -18,7 +18,10 @@ describe('Profile', () => {
     const { getByText, getByLabelText, getByRole } = renderComponent({
       displayName: 'Mary Jane',
     })
-    expect(getByText('Logged in')).toBeInTheDocument()
+    expect(getByText('Welcome')).toBeInTheDocument()
+    expect(
+      within(getByText('Welcome')).getByText('Mary Jane')
+    ).toBeInTheDocument()
 
     expect(getByLabelText('Display Name *')).toHaveValue('Mary Jane')
 

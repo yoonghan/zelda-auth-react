@@ -79,11 +79,8 @@ export default function Profiler({
     <Container component="main" maxWidth="md">
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
       <Typography component="h1" variant="h5">
-        Logged in
+        Welcome <strong>{defaultDisplayName}</strong>
       </Typography>
-      <Alert severity="warning">
-        You can&apos;t change your profile, everything is hardcoded
-      </Alert>
       <Box
         component="form"
         onSubmit={(form) => {
