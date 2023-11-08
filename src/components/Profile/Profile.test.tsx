@@ -36,6 +36,7 @@ describe('Profile', () => {
       await userEvent.click(
         getByRole('button', { name: 'Update Display Name' })
       )
+
       expect(await findByTestId('loader')).toBeVisible()
     })
 
@@ -45,15 +46,17 @@ describe('Profile', () => {
         isProfileUpdated: true,
         error: undefined,
       })
-      const { getByLabelText, getByTestId } = renderComponent(
-        { displayName: '' },
-        mockUpdateUser
-      )
+      const { getByLabelText, getByTestId, findByText, getByText } =
+        renderComponent({ displayName: '' }, mockUpdateUser)
       await userEvent.clear(getByLabelText('Display Name *'))
       await userEvent.type(getByLabelText('Display Name *'), 'John Wick{enter}')
 
       expect(mockUpdateUser).toHaveBeenCalledWith({ displayName: 'John Wick' })
-      expect(await getByTestId('loader')).not.toBeVisible()
+
+      expect(await findByText('Updated Salutations')).toBeInTheDocument()
+      expect(getByText('Salutations - Updated.')).toBeInTheDocument()
+      expect(await findByText('Latest update to (Salutations): Updated.'))
+      expect(getByTestId('loader')).not.toBeVisible()
     })
 
     it('should be able to submit invalid data', async () => {
@@ -62,15 +65,27 @@ describe('Profile', () => {
         isProfileUpdated: false,
         error: 'Fail to Update',
       })
-      const { getByLabelText, getByTestId, findByText } = renderComponent(
-        { displayName: '' },
-        mockUpdateUser
-      )
+      const {
+        getByLabelText,
+        getByTestId,
+        findByText,
+        getByText,
+        getByRole,
+        queryByText,
+      } = renderComponent({ displayName: '' }, mockUpdateUser)
       await userEvent.clear(getByLabelText('Display Name *'))
       await userEvent.type(getByLabelText('Display Name *'), 'John Wick{enter}')
 
-      expect(await findByText('Fail to Update')).toBeInTheDocument()
-      expect(await getByTestId('loader')).not.toBeVisible()
+      expect(await findByText('Updated Salutations')).toBeInTheDocument()
+      expect(getByText('Salutations - Fail To Update.')).toBeInTheDocument()
+      expect(getByText('Fail to Update')).toBeInTheDocument()
+      expect(
+        await findByText('Latest update to (Salutations): Fail To Update.')
+      )
+      expect(getByTestId('loader')).not.toBeVisible()
+
+      await userEvent.click(getByRole('button', { name: 'Close' }))
+      expect(queryByText('Updated Salutations')).not.toBeInTheDocument()
     })
   })
 
