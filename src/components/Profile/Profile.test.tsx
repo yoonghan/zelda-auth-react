@@ -15,21 +15,16 @@ describe('Profile', () => {
   }
 
   it('should render login component correctly', () => {
-    const { getByText, getByRole } = renderComponent({
+    const { getByText } = renderComponent({
       displayName: 'Mary Jane',
     })
     expect(getByText('Welcome')).toBeInTheDocument()
     expect(
       within(getByText('Welcome')).getByText('Mary Jane')
     ).toBeInTheDocument()
-
-    expect(getByRole('link', { name: 'Change Password' })).toHaveAttribute(
-      'href',
-      urls.changePassword
-    )
   })
 
-  describe('processing', () => {
+  describe('salutations', () => {
     it('should show loading state if input is correct', async () => {
       const mockUpdateUser = jest.fn()
       // eslint-disable-next-line @typescript-eslint/promise-function-async
@@ -76,6 +71,21 @@ describe('Profile', () => {
 
       expect(await findByText('Fail to Update')).toBeInTheDocument()
       expect(await getByTestId('loader')).not.toBeVisible()
+    })
+  })
+
+  describe('change password', () => {
+    it('should be able to change password', async () => {
+      const { getByRole } = renderComponent({
+        displayName: 'Mary Jane',
+      })
+
+      await userEvent.click(getByRole('button', { name: 'Password Change' }))
+
+      expect(getByRole('link', { name: 'Change Password' })).toHaveAttribute(
+        'href',
+        urls.changePassword
+      )
     })
   })
 })

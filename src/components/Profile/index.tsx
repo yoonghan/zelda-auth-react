@@ -3,7 +3,6 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { urls } from '../../routes/const'
-import Link from '@mui/material/Link'
 import { useCallback, useState } from 'react'
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -14,6 +13,7 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import DisplayNameForm from './DisplayNameForm'
 import Alert from '@mui/material/Alert'
+import Button from '@mui/material/Button'
 
 interface FormValues {
   displayName: string | null
@@ -68,6 +68,25 @@ export default function Profiler({ displayName, onUpdateUser }: Props) {
           </AccordionDetails>
         </Accordion>
 
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography component="h3" variant="h6">
+              Password Change
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Alert severity="info">Change your password here</Alert>
+            <Button
+              href={urls.changePassword}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Change Password
+            </Button>
+          </AccordionDetails>
+        </Accordion>
+
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={processState.isProcessing}
@@ -80,18 +99,6 @@ export default function Profiler({ displayName, onUpdateUser }: Props) {
         {processState.error && (
           <Alert severity="warning">{processState.error}</Alert>
         )}
-      </Box>
-      <Box
-        sx={{
-          marginTop: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant={'body2'}>
-          <Link href={urls.changePassword}>Change Password</Link>
-        </Typography>
       </Box>
     </Container>
   )
