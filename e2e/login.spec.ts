@@ -12,7 +12,7 @@ test.describe('login', () => {
     await page.getByLabel('Password *').fill('abc123')
     await page.getByRole('button', { name: /sign in/i }).click()
 
-    await expect(page.getByText('Logged In')).toBeVisible()
+    await expect(page.getByText('Welcome')).toBeVisible()
 
     await page.goto('/auth/logout')
     await expect(page.getByText('Signing Out')).toBeVisible()
