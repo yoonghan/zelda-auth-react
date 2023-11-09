@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useForm } from 'react-hook-form'
 import { namePattern } from '../../shared/validation'
-import Alert from '@mui/material/Alert'
+import { useFormError } from '../../../hooks/useFormError'
 
 interface FormValues {
   displayName: string | null
@@ -26,22 +26,7 @@ export default function DisplayNameForm({
     formState: { errors },
   } = useForm()
 
-  const inputErrors = (() => {
-    const keys = Object.keys(errors)
-
-    if (keys.length === 0) {
-      return undefined
-    }
-
-    return (
-      <ul>
-        {keys.map((error) => (
-          // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          <li key={error}>{errors[error].message?.toString()}</li>
-        ))}
-      </ul>
-    )
-  })()
+  const { renderedError } = useFormError(errors)
 
   return (
     <Box
@@ -71,7 +56,7 @@ export default function DisplayNameForm({
           })}
         />
 
-        {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
+        {renderedError}
 
         <Button
           type="submit"

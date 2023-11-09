@@ -32,10 +32,11 @@ describe('DisplayNameForm', () => {
 
   it('should be show error is display name is invalid', async () => {
     const mockUpdateUser = jest.fn()
-    const { getByLabelText, getByText, getByRole } = renderComponent({
-      defaultDisplayName: '',
-      updateUser: mockUpdateUser,
-    })
+    const { getByLabelText, getByText, getByRole, findByText } =
+      renderComponent({
+        defaultDisplayName: '',
+        updateUser: mockUpdateUser,
+      })
 
     await userEvent.click(getByRole('button', { name: 'Update Display Name' }))
     expect(getByText('Display name is required.')).toBeInTheDocument()
@@ -44,7 +45,7 @@ describe('DisplayNameForm', () => {
       getByLabelText('Display Name *'),
       'John     Wick{enter}'
     )
-    expect(getByText('Display name is invalid.')).toBeInTheDocument()
+    expect(await findByText('Display name is invalid.')).toBeInTheDocument()
 
     expect(mockUpdateUser).not.toBeCalled()
   })

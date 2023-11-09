@@ -14,6 +14,7 @@ import Alert from '@mui/material/Alert'
 import { useForm } from 'react-hook-form'
 import Link from '@mui/material/Link'
 import type { OnChangePassword } from '../../types/authentication'
+import { useFormError } from '../../hooks/useFormError'
 
 interface FormValues {
   oPassword: string
@@ -67,22 +68,7 @@ const ChangePassword = ({ onChangePassword }: Props) => {
     [onChangePassword, processState, setValue]
   )
 
-  const inputErrors = (() => {
-    const keys = Object.keys(errors)
-
-    if (keys.length === 0) {
-      return undefined
-    }
-
-    return (
-      <ul>
-        {keys.map((error) => (
-          // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          <li key={error}>{errors[error].message?.toString()}</li>
-        ))}
-      </ul>
-    )
-  })()
+  const { renderedError } = useFormError(errors)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -161,7 +147,7 @@ const ChangePassword = ({ onChangePassword }: Props) => {
               })}
             />
           </Box>
-          {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
+          {renderedError}
 
           {processState.error && (
             <Alert severity="warning">{processState.error}</Alert>
