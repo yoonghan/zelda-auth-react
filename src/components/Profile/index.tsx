@@ -14,7 +14,12 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import DisplayNameForm from './DisplayNameForm'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
-import Modal from '@mui/material/Modal'
+import ComplicatedForm from './ComplicatedForm'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogActions from '@mui/material/DialogActions'
 
 interface FormValues {
   displayName: string | null
@@ -129,6 +134,17 @@ export default function Profiler({ displayName, onUpdateUser }: Props) {
               </Button>
             </AccordionDetails>
           </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography component="h3" variant="h6">
+                More Personal Information
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ComplicatedForm />
+            </AccordionDetails>
+          </Accordion>
           <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={processState.isProcessing}
@@ -139,34 +155,27 @@ export default function Profiler({ displayName, onUpdateUser }: Props) {
         </Box>
       </Container>
 
-      <Modal
+      <Dialog
         open={isModalOpen}
         onClose={closeModal}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
-        sx={style}
       >
-        <Box>
-          <Typography id="modal-title" variant="h6" component="h2">
-            Updated {processState.title}
-          </Typography>
-          <Typography id="modal-description" sx={{ mt: 2 }}>
+        <DialogTitle>Updated {processState.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
             {processState.title} - {processState.status}
-          </Typography>
-          {processState.error && (
-            <Alert severity="error">{processState.error}</Alert>
-          )}
-          <Button
-            onClick={closeModal}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            color="secondary"
-          >
+          </DialogContentText>
+        </DialogContent>
+        {processState.error && (
+          <Alert severity="error">{processState.error}</Alert>
+        )}
+        <DialogActions>
+          <Button onClick={closeModal} autoFocus color="secondary">
             Close
           </Button>
-        </Box>
-      </Modal>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

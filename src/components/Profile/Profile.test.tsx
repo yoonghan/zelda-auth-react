@@ -85,7 +85,7 @@ describe('Profile', () => {
       expect(getByTestId('loader')).not.toBeVisible()
 
       await userEvent.click(getByRole('button', { name: 'Close' }))
-      expect(queryByText('Updated Salutations')).not.toBeInTheDocument()
+      expect(queryByText('Updated Salutations')).not.toBeVisible()
     })
   })
 
