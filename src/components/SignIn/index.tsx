@@ -15,6 +15,7 @@ import Link from '@mui/material/Link'
 import { urls } from '../../routes/const'
 import { yearChange } from '../../shared/const'
 import type { OnSignIn, Error } from '../../types/authentication'
+import { useFormError } from '../../hooks/useFormError'
 
 interface FormValues {
   email: string
@@ -43,22 +44,7 @@ export default function SignIn({
     [onSignIn]
   )
 
-  const inputErrors = (() => {
-    const keys = Object.keys(errors)
-
-    if (keys.length === 0) {
-      return undefined
-    }
-
-    return (
-      <ul>
-        {keys.map((error) => (
-          // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          <li key={error}>{errors[error].message?.toString()}</li>
-        ))}
-      </ul>
-    )
-  })()
+  const { renderedError } = useFormError(errors)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -118,7 +104,7 @@ export default function SignIn({
               })}
             />
           </Box>
-          {inputErrors && <Alert severity="error">{inputErrors}</Alert>}
+          {renderedError}
           {error && <Alert severity="warning">{error}</Alert>}
 
           <Button

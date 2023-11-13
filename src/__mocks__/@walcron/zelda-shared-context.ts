@@ -1,5 +1,5 @@
 export const auth$ = {
-  subscribe: (subscribeCallback: any) => {
+  subscribe: (subscribeCallback: (obj: unknown) => void) => {
     subscribeCallback({
       pending: false,
       error: 'Firebase: login',
@@ -18,7 +18,7 @@ export const changePassword = jest.fn()
 export const updateUser = jest.fn()
 
 export const setupAuthAsLoggedIn = (displayName = 'jack', pending = false) => {
-  auth$.subscribe = (subscribeCallback: any) => {
+  auth$.subscribe = (subscribeCallback: (obj: unknown) => void) => {
     subscribeCallback({
       displayName,
       pending: pending,
@@ -32,7 +32,7 @@ export const setupAuthAsLoggedIn = (displayName = 'jack', pending = false) => {
 }
 
 export const setupAuthWithError = () => {
-  auth$.subscribe = (subscribeCallback: any) => {
+  auth$.subscribe = (subscribeCallback: (obj: unknown) => void) => {
     subscribeCallback({
       pending: false,
       error: 'Firebase: login',
@@ -45,7 +45,7 @@ export const setupAuthWithError = () => {
 }
 
 export const setupAuthAsLoggedOut = () => {
-  auth$.subscribe = (subscribeCallback: any) => {
+  auth$.subscribe = (subscribeCallback: (obj: unknown) => void) => {
     subscribeCallback({
       pending: false,
       error: undefined,

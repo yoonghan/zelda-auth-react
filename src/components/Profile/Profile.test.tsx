@@ -1,5 +1,5 @@
 import Profile from '.'
-import { render } from '@testing-library/react'
+import { render, within } from '@testing-library/react'
 import { urls } from '../../routes/const'
 import { UpdateUserRequest } from '@walcron/zelda-shared-context'
 import userEvent from '@testing-library/user-event'
@@ -15,44 +15,16 @@ describe('Profile', () => {
   }
 
   it('should render login component correctly', () => {
-    const { getByText, getByLabelText, getByRole } = renderComponent({
+    const { getByText } = renderComponent({
       displayName: 'Mary Jane',
     })
-    expect(getByText('Logged in')).toBeInTheDocument()
-
-    expect(getByLabelText('Display Name *')).toHaveValue('Mary Jane')
-
-    expect(getByRole('button', { name: '65 - Singapore' })).toBeInTheDocument()
-    expect(getByLabelText('Phone *')).toBeInTheDocument()
-
-    expect(getByRole('button', { name: 'Update' })).toBeInTheDocument()
-
-    expect(getByRole('link', { name: 'Change Password' })).toHaveAttribute(
-      'href',
-      urls.changePassword
-    )
+    expect(getByText('Welcome')).toBeInTheDocument()
+    expect(
+      within(getByText('Welcome')).getByText('Mary Jane')
+    ).toBeInTheDocument()
   })
 
-  it('should be show error is display name is invalid', async () => {
-    const mockUpdateUser = jest.fn()
-    const { getByLabelText, getByText, getByRole } = renderComponent(
-      { displayName: '' },
-      mockUpdateUser
-    )
-
-    await userEvent.click(getByRole('button', { name: 'Update' }))
-    expect(getByText('Display name is required.')).toBeInTheDocument()
-
-    await userEvent.type(
-      getByLabelText('Display Name *'),
-      'John     Wick{enter}'
-    )
-    expect(getByText('Display name is invalid.')).toBeInTheDocument()
-
-    expect(mockUpdateUser).not.toHaveBeenCalled()
-  })
-
-  describe('processing', () => {
+  describe('salutations', () => {
     it('should show loading state if input is correct', async () => {
       const mockUpdateUser = jest.fn()
       // eslint-disable-next-line @typescript-eslint/promise-function-async
@@ -61,7 +33,10 @@ describe('Profile', () => {
         { displayName: 'Offer' },
         mockUpdateUser
       )
-      await userEvent.click(getByRole('button', { name: 'Update' }))
+      await userEvent.click(
+        getByRole('button', { name: 'Update Display Name' })
+      )
+
       expect(await findByTestId('loader')).toBeVisible()
     })
 
@@ -71,32 +46,61 @@ describe('Profile', () => {
         isProfileUpdated: true,
         error: undefined,
       })
-      const { getByRole, getByLabelText, getByTestId } = renderComponent(
-        { displayName: '' },
-        mockUpdateUser
-      )
+      const { getByLabelText, getByTestId, findByText, getByText } =
+        renderComponent({ displayName: '' }, mockUpdateUser)
       await userEvent.clear(getByLabelText('Display Name *'))
-      await userEvent.type(getByLabelText('Display Name *'), 'John Wick')
-      await userEvent.click(getByRole('button', { name: 'Update' }))
+      await userEvent.type(getByLabelText('Display Name *'), 'John Wick{enter}')
 
       expect(mockUpdateUser).toHaveBeenCalledWith({ displayName: 'John Wick' })
-      expect(await getByTestId('loader')).not.toBeVisible()
+
+      expect(await findByText('Updated Salutations')).toBeInTheDocument()
+      expect(getByText('Salutations - Updated.')).toBeInTheDocument()
+      expect(await findByText('Latest update to (Salutations): Updated.'))
+      expect(getByTestId('loader')).not.toBeVisible()
     })
 
-    it('should be able to submit valid data', async () => {
+    it('should be able to submit invalid data', async () => {
       const mockUpdateUser = jest.fn()
       mockUpdateUser.mockResolvedValue({
         isProfileUpdated: false,
         error: 'Fail to Update',
       })
-      const { getByRole, getByLabelText, getByTestId, findByText } =
-        renderComponent({ displayName: '' }, mockUpdateUser)
+      const {
+        getByLabelText,
+        getByTestId,
+        findByText,
+        getByText,
+        getByRole,
+        queryByText,
+      } = renderComponent({ displayName: '' }, mockUpdateUser)
       await userEvent.clear(getByLabelText('Display Name *'))
-      await userEvent.type(getByLabelText('Display Name *'), 'John Wick')
-      await userEvent.click(getByRole('button', { name: 'Update' }))
+      await userEvent.type(getByLabelText('Display Name *'), 'John Wick{enter}')
 
-      expect(await findByText('Fail to Update')).toBeInTheDocument()
-      expect(await getByTestId('loader')).not.toBeVisible()
+      expect(await findByText('Updated Salutations')).toBeInTheDocument()
+      expect(getByText('Salutations - Fail To Update.')).toBeInTheDocument()
+      expect(getByText('Fail to Update')).toBeInTheDocument()
+      expect(
+        await findByText('Latest update to (Salutations): Fail To Update.')
+      )
+      expect(getByTestId('loader')).not.toBeVisible()
+
+      await userEvent.click(getByRole('button', { name: 'Close' }))
+      expect(queryByText('Updated Salutations')).not.toBeVisible()
+    })
+  })
+
+  describe('change password', () => {
+    it('should be able to change password', async () => {
+      const { getByRole } = renderComponent({
+        displayName: 'Mary Jane',
+      })
+
+      await userEvent.click(getByRole('button', { name: 'Password Change' }))
+
+      expect(getByRole('link', { name: 'Change Password' })).toHaveAttribute(
+        'href',
+        urls.changePassword
+      )
     })
   })
 })

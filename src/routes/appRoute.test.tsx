@@ -50,24 +50,24 @@ describe('appRoute', () => {
 
     it('should navigate to profile and not redirected', async () => {
       const { findByText } = renderComponent({ goto: ['/', '/auth/profile'] })
-      expect(await findByText('Logged in')).toBeInTheDocument()
+      expect(await findByText('Welcome')).toBeInTheDocument()
     })
 
     it('should navigate to profile if access from sign in', async () => {
       const { findByText } = renderComponent({ goto: ['/', '/auth/login'] })
-      expect(await findByText('Logged in')).toBeInTheDocument()
+      expect(await findByText('Welcome')).toBeInTheDocument()
     })
 
     it('should navigate to profile if access from create', async () => {
       const { findByText } = render(<Wrapper goto={['/auth/create']} />)
-      expect(await findByText('Logged in')).toBeInTheDocument()
+      expect(await findByText('Welcome')).toBeInTheDocument()
     })
 
     it('should navigate to profile if access from forgot-password', async () => {
       const { findByText } = render(
         <Wrapper goto={['/auth/forgot-password']} />
       )
-      expect(await findByText('Logged in')).toBeInTheDocument()
+      expect(await findByText('Welcome')).toBeInTheDocument()
     })
 
     it('should navigate to change-password and not redireced', async () => {
