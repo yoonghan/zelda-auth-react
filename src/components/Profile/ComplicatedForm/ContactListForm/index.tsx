@@ -40,15 +40,12 @@ export default function ContactListForm() {
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [formValid, setFormIsValid] = useState(false)
 
-  const contacts = useRef([generateContact(`--new-${initialVal}`)])
+  const contacts = useRef([generateContact(`-new-${initialVal}`)])
 
   const addItem = useCallback(() => {
     setNextVal(nextVal + 1)
     setTotal(total + 1)
-    contacts.current = [
-      generateContact(`--new-${nextVal}`),
-      ...contacts.current,
-    ]
+    contacts.current = [generateContact(`-new-${nextVal}`), ...contacts.current]
   }, [total, nextVal])
 
   const removeItem = useCallback(
