@@ -28,13 +28,9 @@ export default function ContactForm({
   changeCallback,
   changeIsValid,
 }: ContactFormProps) {
-  const {
-    register,
-    formState: { errors, isValid },
-    watch,
-  } = useForm({ mode: 'onBlur' })
+  const { register, formState, watch } = useForm({ mode: 'onBlur' })
 
-  const { renderedError } = useFormError(errors)
+  const { renderedError } = useFormError(formState.errors)
 
   useEffect(() => {
     const subscription = watch((value, { name }) => changeCallback(name, value))
@@ -42,8 +38,11 @@ export default function ContactForm({
   }, [changeCallback, watch])
 
   useEffect(() => {
-    changeIsValid(isValid)
-  }, [changeIsValid, isValid])
+    // Please note this is not testable, but it does show warning as formState do return empty isValid
+    const isValid = formState.isValid
+    /* istanbul ignore next */
+    changeIsValid(isValid === undefined ? true : isValid)
+  }, [changeIsValid, formState])
 
   return (
     <Box>

@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react'
 import ContactListForm from '.'
 import userEvent from '@testing-library/user-event'
+import { Contact } from './types'
 
 describe('ContactListForm', () => {
-  const renderComponent = () => render(<ContactListForm />)
+  const renderComponent = (listOfContacts?: Contact[]) =>
+    render(<ContactListForm listOfContacts={listOfContacts} />)
 
   it('should render non-empty list', () => {
     const { getByLabelText } = renderComponent()
@@ -38,5 +40,27 @@ describe('ContactListForm', () => {
     ).toBeInTheDocument()
     await userEvent.click(getByRole('button', { name: 'Close' }))
     expect(queryByText('Saving information')).not.toBeVisible()
+  })
+
+  it('can load contacts', () => {
+    const { getAllByLabelText } = renderComponent([
+      {
+        id: 'gen-1',
+        phoneFor: 'office',
+        phoneCode: '60',
+        phoneNumber: 1234567,
+      },
+      {
+        id: 'gen-2',
+        phoneFor: 'personal',
+        phoneCode: '65',
+        phoneNumber: 2345678,
+      },
+    ])
+
+    const phoneNos = getAllByLabelText('Phone Number *')
+    expect(phoneNos[0]).toHaveValue('1234567')
+    expect(phoneNos[1]).toHaveValue('2345678')
+    expect(phoneNos).toHaveLength(2)
   })
 })

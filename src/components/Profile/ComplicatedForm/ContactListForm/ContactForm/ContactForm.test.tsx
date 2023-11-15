@@ -60,17 +60,4 @@ describe('ContactForm', () => {
       'phoneNumber-0': '9',
     })
   })
-
-  it('should trigger change-callback to field changed', async () => {
-    const changeCallbackFn = jest.fn()
-    const { getByLabelText } = renderComponent(changeCallbackFn)
-
-    await userEvent.type(getByLabelText('Phone Number *'), '9')
-
-    expect(changeCallbackFn).toHaveBeenCalledWith('phoneNumber-0', {
-      'phoneCode-0': '65',
-      'phoneFor-0': 'office',
-      'phoneNumber-0': '9',
-    })
-  })
 })
