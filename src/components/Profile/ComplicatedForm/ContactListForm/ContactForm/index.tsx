@@ -38,10 +38,7 @@ export default function ContactForm({
   }, [changeCallback, watch])
 
   useEffect(() => {
-    // Please note this is not testable, but it does show warning as formState do return empty isValid
-    const isValid = formState.isValid
-    /* istanbul ignore next */
-    changeIsValid(isValid === undefined ? true : isValid)
+    changeIsValid(formState.isValid)
   }, [changeIsValid, formState])
 
   return (
