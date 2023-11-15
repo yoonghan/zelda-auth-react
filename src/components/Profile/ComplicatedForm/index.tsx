@@ -8,11 +8,29 @@ import Alert from '@mui/material/Alert'
 import ContactListForm from './ContactListForm'
 import MailForm from './MailForm'
 import Button from '@mui/material/Button'
+import { useCallback, useState } from 'react'
 
 export default function ComplicatedForm() {
-  const insertData = () => {
-    
-  }
+  const [contacts, setContacts] = useState([])
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  const simulateContact = useCallback(() => {
+    setRefreshKey(new Date().getTime())
+    setContacts([
+      {
+        id: 'gen-1',
+        phoneFor: 'office',
+        phoneCode: '60',
+        phoneNumber: 90873403,
+      },
+      {
+        id: 'gen-2',
+        phoneFor: 'personal',
+        phoneCode: '65',
+        phoneNumber: 1234567,
+      },
+    ])
+  }, [])
 
   return (
     <Box sx={{ mt: 1 }}>
@@ -30,7 +48,7 @@ export default function ComplicatedForm() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ContactListForm />
+          <ContactListForm listOfContacts={contacts} key={refreshKey} />
         </AccordionDetails>
       </Accordion>
 
@@ -45,7 +63,18 @@ export default function ComplicatedForm() {
         </AccordionDetails>
       </Accordion>
 
-      <Button onClick={insertData}>Simulate data population</Button>
+      <Accordion defaultExpanded={true}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography component="h3" variant="h6">
+            Simulation
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Button fullWidth variant="contained" onClick={simulateContact}>
+            Simulate Contact Population
+          </Button>
+        </AccordionDetails>
+      </Accordion>
     </Box>
   )
 }
