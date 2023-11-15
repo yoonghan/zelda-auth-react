@@ -31,16 +31,28 @@ const generateContact = (id: string): ContactWithValid => ({
   isValid: false,
 })
 
-export default function ContactListForm() {
+interface Props {
+  listOfContacts?: Contact[]
+}
+
+export default function ContactListForm({ listOfContacts }: Props) {
   const { handleSubmit } = useForm()
 
-  const initialVal = 0
+  const initialVal = listOfContacts?.length || 0
   const [nextVal, setNextVal] = useState(initialVal + 1)
   const [total, setTotal] = useState(0)
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [formValid, setFormIsValid] = useState(false)
 
-  const contacts = useRef([generateContact(`-new-${initialVal}`)])
+  const initialContacts = () => {
+    if (listOfContacts === undefined || listOfContacts.length === 0) {
+      return [generateContact(`-new-${initialVal}`)]
+    } else {
+      return listOfContacts.map((contact) => ({ ...contact, isValid: true }))
+    }
+  }
+
+  const contacts = useRef(initialContacts())
 
   const addItem = useCallback(() => {
     setNextVal(nextVal + 1)
