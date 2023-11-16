@@ -3,7 +3,18 @@ import MailForm from '.'
 import userEvent from '@testing-library/user-event'
 
 describe('MailForm', () => {
-  const renderComponent = () => render(<MailForm />)
+  const renderComponent = (props?: {
+    address: string
+    postalCode: string
+    country: string
+  }) =>
+    render(
+      <MailForm
+        address={props?.address}
+        postalCode={props?.postalCode}
+        country={props?.country}
+      />
+    )
 
   it('should render component correctly', () => {
     const { getByLabelText } = renderComponent()
@@ -30,5 +41,17 @@ describe('MailForm', () => {
     expect(getByText('48100 Malaysia')).toBeInTheDocument()
     await userEvent.click(getByRole('button', { name: 'Close' }))
     expect(queryByText('Saving information')).not.toBeVisible()
+  })
+
+  it('should be able to submit and pop a message', async () => {
+    const { getByRole, findByText, getByText } = renderComponent({
+      address: '34, A road',
+      postalCode: '24000',
+      country: 'SG',
+    })
+    await userEvent.click(getByRole('button', { name: 'Save Mailing Address' }))
+    expect(await findByText('Saving information')).toBeVisible()
+    expect(getByText('34, A road')).toBeInTheDocument()
+    expect(getByText('24000 Singapore')).toBeInTheDocument()
   })
 })

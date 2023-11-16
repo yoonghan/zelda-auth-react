@@ -14,7 +14,17 @@ import { useCallback, useState } from 'react'
 import { Typography } from '@mui/material'
 import DropDown from '../../../Dropdown'
 
-export default function MailForm() {
+interface Props {
+  address?: string
+  postalCode?: string
+  country?: string
+}
+
+export default function MailForm({
+  address,
+  postalCode,
+  country = 'MY',
+}: Props) {
   const {
     register,
     formState: { errors },
@@ -59,6 +69,7 @@ export default function MailForm() {
         label="Address"
         name="address"
         autoComplete="address"
+        defaultValue={address}
         {...register('address', {
           required: 'Address is required.',
         })}
@@ -72,6 +83,7 @@ export default function MailForm() {
         label="Postal Code"
         name="postalCode"
         type="number"
+        defaultValue={postalCode}
         autoComplete="postal-code"
         {...register('postalCode', {
           required: 'Postal Code is required.',
@@ -85,7 +97,7 @@ export default function MailForm() {
             id={'country'}
             register={register}
             items={countryCodes}
-            defaultValue={'MY'}
+            defaultValue={country}
             required={true}
           />
         </Grid>
