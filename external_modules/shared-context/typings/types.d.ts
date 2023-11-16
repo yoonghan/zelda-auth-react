@@ -8,8 +8,10 @@ import { AuthResponse, AuthWithProfileResponse } from './type/Auth';
 import { ChangePasswordResponse, EmailPasswordResetResponse } from './type/ChangePassword';
 import type { RemoveUser } from './type/RemoveUser';
 import type { UpdateUserRequest, UpdateUserResponse } from './type/UpdateUser';
+import type { UpdateUserAdditionalInfo, UpdateUserAdditionalInfoResponse } from './type/updateUserAdditionalInfo';
 export const SESSION_KEY = "sessionToken";
-export declare const DISPLAYNAME_KEY = "sessionToken";
+export declare const DISPLAYNAME_KEY = "displayToken";
+export declare const ADDITIONALINFO_KEY = "additionalInfoToken";
 export declare const auth$: BehaviorSubject<AuthResponse>;
 export declare function create(username: string, password: string, displayName?: string): Promise<AuthWithProfileResponse>;
 export declare function login(username: string, password: string): Promise<{
@@ -25,6 +27,8 @@ export declare function logout(): Promise<void>;
 export declare const updateUserLogin: (user: any) => void;
 export declare function removeUser(): Promise<RemoveUser>;
 export declare function updateUser(updateUserRequest: UpdateUserRequest): Promise<UpdateUserResponse>;
+export declare function updateUserAdditionalInfo(updateUserAdditionalInfoRequest: Partial<UpdateUserAdditionalInfo>): Promise<UpdateUserAdditionalInfoResponse>;
+export declare function getUserAdditionalInfo(): Promise<UpdateUserAdditionalInfo>;
 export interface AuthResponse {
     sessionToken: string | null;
     displayName: string;
@@ -52,5 +56,14 @@ export type UpdateUserRequest = {
 export type UpdateUserResponse = {
     isProfileUpdated: boolean;
     error?: string;
+};
+export type UpdateUserAdditionalInfo = {
+    contacts: object[];
+    mailingAddress: object;
+    preferences: object;
+};
+export type UpdateUserAdditionalInfoResponse = {
+    isAdditionaUserInfoUpdated: boolean;
+    error: string;
 };
 }
