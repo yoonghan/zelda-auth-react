@@ -29,6 +29,12 @@ export default function ComplicatedForm() {
         phoneCode: '65',
         phoneNumber: 1234567,
       },
+      {
+        id: 'gen-3',
+        phoneFor: 'home',
+        phoneCode: '60',
+        phoneNumber: 80239231,
+      },
     ])
   }, [])
 
@@ -71,7 +77,7 @@ export default function ComplicatedForm() {
         </AccordionSummary>
         <AccordionDetails>
           <Button fullWidth variant="contained" onClick={simulateContact}>
-            Simulate Contact Population
+            Simulate Inputs
           </Button>
         </AccordionDetails>
       </Accordion>

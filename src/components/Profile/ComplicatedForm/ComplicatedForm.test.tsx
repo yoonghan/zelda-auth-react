@@ -16,10 +16,8 @@ describe('ComplicateForm', () => {
 
     expect(getByText('Total: 1')).toBeInTheDocument()
 
-    await userEvent.click(
-      getByRole('button', { name: 'Simulate Contact Population' })
-    )
+    await userEvent.click(getByRole('button', { name: 'Simulate Inputs' }))
 
-    expect(await findByText('Total: 2')).toBeInTheDocument()
+    expect(await findByText('Total: 3')).toBeInTheDocument()
   })
 })
