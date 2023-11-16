@@ -33,9 +33,10 @@ const generateContact = (id: string): ContactWithValid => ({
 
 interface Props {
   listOfContacts?: Contact[]
+  onSubmit: (contacts: Contact[]) => void
 }
 
-export default function ContactListForm({ listOfContacts }: Props) {
+export default function ContactListForm({ listOfContacts, onSubmit }: Props) {
   const { handleSubmit } = useForm()
 
   const initialVal = listOfContacts?.length || 0
@@ -137,6 +138,7 @@ export default function ContactListForm({ listOfContacts }: Props) {
     if (hasInvalidForm) {
       setFormIsValid(true)
     } else {
+      onSubmit([...contacts.current])
       setSaveDialogOpen(true)
     }
   }

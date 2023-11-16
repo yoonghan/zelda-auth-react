@@ -3,16 +3,20 @@ import MailForm from '.'
 import userEvent from '@testing-library/user-event'
 
 describe('MailForm', () => {
-  const renderComponent = (props?: {
-    address: string
-    postalCode: string
-    country: string
-  }) =>
+  const renderComponent = (
+    props?: {
+      address: string
+      postalCode: string
+      country: string
+    },
+    onSubmit = jest.fn()
+  ) =>
     render(
       <MailForm
         address={props?.address}
         postalCode={props?.postalCode}
         country={props?.country}
+        onSubmit={onSubmit}
       />
     )
 
@@ -31,8 +35,9 @@ describe('MailForm', () => {
   })
 
   it('should be able to submit and pop a message', async () => {
+    const onSubmitFn = jest.fn()
     const { getByRole, getByText, queryByText, getByLabelText, findByText } =
-      renderComponent()
+      renderComponent(undefined, onSubmitFn)
     await userEvent.type(getByLabelText('Address *'), '48, Road Avenue')
     await userEvent.type(getByLabelText('Postal Code *'), '48100')
     await userEvent.click(getByRole('button', { name: 'Save Mailing Address' }))
@@ -41,6 +46,8 @@ describe('MailForm', () => {
     expect(getByText('48100 Malaysia')).toBeInTheDocument()
     await userEvent.click(getByRole('button', { name: 'Close' }))
     expect(queryByText('Saving information')).not.toBeVisible()
+
+    expect(onSubmitFn).toHaveBeenCalled()
   })
 
   it('should be able to submit and pop a message', async () => {

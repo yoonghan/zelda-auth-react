@@ -14,23 +14,32 @@ import { useCallback, useState } from 'react'
 import { Typography } from '@mui/material'
 import DropDown from '../../../Dropdown'
 
-interface Props {
+interface FormValues {
   address?: string
   postalCode?: string
   country?: string
+}
+
+interface Props extends FormValues {
+  onSubmit: (fullAddress: {
+    address: string
+    postalCode: string
+    country: string
+  }) => void
 }
 
 export default function MailForm({
   address,
   postalCode,
   country = 'MY',
+  onSubmit,
 }: Props) {
   const {
     register,
     formState: { errors },
     getValues,
     handleSubmit,
-  } = useForm({ mode: 'onBlur' })
+  } = useForm<FormValues>({ mode: 'onBlur' })
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
 
   const { renderedError } = useFormError(errors)
@@ -55,7 +64,12 @@ export default function MailForm({
     )
   }
 
-  const onSubmitForm = () => {
+  const onSubmitForm = ({ address, postalCode, country }: FormValues) => {
+    onSubmit({
+      address,
+      postalCode,
+      country,
+    })
     setSaveDialogOpen(true)
   }
 

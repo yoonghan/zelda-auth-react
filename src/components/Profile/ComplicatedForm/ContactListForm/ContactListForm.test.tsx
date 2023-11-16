@@ -4,8 +4,10 @@ import userEvent from '@testing-library/user-event'
 import { Contact } from './types'
 
 describe('ContactListForm', () => {
-  const renderComponent = (listOfContacts?: Contact[]) =>
-    render(<ContactListForm listOfContacts={listOfContacts} />)
+  const renderComponent = (listOfContacts?: Contact[], onSubmit = jest.fn()) =>
+    render(
+      <ContactListForm listOfContacts={listOfContacts} onSubmit={onSubmit} />
+    )
 
   it('should render non-empty list', () => {
     const { getByLabelText } = renderComponent()
@@ -27,8 +29,9 @@ describe('ContactListForm', () => {
   })
 
   it('should be able to submit', async () => {
+    const onSubmitFn = jest.fn()
     const { getByLabelText, getByRole, findByText, queryByText } =
-      renderComponent()
+      renderComponent(undefined, onSubmitFn)
     await userEvent.type(getByLabelText('Phone Number *'), '12345678')
     await userEvent.click(getByRole('button', { name: 'Save Contacts' }))
     expect(await findByText('Saving information')).toBeVisible()
@@ -40,6 +43,8 @@ describe('ContactListForm', () => {
     ).toBeInTheDocument()
     await userEvent.click(getByRole('button', { name: 'Close' }))
     expect(queryByText('Saving information')).not.toBeVisible()
+
+    expect(onSubmitFn).toHaveBeenCalled()
   })
 
   it('can load contacts', () => {
