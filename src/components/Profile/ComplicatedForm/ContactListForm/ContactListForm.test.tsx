@@ -47,7 +47,9 @@ describe('ContactListForm', () => {
     expect(onSubmitFn).toHaveBeenCalled()
   })
 
-  it('can load contacts', () => {
+  it('can load contacts', (done) => {
+    const mock = jest.spyOn(console, 'error').mockImplementation(() => {})
+
     const { getAllByLabelText } = renderComponent([
       {
         id: 'gen-1',
@@ -67,5 +69,10 @@ describe('ContactListForm', () => {
     expect(phoneNos[0]).toHaveValue('1234567')
     expect(phoneNos[1]).toHaveValue('2345678')
     expect(phoneNos).toHaveLength(2)
+
+    setTimeout(() => {
+      done()
+      mock.mockRestore()
+    }, 100)
   })
 })

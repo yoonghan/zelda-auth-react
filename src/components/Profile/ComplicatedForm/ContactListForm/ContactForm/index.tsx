@@ -39,7 +39,7 @@ export default function ContactForm({
 
   useEffect(() => {
     changeIsValid(formState.isValid)
-  }, [changeIsValid, formState])
+  }, [changeIsValid, formState.isValid])
 
   return (
     <Box>
