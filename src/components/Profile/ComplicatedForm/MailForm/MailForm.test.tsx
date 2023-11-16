@@ -49,6 +49,11 @@ describe('MailForm', () => {
       postalCode: '24000',
       country: 'SG',
     })
+
+    expect(
+      getByRole('button', { name: 'Save Mailing Address' })
+    ).toBeInTheDocument()
+
     await userEvent.click(getByRole('button', { name: 'Save Mailing Address' }))
     expect(await findByText('Saving information')).toBeVisible()
     expect(getByText('34, A road')).toBeInTheDocument()

@@ -12,6 +12,7 @@ import { useCallback, useState } from 'react'
 
 export default function ComplicatedForm() {
   const [contacts, setContacts] = useState([])
+  const [address, setAddress] = useState({})
   const [refreshKey, setRefreshKey] = useState(0)
 
   const simulateContact = useCallback(() => {
@@ -36,6 +37,11 @@ export default function ComplicatedForm() {
         phoneNumber: 80239231,
       },
     ])
+    setAddress({
+      address: '327, Golden Brick Road',
+      postalCode: '333888',
+      country: 'SG',
+    })
   }, [])
 
   return (
@@ -65,7 +71,7 @@ export default function ComplicatedForm() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MailForm />
+          <MailForm {...address} key={refreshKey} />
         </AccordionDetails>
       </Accordion>
 
