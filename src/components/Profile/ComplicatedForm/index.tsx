@@ -9,8 +9,14 @@ import ContactListForm from './ContactListForm'
 import MailForm from './MailForm'
 import Button from '@mui/material/Button'
 import { useCallback, useState } from 'react'
+import { OnUpdateUserAdditionalInfo } from '../../../types/authentication'
+import type { UpdateUserAdditionalInfo } from '@walcron/zelda-shared-context'
 
-export default function ComplicatedForm() {
+interface Props {
+  onUpdateUserAdditionalInfo: OnUpdateUserAdditionalInfo
+}
+
+export default function ComplicatedForm({ onUpdateUserAdditionalInfo }: Props) {
   const [contacts, setContacts] = useState([])
   const [address, setAddress] = useState({})
   const [refreshKey, setRefreshKey] = useState(0)
@@ -44,6 +50,13 @@ export default function ComplicatedForm() {
     })
   }, [])
 
+  const onSubmit =
+    (type: keyof UpdateUserAdditionalInfo) => async (information: object) => {
+      onUpdateUserAdditionalInfo({
+        [type]: information,
+      })
+    }
+
   return (
     <Box sx={{ mt: 1 }}>
       <Alert severity="warning">
@@ -60,7 +73,11 @@ export default function ComplicatedForm() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ContactListForm listOfContacts={contacts} key={refreshKey} />
+          <ContactListForm
+            listOfContacts={contacts}
+            key={refreshKey}
+            onSubmit={onSubmit('contacts')}
+          />
         </AccordionDetails>
       </Accordion>
 
@@ -71,7 +88,11 @@ export default function ComplicatedForm() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MailForm {...address} key={refreshKey} />
+          <MailForm
+            {...address}
+            key={refreshKey}
+            onSubmit={onSubmit('mailingAddress')}
+          />
         </AccordionDetails>
       </Accordion>
 
