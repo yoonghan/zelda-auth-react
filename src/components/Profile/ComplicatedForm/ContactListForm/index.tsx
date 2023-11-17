@@ -138,7 +138,12 @@ export default function ContactListForm({ listOfContacts, onSubmit }: Props) {
     if (hasInvalidForm) {
       setFormIsValid(true)
     } else {
-      onSubmit([...contacts.current])
+      onSubmit(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        contacts.current.map(({ isValid, ...others }) => {
+          return others
+        })
+      )
       setSaveDialogOpen(true)
     }
   }

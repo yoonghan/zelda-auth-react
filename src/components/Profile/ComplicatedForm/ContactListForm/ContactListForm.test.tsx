@@ -44,7 +44,14 @@ describe('ContactListForm', () => {
     await userEvent.click(getByRole('button', { name: 'Close' }))
     expect(queryByText('Saving information')).not.toBeVisible()
 
-    expect(onSubmitFn).toHaveBeenCalled()
+    expect(onSubmitFn).toHaveBeenCalledWith([
+      {
+        id: '-new-0',
+        phoneCode: '65',
+        phoneFor: 'office',
+        phoneNumber: '12345678',
+      },
+    ])
   })
 
   it('can load contacts', (done) => {
