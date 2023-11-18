@@ -34,7 +34,7 @@ describe('ContactListForm', () => {
       renderComponent(undefined, onSubmitFn)
     await userEvent.type(getByLabelText('Phone Number *'), '12345678')
     await userEvent.click(getByRole('button', { name: 'Save Contacts' }))
-    expect(await findByText('Saving information')).toBeVisible()
+    expect(await findByText('Information Saved')).toBeVisible()
     expect(
       getByRole('row', { name: 'Phone For Phone Number' })
     ).toBeInTheDocument()
@@ -42,7 +42,7 @@ describe('ContactListForm', () => {
       getByRole('row', { name: 'office (65) - 12345678' })
     ).toBeInTheDocument()
     await userEvent.click(getByRole('button', { name: 'Close' }))
-    expect(queryByText('Saving information')).not.toBeVisible()
+    expect(queryByText('Information Saved')).not.toBeVisible()
 
     expect(onSubmitFn).toHaveBeenCalledWith([
       {

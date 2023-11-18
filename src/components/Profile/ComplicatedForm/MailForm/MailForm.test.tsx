@@ -41,11 +41,11 @@ describe('MailForm', () => {
     await userEvent.type(getByLabelText('Address *'), '48, Road Avenue')
     await userEvent.type(getByLabelText('Postal Code *'), '48100')
     await userEvent.click(getByRole('button', { name: 'Save Mailing Address' }))
-    expect(await findByText('Saving information')).toBeVisible()
+    expect(await findByText('Information Saved')).toBeVisible()
     expect(getByText('48, Road Avenue')).toBeInTheDocument()
     expect(getByText('48100 Malaysia')).toBeInTheDocument()
     await userEvent.click(getByRole('button', { name: 'Close' }))
-    expect(queryByText('Saving information')).not.toBeVisible()
+    expect(queryByText('Information Saved')).not.toBeVisible()
 
     expect(onSubmitFn).toHaveBeenCalled()
   })
@@ -62,7 +62,7 @@ describe('MailForm', () => {
     ).toBeInTheDocument()
 
     await userEvent.click(getByRole('button', { name: 'Save Mailing Address' }))
-    expect(await findByText('Saving information')).toBeVisible()
+    expect(await findByText('Information Saved')).toBeVisible()
     expect(getByText('34, A road')).toBeInTheDocument()
     expect(getByText('24000 Singapore')).toBeInTheDocument()
   })

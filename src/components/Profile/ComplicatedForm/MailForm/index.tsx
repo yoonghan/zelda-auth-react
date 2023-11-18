@@ -5,14 +5,10 @@ import TextField from '@mui/material/TextField'
 import { useForm } from 'react-hook-form'
 import { useFormError } from '../../../../hooks/useFormError'
 import { countryCodes } from '../ContactListForm/const'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogActions from '@mui/material/DialogActions'
-import { useCallback, useState } from 'react'
+import { useRef } from 'react'
 import { Typography } from '@mui/material'
 import DropDown from '../../../Dropdown'
+import SaveDialog, { SaveDialogHandler } from '../SaveDialog'
 
 interface FormValues {
   address?: string
@@ -40,13 +36,9 @@ export default function MailForm({
     getValues,
     handleSubmit,
   } = useForm<FormValues>({ mode: 'onBlur' })
-  const [saveDialogOpen, setSaveDialogOpen] = useState(false)
-
   const { renderedError } = useFormError(errors)
 
-  const closeSaveDialog = useCallback(() => {
-    setSaveDialogOpen(false)
-  }, [])
+  const dialogRef = useRef<SaveDialogHandler>(null)
 
   const renderSavedInformation = () => {
     return (
@@ -70,7 +62,7 @@ export default function MailForm({
       postalCode,
       country,
     })
-    setSaveDialogOpen(true)
+    dialogRef.current.openSaveDialog()
   }
 
   return (
@@ -128,26 +120,10 @@ export default function MailForm({
       >
         Save Mailing Address
       </Button>
-      <Dialog
-        open={saveDialogOpen}
-        onClose={closeSaveDialog}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <DialogTitle id="modal-title">Saving information</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This information are not <strong>&quot;saved&quot;</strong>. It is
-            only for programming demo purposes.
-          </DialogContentText>
-          {renderSavedInformation()}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeSaveDialog} autoFocus color="secondary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <SaveDialog
+        ref={dialogRef}
+        renderSavedInformation={renderSavedInformation}
+      />
     </Box>
   )
 }
