@@ -1,17 +1,43 @@
-import { render, within } from '@testing-library/react'
+import { render, within, waitFor, screen } from '@testing-library/react'
 import ComplicatedForm from '.'
 import userEvent from '@testing-library/user-event'
 
 describe('ComplicateForm', () => {
-  const renderForm = (onUpdateUserAdditionalInfo = jest.fn()) =>
+  const renderForm = (
+    onUpdateUserAdditionalInfo = jest.fn(),
+    onGetUserAdditionalInfo = jest.fn()
+  ) =>
     render(
       <ComplicatedForm
         onUpdateUserAdditionalInfo={onUpdateUserAdditionalInfo}
+        onGetUserAdditionalInfo={onGetUserAdditionalInfo}
       />
     )
 
-  it('should render form correctly', () => {
+  const waitForLoaderToComplete = async () => {
+    await waitFor(() => {
+      expect(
+        screen.queryByTestId('complicatedform-loader')
+      ).not.toBeInTheDocument()
+    })
+  }
+
+  it('should show a loader', () => {
+    const onGetUserAdditionalInfo = jest.fn()
+    onGetUserAdditionalInfo.mockImplementation(() => new Promise(() => {}))
+    const { getByTestId, getByText } = renderForm(
+      undefined,
+      onGetUserAdditionalInfo
+    )
+    expect(getByTestId('complicatedform-loader')).toBeInTheDocument()
+    expect(
+      getByText("You won't see this as it loads very fast.")
+    ).toBeInTheDocument()
+  })
+
+  it('should render form correctly', async () => {
     const { getByRole } = renderForm()
+    await waitForLoaderToComplete()
     expect(
       getByRole('heading', { name: 'Contactless Contact' })
     ).toBeInTheDocument()
@@ -20,9 +46,44 @@ describe('ComplicateForm', () => {
     ).toBeInTheDocument()
   })
 
+  it('should trigger onGetUserAdditionalinfo when load', async () => {
+    const onGetUserAdditionalInfo = jest.fn()
+    onGetUserAdditionalInfo.mockResolvedValue({
+      contacts: [
+        {
+          id: 'gen-1',
+          phoneCode: '60',
+          phoneFor: 'office',
+          phoneNumber: 90873403,
+        },
+      ],
+      mailingAddress: {
+        address: '327, Golden Brick Road',
+        country: 'SG',
+        postalCode: '333888',
+      },
+    })
+    const { getByRole } = renderForm(undefined, onGetUserAdditionalInfo)
+
+    await waitForLoaderToComplete()
+
+    expect(
+      getByRole('heading', { name: 'Contactless Contact' })
+    ).toBeInTheDocument()
+    expect(onGetUserAdditionalInfo).toHaveBeenCalled()
+    expect(getByRole('textbox', { name: 'Phone Number' })).toHaveValue(
+      '90873403'
+    )
+    expect(getByRole('textbox', { name: 'Address' })).toHaveValue(
+      '327, Golden Brick Road'
+    )
+  })
+
   it('should be able save simulate inputs for contacts', async () => {
     const onUpdateUserAdditionalInfoFn = jest.fn()
     const { getByRole } = renderForm(onUpdateUserAdditionalInfoFn)
+
+    await waitForLoaderToComplete()
 
     const contactBox = getByRole('heading', { name: 'Contactless Contact' })
       .parentElement.parentElement.parentElement
@@ -59,6 +120,8 @@ describe('ComplicateForm', () => {
   it('should be able save simulate inputs for address', async () => {
     const onUpdateUserAdditionalInfoFn = jest.fn()
     const { getByRole } = renderForm(onUpdateUserAdditionalInfoFn)
+
+    await waitForLoaderToComplete()
 
     const mailingBox = getByRole('heading', { name: 'Mailing / Billing' })
       .parentElement.parentElement.parentElement

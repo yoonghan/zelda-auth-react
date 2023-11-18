@@ -8,15 +8,22 @@ import Alert from '@mui/material/Alert'
 import ContactListForm from './ContactListForm'
 import MailForm from './MailForm'
 import Button from '@mui/material/Button'
-import { useCallback, useState } from 'react'
-import { OnUpdateUserAdditionalInfo } from '../../../types/authentication'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  OnUpdateUserAdditionalInfo,
+  OnGetUserAdditionalInfo,
+} from '../../../types/authentication'
 import type { UpdateUserAdditionalInfo } from '@walcron/zelda-shared-context'
 
 interface Props {
   onUpdateUserAdditionalInfo: OnUpdateUserAdditionalInfo
+  onGetUserAdditionalInfo: OnGetUserAdditionalInfo
 }
 
-export default function ComplicatedForm({ onUpdateUserAdditionalInfo }: Props) {
+export default function ComplicatedForm({
+  onUpdateUserAdditionalInfo,
+  onGetUserAdditionalInfo,
+}: Props) {
   const [contacts, setContacts] = useState([])
   const [address, setAddress] = useState({})
   const [refreshKey, setRefreshKey] = useState(0)
@@ -56,6 +63,26 @@ export default function ComplicatedForm({ onUpdateUserAdditionalInfo }: Props) {
         [type]: information,
       })
     }
+
+  const getUserInformation = useCallback(async () => {
+    const userinfo = await onGetUserAdditionalInfo()
+    setContacts(userinfo?.contacts || [])
+    setAddress(userinfo?.mailingAddress || {})
+
+    setRefreshKey(new Date().getTime())
+  }, [onGetUserAdditionalInfo])
+
+  useEffect(() => {
+    getUserInformation()
+  }, [getUserInformation])
+
+  if (refreshKey === 0) {
+    return (
+      <div data-testid="complicatedform-loader">
+        You won&apos;t see this as it loads very fast.
+      </div>
+    )
+  }
 
   return (
     <Box sx={{ mt: 1 }}>

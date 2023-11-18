@@ -6,7 +6,11 @@ import { urls } from '../../routes/const'
 import { startTransition, useCallback, useState } from 'react'
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
-import type { OnUpdateUser } from '../../types/authentication'
+import type {
+  OnGetUserAdditionalInfo,
+  OnUpdateUser,
+  OnUpdateUserAdditionalInfo,
+} from '../../types/authentication'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -28,9 +32,16 @@ interface FormValues {
 interface Props {
   displayName: string | null
   onUpdateUser: OnUpdateUser
+  onUpdateUserAdditionalInfo: OnUpdateUserAdditionalInfo
+  onGetUserAdditionalInfo: OnGetUserAdditionalInfo
 }
 
-export default function Profiler({ displayName, onUpdateUser }: Props) {
+export default function Profiler({
+  displayName,
+  onUpdateUser,
+  onGetUserAdditionalInfo,
+  onUpdateUserAdditionalInfo,
+}: Props) {
   const [isModalOpen, setModalOpen] = useState(false)
 
   const [processState, setProcessState] = useState({
@@ -130,7 +141,10 @@ export default function Profiler({ displayName, onUpdateUser }: Props) {
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <ComplicatedForm />
+              <ComplicatedForm
+                onUpdateUserAdditionalInfo={onUpdateUserAdditionalInfo}
+                onGetUserAdditionalInfo={onGetUserAdditionalInfo}
+              />
             </AccordionDetails>
           </Accordion>
           <Backdrop
