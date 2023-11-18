@@ -7,31 +7,43 @@ import {
   resetEmail,
   changePassword,
   updateUser,
+  updateUserAdditionalInfo,
+  UpdateUserAdditionalInfo,
+  getUserAdditionalInfo,
 } from '@walcron/zelda-shared-context'
 import { remapAuthenticationError } from './remapError'
 import type { Authentication as Props } from '../types/authentication'
 
 export const defaultProps: Props = {
-  onCreate: (username: string, password: string, displayName: string) => {
+  onCreate: () => {
     // empty
   },
-  onSignIn: (username: string, password: string) => {
+  onSignIn: () => {
     // empty
   },
   onSignOut: async () => {
     // empty
   },
-  onSendEmailToResetPassword: async (email: string) => ({
+  onSendEmailToResetPassword: async () => ({
     isSent: false,
     error: undefined,
   }),
-  onChangePassword: async (oldPassword: string, newPassword: string) => ({
+  onChangePassword: async () => ({
     isChanged: false,
     error: undefined,
   }),
-  onUpdateUser: async (userRequest) => ({
+  onUpdateUser: async () => ({
     isProfileUpdated: false,
     error: undefined,
+  }),
+  onUpdateUserAdditionalInfo: async () => ({
+    isAdditionaUserInfoUpdated: false,
+    error: undefined,
+  }),
+  onGetUserAdditionalInfo: async () => ({
+    contacts: undefined,
+    mailingAddress: undefined,
+    preferences: undefined,
   }),
   error: undefined,
   loggedIn: false,
@@ -101,6 +113,14 @@ export const AuthenticationProvider = ({
             ...response,
             error: remapAuthenticationError(response?.error),
           }
+        },
+        onUpdateUserAdditionalInfo: async (
+          additionalUserInfo: Partial<UpdateUserAdditionalInfo>
+        ) => {
+          return await updateUserAdditionalInfo(additionalUserInfo)
+        },
+        onGetUserAdditionalInfo: async () => {
+          return await getUserAdditionalInfo()
         },
         error,
         loggedIn,

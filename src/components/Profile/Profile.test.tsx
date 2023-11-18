@@ -1,21 +1,36 @@
 import Profile from '.'
-import { render, within } from '@testing-library/react'
+import { render, waitFor, within } from '@testing-library/react'
 import { urls } from '../../routes/const'
 import { UpdateUserRequest } from '@walcron/zelda-shared-context'
 import userEvent from '@testing-library/user-event'
 
 describe('Profile', () => {
-  const renderComponent = (
+  const renderComponent = async (
     { displayName }: UpdateUserRequest,
-    onUpdateUser = jest.fn()
+    onUpdateUser = jest.fn(),
+    onUpdateUserAdditionalInfo = jest.fn(),
+    onGetUserAdditionalInfo = jest.fn()
   ) => {
-    return render(
-      <Profile displayName={displayName} onUpdateUser={onUpdateUser} />
+    const result = render(
+      <Profile
+        displayName={displayName}
+        onUpdateUser={onUpdateUser}
+        onUpdateUserAdditionalInfo={onUpdateUserAdditionalInfo}
+        onGetUserAdditionalInfo={onGetUserAdditionalInfo}
+      />
     )
+
+    await waitFor(() => {
+      expect(
+        result.queryByTestId('complicatedform-loader')
+      ).not.toBeInTheDocument()
+    })
+
+    return result
   }
 
-  it('should render login component correctly', () => {
-    const { getByText } = renderComponent({
+  it('should render login component correctly', async () => {
+    const { getByText } = await renderComponent({
       displayName: 'Mary Jane',
     })
     expect(getByText('Welcome')).toBeInTheDocument()
@@ -29,7 +44,7 @@ describe('Profile', () => {
       const mockUpdateUser = jest.fn()
       // eslint-disable-next-line @typescript-eslint/promise-function-async
       mockUpdateUser.mockImplementation(() => new Promise(() => {}))
-      const { findByTestId, getByRole } = renderComponent(
+      const { findByTestId, getByRole } = await renderComponent(
         { displayName: 'Offer' },
         mockUpdateUser
       )
@@ -47,7 +62,7 @@ describe('Profile', () => {
         error: undefined,
       })
       const { getByLabelText, getByTestId, findByText, getByText } =
-        renderComponent({ displayName: '' }, mockUpdateUser)
+        await renderComponent({ displayName: '' }, mockUpdateUser)
       await userEvent.clear(getByLabelText('Display Name *'))
       await userEvent.type(getByLabelText('Display Name *'), 'John Wick{enter}')
 
@@ -72,7 +87,7 @@ describe('Profile', () => {
         getByText,
         getByRole,
         queryByText,
-      } = renderComponent({ displayName: '' }, mockUpdateUser)
+      } = await renderComponent({ displayName: '' }, mockUpdateUser)
       await userEvent.clear(getByLabelText('Display Name *'))
       await userEvent.type(getByLabelText('Display Name *'), 'John Wick{enter}')
 
@@ -91,7 +106,7 @@ describe('Profile', () => {
 
   describe('change password', () => {
     it('should be able to change password', async () => {
-      const { getByRole } = renderComponent({
+      const { getByRole } = await renderComponent({
         displayName: 'Mary Jane',
       })
 

@@ -12,6 +12,8 @@ import {
   changePassword,
   resetEmail,
   updateUser,
+  updateUserAdditionalInfo,
+  getUserAdditionalInfo,
 } from '@walcron/zelda-shared-context'
 import {
   changePassword as mockChangePassword,
@@ -44,6 +46,17 @@ describe('authentication', () => {
       isProfileUpdated: false,
       error: undefined,
     })
+    expect(
+      await defaultProps.onUpdateUserAdditionalInfo({ contacts: undefined })
+    ).toStrictEqual({
+      isAdditionaUserInfoUpdated: false,
+      error: undefined,
+    })
+    expect(await defaultProps.onGetUserAdditionalInfo()).toStrictEqual({
+      contacts: undefined,
+      mailingAddress: undefined,
+      preferences: undefined,
+    })
   })
 
   describe('provider', () => {
@@ -68,6 +81,8 @@ describe('authentication', () => {
               onSendEmailToResetPassword,
               onChangePassword,
               onUpdateUser,
+              onUpdateUserAdditionalInfo,
+              onGetUserAdditionalInfo,
               error,
               isProcessing,
             }) => (
@@ -119,6 +134,22 @@ describe('authentication', () => {
                 </button>
                 <button
                   onClick={() => {
+                    void onUpdateUserAdditionalInfo({ contacts: [] }).then(
+                      () => {}
+                    )
+                  }}
+                >
+                  Update User Additional Info
+                </button>
+                <button
+                  onClick={() => {
+                    void onGetUserAdditionalInfo().then(() => {})
+                  }}
+                >
+                  Get User Additional Info
+                </button>
+                <button
+                  onClick={() => {
                     void onSignOut()
                   }}
                 >
@@ -152,6 +183,16 @@ describe('authentication', () => {
       expect(updateUser).toHaveBeenCalled()
       expect(updatedError).toBe('Issue - change user')
       expect(getByTestId('is-processing')).toHaveTextContent('false')
+
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Update User Additional Info' })
+      )
+      expect(updateUserAdditionalInfo).toHaveBeenCalled()
+
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Get User Additional Info' })
+      )
+      expect(getUserAdditionalInfo).toHaveBeenCalled()
     })
   })
 })

@@ -4,8 +4,10 @@ import userEvent from '@testing-library/user-event'
 import { Contact } from './types'
 
 describe('ContactListForm', () => {
-  const renderComponent = (listOfContacts?: Contact[]) =>
-    render(<ContactListForm listOfContacts={listOfContacts} />)
+  const renderComponent = (listOfContacts?: Contact[], onSubmit = jest.fn()) =>
+    render(
+      <ContactListForm listOfContacts={listOfContacts} onSubmit={onSubmit} />
+    )
 
   it('should render non-empty list', () => {
     const { getByLabelText } = renderComponent()
@@ -27,11 +29,12 @@ describe('ContactListForm', () => {
   })
 
   it('should be able to submit', async () => {
+    const onSubmitFn = jest.fn()
     const { getByLabelText, getByRole, findByText, queryByText } =
-      renderComponent()
+      renderComponent(undefined, onSubmitFn)
     await userEvent.type(getByLabelText('Phone Number *'), '12345678')
     await userEvent.click(getByRole('button', { name: 'Save Contacts' }))
-    expect(await findByText('Saving information')).toBeVisible()
+    expect(await findByText('Information Saved')).toBeVisible()
     expect(
       getByRole('row', { name: 'Phone For Phone Number' })
     ).toBeInTheDocument()
@@ -39,10 +42,21 @@ describe('ContactListForm', () => {
       getByRole('row', { name: 'office (65) - 12345678' })
     ).toBeInTheDocument()
     await userEvent.click(getByRole('button', { name: 'Close' }))
-    expect(queryByText('Saving information')).not.toBeVisible()
+    expect(queryByText('Information Saved')).not.toBeVisible()
+
+    expect(onSubmitFn).toHaveBeenCalledWith([
+      {
+        id: '-new-0',
+        phoneCode: '65',
+        phoneFor: 'office',
+        phoneNumber: '12345678',
+      },
+    ])
   })
 
-  it('can load contacts', () => {
+  it('can load contacts', (done) => {
+    const mock = jest.spyOn(console, 'error').mockImplementation(() => {})
+
     const { getAllByLabelText } = renderComponent([
       {
         id: 'gen-1',
@@ -62,5 +76,10 @@ describe('ContactListForm', () => {
     expect(phoneNos[0]).toHaveValue('1234567')
     expect(phoneNos[1]).toHaveValue('2345678')
     expect(phoneNos).toHaveLength(2)
+
+    setTimeout(() => {
+      done()
+      mock.mockRestore()
+    }, 100)
   })
 })

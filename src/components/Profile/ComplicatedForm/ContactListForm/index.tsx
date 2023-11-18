@@ -7,11 +7,6 @@ import Button from '@mui/material/Button'
 import { Contact } from './types'
 import { generateId } from './generateId'
 import ContactForm from './ContactForm'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogActions from '@mui/material/DialogActions'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
@@ -20,6 +15,7 @@ import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
 import Alert from '@mui/material/Alert'
+import SaveDialog, { SaveDialogHandler } from '../SaveDialog'
 
 type ContactWithValid = Contact & { isValid: boolean }
 
@@ -33,16 +29,18 @@ const generateContact = (id: string): ContactWithValid => ({
 
 interface Props {
   listOfContacts?: Contact[]
+  onSubmit: (contacts: Contact[]) => void
 }
 
-export default function ContactListForm({ listOfContacts }: Props) {
+export default function ContactListForm({ listOfContacts, onSubmit }: Props) {
   const { handleSubmit } = useForm()
 
   const initialVal = listOfContacts?.length || 0
   const [nextVal, setNextVal] = useState(initialVal + 1)
   const [total, setTotal] = useState(0)
-  const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [formValid, setFormIsValid] = useState(false)
+
+  const dialogRef = useRef<SaveDialogHandler>(null)
 
   const initialContacts = () => {
     if (listOfContacts === undefined || listOfContacts.length === 0) {
@@ -97,11 +95,6 @@ export default function ContactListForm({ listOfContacts }: Props) {
     },
     []
   )
-
-  const closeSaveDialog = useCallback(() => {
-    setSaveDialogOpen(false)
-  }, [])
-
   const renderSavedInformation = () => {
     return (
       <TableContainer component={Paper}>
@@ -137,7 +130,13 @@ export default function ContactListForm({ listOfContacts }: Props) {
     if (hasInvalidForm) {
       setFormIsValid(true)
     } else {
-      setSaveDialogOpen(true)
+      onSubmit(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        contacts.current.map(({ isValid, ...others }) => {
+          return others
+        })
+      )
+      dialogRef.current.openSaveDialog()
     }
   }
 
@@ -163,7 +162,6 @@ export default function ContactListForm({ listOfContacts }: Props) {
           <Alert severity="error">Form contains error.</Alert>
         </>
       )}
-
       <Button
         type="submit"
         color="secondary"
@@ -173,26 +171,11 @@ export default function ContactListForm({ listOfContacts }: Props) {
       >
         Save Contacts
       </Button>
-      <Dialog
-        open={saveDialogOpen}
-        onClose={closeSaveDialog}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <DialogTitle id="modal-title">Saving information</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This information are not <strong>&quot;saved&quot;</strong>. It is
-            only for programming demo purposes.
-          </DialogContentText>
-          {renderSavedInformation()}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeSaveDialog} autoFocus color="secondary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      <SaveDialog
+        ref={dialogRef}
+        renderSavedInformation={renderSavedInformation}
+      />
     </Box>
   )
 }

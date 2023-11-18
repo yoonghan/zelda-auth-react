@@ -5,29 +5,40 @@ import TextField from '@mui/material/TextField'
 import { useForm } from 'react-hook-form'
 import { useFormError } from '../../../../hooks/useFormError'
 import { countryCodes } from '../ContactListForm/const'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogActions from '@mui/material/DialogActions'
-import { useCallback, useState } from 'react'
+import { useRef } from 'react'
 import { Typography } from '@mui/material'
 import DropDown from '../../../Dropdown'
+import SaveDialog, { SaveDialogHandler } from '../SaveDialog'
 
-export default function MailForm() {
+interface FormValues {
+  address?: string
+  postalCode?: string
+  country?: string
+}
+
+interface Props extends FormValues {
+  onSubmit: (fullAddress: {
+    address: string
+    postalCode: string
+    country: string
+  }) => void
+}
+
+export default function MailForm({
+  address,
+  postalCode,
+  country = 'MY',
+  onSubmit,
+}: Props) {
   const {
     register,
     formState: { errors },
     getValues,
     handleSubmit,
-  } = useForm({ mode: 'onBlur' })
-  const [saveDialogOpen, setSaveDialogOpen] = useState(false)
-
+  } = useForm<FormValues>({ mode: 'onBlur' })
   const { renderedError } = useFormError(errors)
 
-  const closeSaveDialog = useCallback(() => {
-    setSaveDialogOpen(false)
-  }, [])
+  const dialogRef = useRef<SaveDialogHandler>(null)
 
   const renderSavedInformation = () => {
     return (
@@ -45,8 +56,13 @@ export default function MailForm() {
     )
   }
 
-  const onSubmitForm = () => {
-    setSaveDialogOpen(true)
+  const onSubmitForm = ({ address, postalCode, country }: FormValues) => {
+    onSubmit({
+      address,
+      postalCode,
+      country,
+    })
+    dialogRef.current.openSaveDialog()
   }
 
   return (
@@ -59,6 +75,7 @@ export default function MailForm() {
         label="Address"
         name="address"
         autoComplete="address"
+        defaultValue={address}
         {...register('address', {
           required: 'Address is required.',
         })}
@@ -72,6 +89,7 @@ export default function MailForm() {
         label="Postal Code"
         name="postalCode"
         type="number"
+        defaultValue={postalCode}
         autoComplete="postal-code"
         {...register('postalCode', {
           required: 'Postal Code is required.',
@@ -85,7 +103,7 @@ export default function MailForm() {
             id={'country'}
             register={register}
             items={countryCodes}
-            defaultValue={'MY'}
+            defaultValue={country}
             required={true}
           />
         </Grid>
@@ -102,26 +120,10 @@ export default function MailForm() {
       >
         Save Mailing Address
       </Button>
-      <Dialog
-        open={saveDialogOpen}
-        onClose={closeSaveDialog}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <DialogTitle id="modal-title">Saving information</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This information are not <strong>&quot;saved&quot;</strong>. It is
-            only for programming demo purposes.
-          </DialogContentText>
-          {renderSavedInformation()}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeSaveDialog} autoFocus color="secondary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <SaveDialog
+        ref={dialogRef}
+        renderSavedInformation={renderSavedInformation}
+      />
     </Box>
   )
 }

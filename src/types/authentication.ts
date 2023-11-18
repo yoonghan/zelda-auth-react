@@ -3,6 +3,8 @@ import type {
   EmailPasswordResetResponse,
   UpdateUserRequest,
   UpdateUserResponse,
+  UpdateUserAdditionalInfo,
+  UpdateUserAdditionalInfoResponse,
 } from '@walcron/zelda-shared-context'
 
 export type OnSignIn = (username: string, password: string) => void
@@ -22,6 +24,10 @@ export type OnChangePassword = (
 export type OnUpdateUser = (
   userInfo: UpdateUserRequest
 ) => Promise<UpdateUserResponse>
+export type OnUpdateUserAdditionalInfo = (
+  userAdditionalInfo: Partial<UpdateUserAdditionalInfo>
+) => Promise<UpdateUserAdditionalInfoResponse>
+export type OnGetUserAdditionalInfo = () => Promise<UpdateUserAdditionalInfo>
 export type Error = string | undefined
 export type LoggedIn = boolean | null
 export type DisplayName = string | null
@@ -33,6 +39,8 @@ export interface Authentication {
   onSendEmailToResetPassword: OnSendEmailToReset
   onChangePassword: OnChangePassword
   onUpdateUser: OnUpdateUser
+  onUpdateUserAdditionalInfo: OnUpdateUserAdditionalInfo
+  onGetUserAdditionalInfo: OnGetUserAdditionalInfo
   error: Error
   loggedIn: LoggedIn
   displayName: DisplayName

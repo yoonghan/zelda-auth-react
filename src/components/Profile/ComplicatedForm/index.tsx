@@ -8,10 +8,24 @@ import Alert from '@mui/material/Alert'
 import ContactListForm from './ContactListForm'
 import MailForm from './MailForm'
 import Button from '@mui/material/Button'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  OnUpdateUserAdditionalInfo,
+  OnGetUserAdditionalInfo,
+} from '../../../types/authentication'
+import type { UpdateUserAdditionalInfo } from '@walcron/zelda-shared-context'
 
-export default function ComplicatedForm() {
+interface Props {
+  onUpdateUserAdditionalInfo: OnUpdateUserAdditionalInfo
+  onGetUserAdditionalInfo: OnGetUserAdditionalInfo
+}
+
+export default function ComplicatedForm({
+  onUpdateUserAdditionalInfo,
+  onGetUserAdditionalInfo,
+}: Props) {
   const [contacts, setContacts] = useState([])
+  const [address, setAddress] = useState({})
   const [refreshKey, setRefreshKey] = useState(0)
 
   const simulateContact = useCallback(() => {
@@ -29,8 +43,46 @@ export default function ComplicatedForm() {
         phoneCode: '65',
         phoneNumber: 1234567,
       },
+      {
+        id: 'gen-3',
+        phoneFor: 'home',
+        phoneCode: '60',
+        phoneNumber: 80239231,
+      },
     ])
+    setAddress({
+      address: '327, Golden Brick Road',
+      postalCode: '333888',
+      country: 'SG',
+    })
   }, [])
+
+  const onSubmit =
+    (type: keyof UpdateUserAdditionalInfo) => async (information: object) => {
+      onUpdateUserAdditionalInfo({
+        [type]: information,
+      })
+    }
+
+  const getUserInformation = useCallback(async () => {
+    const userinfo = await onGetUserAdditionalInfo()
+    setContacts(userinfo?.contacts || [])
+    setAddress(userinfo?.mailingAddress || {})
+
+    setRefreshKey(new Date().getTime())
+  }, [onGetUserAdditionalInfo])
+
+  useEffect(() => {
+    getUserInformation()
+  }, [getUserInformation])
+
+  if (refreshKey === 0) {
+    return (
+      <div data-testid="complicatedform-loader">
+        You won&apos;t see this as it loads very fast.
+      </div>
+    )
+  }
 
   return (
     <Box sx={{ mt: 1 }}>
@@ -48,7 +100,11 @@ export default function ComplicatedForm() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ContactListForm listOfContacts={contacts} key={refreshKey} />
+          <ContactListForm
+            listOfContacts={contacts}
+            key={refreshKey}
+            onSubmit={onSubmit('contacts')}
+          />
         </AccordionDetails>
       </Accordion>
 
@@ -59,7 +115,11 @@ export default function ComplicatedForm() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MailForm />
+          <MailForm
+            {...address}
+            key={refreshKey}
+            onSubmit={onSubmit('mailingAddress')}
+          />
         </AccordionDetails>
       </Accordion>
 
@@ -71,7 +131,7 @@ export default function ComplicatedForm() {
         </AccordionSummary>
         <AccordionDetails>
           <Button fullWidth variant="contained" onClick={simulateContact}>
-            Simulate Contact Population
+            Simulate Inputs
           </Button>
         </AccordionDetails>
       </Accordion>
