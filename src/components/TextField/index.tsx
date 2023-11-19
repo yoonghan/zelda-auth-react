@@ -1,4 +1,5 @@
 import TextField from '@mui/material/TextField'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 /**
@@ -10,6 +11,8 @@ export default function TestField({ value }: { value: number }) {
     register,
     formState, //mark this for reference that if destructred to {error, isValid} there will be exception thrown.
   } = useForm()
+
+  useEffect(() => {}, [formState.isValid])
 
   return (
     <TextField
